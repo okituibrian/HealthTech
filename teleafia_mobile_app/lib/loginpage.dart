@@ -27,7 +27,7 @@ class _LoginState extends State<Login> {
           height: MediaQuery.of(context).size.height *1,
 
           child: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(5.0),
 
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,7 +121,7 @@ class _LoginState extends State<Login> {
 
           ),
 
-          SizedBox(height: 20.0) ,
+          SizedBox(height: 10.0) ,
 
           ElevatedButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword()));
@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 10.0),
 
             Row(
               children: [
