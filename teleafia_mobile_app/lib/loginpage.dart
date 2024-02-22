@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_mobile_app/chp_signupform.dart';
+import 'package:teleafia_mobile_app/chp_signupform.dart';
+import 'package:teleafia_mobile_app/forgotpassword.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -14,6 +17,9 @@ class _LoginState extends State<Login> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: background,
+      ),
       body: SafeArea(
         child: Container(
           color: background,
@@ -117,7 +123,9 @@ class _LoginState extends State<Login> {
 
           SizedBox(height: 20.0) ,
 
-          ElevatedButton(onPressed: (){},
+          ElevatedButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword()));
+          },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
             ),
@@ -127,6 +135,7 @@ class _LoginState extends State<Login> {
                 fontSize: 14.0,
               ),
             ),
+          ),
             SizedBox(height: 20.0),
 
             Row(
@@ -134,7 +143,9 @@ class _LoginState extends State<Login> {
                 Text('To create account'),
 
 
-                ElevatedButton(onPressed:(){},
+                ElevatedButton(onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PatientSignupPage()));
+                },
                   child: Text('SIGNUP',
                     style: TextStyle(
                       color: maroon,
