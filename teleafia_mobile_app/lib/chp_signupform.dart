@@ -266,6 +266,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         onPressed: () {
                           final registerBloc =
                           BlocProvider.of<RegisterBloc>(context);
+                          if(confirmPasswordController.text == passwordController.text){
                           registerBloc.add(RegisterButtonWhenPressed(
                             name: nameController.text,
                             email: emailController.text,
@@ -274,7 +275,16 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                             location: locationController.text,
                             password: passwordController.text,
                             confirm_password: confirmPasswordController.text,
-                          ));
+                          ));}
+                          else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text('Passwords do not match'),
+                                  duration: Duration(seconds: 2,),
+
+                                ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: maroon,

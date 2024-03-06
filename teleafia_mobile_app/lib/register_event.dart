@@ -22,5 +22,12 @@ class RegisterButtonWhenPressed extends RegisterEvent {
     required this.password,
     required this.confirm_password,
 
+
   });
+  bool doPasswordsMatch() {
+    return password == confirm_password;
+  }
+  String getSinglePassword() {
+    return password;
+  }
 }
