@@ -1,14 +1,24 @@
-import 'package:teleafia_mobile_app/chp_signupform.dart';
+import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart';
+import 'package:teleafia_mobile_app/presentation/chp_signupform.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teleafia_mobile_app/register_bloc.dart';
+import 'package:teleafia_mobile_app/presentation/landingpage.dart';
+import 'package:teleafia_mobile_app/bloc/registerbloc/register_bloc.dart';
 
 void main() {
   runApp(
-    BlocProvider(
-      create: (context) => RegisterBloc(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(),
+        ),
+        BlocProvider<RegisterBloc>(
+          create: (context) => RegisterBloc(),
+        ),
+      ],
       child: MaterialApp(
-        home: PatientSignupPage(),
+        debugShowCheckedModeBanner: false,
+        home: Welcome(),
       ),
     ),
   );

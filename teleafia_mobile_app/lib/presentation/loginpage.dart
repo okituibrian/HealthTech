@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_mobile_app/chp_signupform.dart';
-import 'package:teleafia_mobile_app/chp_signupform.dart';
-import 'package:teleafia_mobile_app/forgotpassword.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teleafia_mobile_app/presentation/chp_signupform.dart';
+import 'package:teleafia_mobile_app/presentation/forgotpassword.dart';
+import 'package:teleafia_mobile_app/presentation/landingpage.dart';
+import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart';
+//import 'package:teleafia_mobile_app/bloc/loginBloc/login_event.dart';
+import 'dart:async';
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -14,13 +19,34 @@ class _LoginState extends State<Login> {
   @override
   Color maroon = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: background,
       ),
-      body: SafeArea(
+      body: BlocBuilder<LoginBloc, LoginState>(
+  builder: (context, state) {
+    if (state is LoginLoading) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: maroon,
+        ),
+      );
+    } else if (state is LoginSuccess){
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>Welcome()));
+    } else if (state is LoginFailure) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+           content: Text('Failed to login please try again'),
+            duration: Duration(seconds: 3,),
+          ),
+      );
+    }
+    return SafeArea(
         child: Container(
           color: background,
           width: MediaQuery.of(context).size.width *1,
@@ -108,7 +134,27 @@ class _LoginState extends State<Login> {
 
           SizedBox(height: 10.0,)  ,
 
-          ElevatedButton(onPressed: (){},
+          ElevatedButton(onPressed: (){
+            final loginBloc = BlocProvider.of<LoginBloc>(context);
+            String email = emailController.text;
+            String phoneNumber = phoneNumberController.text;
+            String password = passwordController.text;
+            if (email.isNotEmpty) {
+              loginBloc.add(LoginButtonWhenPressedWithEmail(email: email, password: password));
+            }else if (phoneNumber.isNotEmpty) {
+              loginBloc.add(LoginButtonWhenPressedWithPhone(phoneNumber: phoneNumber, password: password));
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Please enter email or phone number'),
+                  duration: Duration(seconds: 3,),
+                ),
+              );
+            }
+
+
+            
+          },
             style: ElevatedButton.styleFrom(
               backgroundColor: maroon,
             ),
@@ -159,7 +205,9 @@ class _LoginState extends State<Login> {
         ),
 
       ),
-    ),
+    );
+  },
+),
     );
   }
 }

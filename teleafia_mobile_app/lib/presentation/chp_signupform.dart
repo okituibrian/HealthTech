@@ -1,5 +1,5 @@
-import 'package:teleafia_mobile_app/register_bloc.dart';
-import 'package:teleafia_mobile_app/verifypage.dart';
+import 'package:teleafia_mobile_app/bloc/registerbloc/register_bloc.dart';
+import 'package:teleafia_mobile_app/presentation/verifypage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 //import 'package:trial_app/login_page.dart';
@@ -29,8 +29,8 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   bool _obsecureText = true;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController idController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController idNumberController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -150,7 +150,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       child: Container(
                         height: 40.0,
                         child: TextField(
-                          controller: phoneController,
+                          controller: phoneNumberController,
                           decoration: InputDecoration(
                             hintText: 'phone',
                             prefixIcon: Icon(
@@ -175,7 +175,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       child: Container(
                         height: 40.0,
                         child: TextField(
-                          controller: idController,
+                          controller: idNumberController,
                           decoration: InputDecoration(
                             hintText: 'id',
                             prefixIcon: Icon(
@@ -270,8 +270,8 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                           registerBloc.add(RegisterButtonWhenPressed(
                             name: nameController.text,
                             email: emailController.text,
-                            phone: phoneController.text,
-                            id: idController.text,
+                            phoneNumber: phoneNumberController.text,
+                            idNumber: idNumberController.text,
                             location: locationController.text,
                             password: passwordController.text,
                             confirm_password: confirmPasswordController.text,

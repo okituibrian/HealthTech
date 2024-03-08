@@ -17,11 +17,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           body: jsonEncode({
             'name': event.name,
             'email': event.email,
-            'phone': event.phone,
-            'id': event.id,
+            'phone': event.phoneNumber,
+            'id': event.idNumber,
             'location': event.location,
             'password': event.password,
-            'confirm_password': event.confirm_password
+            'confirm_password': event.confirm_password,
           }),
           headers: {'Content-Type': 'application/json'},
         );

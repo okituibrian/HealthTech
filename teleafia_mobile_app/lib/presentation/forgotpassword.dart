@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_mobile_app/forgotpassword_verifcation.dart';
+import 'package:teleafia_mobile_app/presentation/forgotpassword_verifcation.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
