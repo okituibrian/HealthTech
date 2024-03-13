@@ -1,0 +1,24 @@
+R_DEF: Internal format may change without notice
+local
+color background
+color black
+color maroon
+color white
+drawable corners_round
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable image_clpped
+drawable pic
+drawable rounded_button
+id joinplatform
+id main
+id picImage
+id welcome
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.MyKotlinapp
+style Theme.MyKotlinapp
+xml backup_rules
+xml data_extraction_rules

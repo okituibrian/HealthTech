@@ -1,0 +1,10 @@
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/pic"
+    android:gravity="center"
+    android:antialias="true"
+    android:tileMode="disabled"
+    >
+
+
+
+</bitmap>
