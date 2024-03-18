@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package: teleaafia_mobile'
+import 'package:teleafia_mobile_app/loginpage.dart';
+import 'package:teleafia_mobile_app/resetpassword_bloc.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -28,7 +29,14 @@ class _ResetPasswordState extends State<ResetPassword> {
             width: MediaQuery.of(context).size.width * 0.96,
             height: MediaQuery.of(context).size.height * 0.96,
             child: BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
-              builder: (context, state) {
+              builder: (context, state) { if (state is ResetPasswordSuccess) {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Login()));
+              } else if (state is ResetPasswordFailure) {
+                return Center(
+                  child: Text('Reset Password Failed: ${state.error}'),
+                );
+              }
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
