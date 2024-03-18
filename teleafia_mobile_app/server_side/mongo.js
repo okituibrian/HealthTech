@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://trial:trial@trial.874xgts.mongodb.net/trial?retryWrites=true&w=majority&appName=trial')
+mongoose.connect('mongodb://admin:okitui75@ac-nqltoof-shard-00-00.9fq1ade.mongodb.net:27017,ac-nqltoof-shard-00-01.9fq1ade.mongodb.net:27017,ac-nqltoof-shard-00-02.9fq1ade.mongodb.net:27017/test?ssl=true&replicaSet=atlas-11ne0q-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
 .then(() => {
 console.log('connected');
 })
-.catch(() =>{
-console.log('error');
+.catch((error) =>{
+console.log('unable to connect', error);
 })
 const newSchema = new mongoose.Schema({
 name: {
