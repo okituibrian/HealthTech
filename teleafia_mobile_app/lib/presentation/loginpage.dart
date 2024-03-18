@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_mobile_app/presentation/chp_signupform.dart';
 import 'package:teleafia_mobile_app/presentation/forgotpassword.dart';
@@ -20,7 +21,7 @@ class _LoginState extends State<Login> {
   Color maroon = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
+  //final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   Widget build(BuildContext context) {
@@ -39,13 +40,16 @@ class _LoginState extends State<Login> {
     } else if (state is LoginSuccess){
       Navigator.push(context, MaterialPageRoute(builder: (context) =>Welcome()));
     } else if (state is LoginFailure) {
+      SchedulerBinding.instance.addPostFrameCallback((_){
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
            content: Text('Failed to login please try again'),
             duration: Duration(seconds: 3,),
           ),
       );
+    });
     }
+
     return SafeArea(
         child: Container(
           color: background,
@@ -76,8 +80,7 @@ class _LoginState extends State<Login> {
           ),
 
           SizedBox (height: 10.0),
-          Padding(
-            padding: EdgeInsets.fromLTRB(2.0,1.0, 170.0, 1.0),
+          Center(
             child: Text('Proceed With your',
               style: TextStyle(
                 color: maroon,
@@ -89,8 +92,7 @@ class _LoginState extends State<Login> {
 
           SizedBox (height: 5.0),
 
-          Padding(
-            padding: EdgeInsets.fromLTRB(2.0, 1.0, 250.0,1.0),
+          Center(
             child: Text('LOGIN',
               style: TextStyle(
                 color: maroon,
@@ -104,15 +106,22 @@ class _LoginState extends State<Login> {
           Container(
             height: 35.0,
             child: TextField(
+              controller: emailController,
               decoration: InputDecoration( prefixIcon:Icon(Icons.contact_emergency,
                   color: maroon),
-                hintText: 'Email/Mobile',
-                border: OutlineInputBorder(
+                hintText: 'Email',
+                enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide(color: maroon),
+                  ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide(color: maroon),
+
                 ),
-              ),
 
             ),
+          ),
           ),
 
           SizedBox(height:10.0) ,
@@ -120,11 +129,17 @@ class _LoginState extends State<Login> {
           Container(
             height: 35.0,
             child: TextField(
+              controller: passwordController,
               decoration: InputDecoration(prefixIcon:Icon(Icons.lock,
                   color: maroon),
                 hintText: 'Password',
-                border: OutlineInputBorder(
+                enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide(color: maroon),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide(color: maroon),
 
                 ),
               ),
@@ -137,23 +152,19 @@ class _LoginState extends State<Login> {
           ElevatedButton(onPressed: (){
             final loginBloc = BlocProvider.of<LoginBloc>(context);
             String email = emailController.text;
-            String phoneNumber = phoneNumberController.text;
             String password = passwordController.text;
             if (email.isNotEmpty) {
               loginBloc.add(LoginButtonWhenPressedWithEmail(email: email, password: password));
-            }else if (phoneNumber.isNotEmpty) {
-              loginBloc.add(LoginButtonWhenPressedWithPhone(phoneNumber: phoneNumber, password: password));
+              emailController.clear();
+              passwordController.clear();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Please enter email or phone number'),
+                  content: Text('Please enter email'),
                   duration: Duration(seconds: 3,),
                 ),
               );
             }
-
-
-            
           },
             style: ElevatedButton.styleFrom(
               backgroundColor: maroon,
@@ -182,7 +193,7 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-            SizedBox(height: 10.0),
+           /* SizedBox(height: 10.0),
 
             Row(
               children: [
@@ -199,7 +210,7 @@ class _LoginState extends State<Login> {
                   ),
                 ) ,
               ],
-            ),
+            ),*/
             ],
           ),
         ),

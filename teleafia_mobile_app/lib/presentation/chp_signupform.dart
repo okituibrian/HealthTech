@@ -33,8 +33,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   final TextEditingController idNumberController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-  TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

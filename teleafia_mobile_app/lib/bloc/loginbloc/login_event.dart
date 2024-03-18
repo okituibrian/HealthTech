@@ -15,14 +15,3 @@ class LoginButtonWhenPressedWithEmail extends LoginEvent {
 }
 
 
-class LoginButtonWhenPressedWithPhone extends LoginEvent {
-
-  final String phoneNumber;
-  final String password;
-
-  LoginButtonWhenPressedWithPhone({
-
-    required this.phoneNumber,
-    required this.password,
-  });
-}
