@@ -2,16 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_mobile_app/presentation/changepassword.dart';
-import 'package:teleafia_mobile_app/presentation/chp_signupform.dart';
 import 'package:teleafia_mobile_app/presentation/forgotpassword.dart';
-import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart ';
-
+import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart';
 
 import 'dart:async';
-
-import '../bloc/loginbloc/login_bloc.dart';
-
-
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -33,7 +27,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         backgroundColor: background,
       ),
-      body: BlocBuilder<LoginBloc, LoginState>(
+      body: BlocBuilder<LoginBloc,LoginState>(
   builder: (context, state) {
     if (state is LoginLoading) {
       return Center(
@@ -153,23 +147,17 @@ class _LoginState extends State<Login> {
 
           SizedBox(height: 10.0,)  ,
 
-          ElevatedButton(onPressed: (){
+          ElevatedButton(
+              onPressed: (){
             final loginBloc = BlocProvider.of<LoginBloc>(context);
             String email = emailController.text;
-<<<<<<< HEAD
-            String phoneNumber = phoneNumberController.text;
-            //String password = passwordController.text;
-            if (email.isNotEmpty) {
-              loginBloc.add(LoginButtonWhenPressedWithEmail(email: email, password: password));
-           /* }else if (phoneNumber.isNotEmpty) {
-              loginBloc.add(LoginButtonWhenPressedWithPhone(phoneNumber: phoneNumber, password: password));*/
-=======
             String password = passwordController.text;
+
+            //String password = passwordController.text;
             if (email.isNotEmpty) {
               loginBloc.add(LoginButtonWhenPressedWithEmail(email: email, password: password));
               emailController.clear();
               passwordController.clear();
->>>>>>> c05641fc93ea43e5fb1f3331c04ff49c47b83021
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

@@ -28,11 +28,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         if (response.statusCode == 200) {
           emit(RegisterSuccess());
         } else {
-<<<<<<< HEAD
+
           emit(RegisterFailure(error: 'registration not successful'));
-=======
+
           emit(RegisterFailure(error: 'not registered'));
->>>>>>> c05641fc93ea43e5fb1f3331c04ff49c47b83021
+
         }
       } catch (e) {
         emit(RegisterFailure(error: 'Error: $e'));

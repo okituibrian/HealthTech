@@ -13,32 +13,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoading());
       try {
         var response = await http.post(
-<<<<<<< HEAD
-            Uri.parse('http://localhost:4000/login'),
-            body: jsonEncode({
-              'email': event.email,
-            'password':event.password,
-            }),
-          headers: {'Content-Type': 'application/json'},
-        );
-        if (response.statusCode == 200) {
-          emit(LoginSuccess());
-        }else {
-          emit(LoginFailure(error: 'login failed'));
-        }
-
-        }catch (e) {
-        emit (LoginFailure(error:'Error: $e'));
-      }
-    });
-    /*on<LoginButtonWhenPressedWithPhone>((event, emit) async {
-      emit(LoginLoading());
-      try {
-        var response = await http.post(
-          Uri.parse('http://localhost:4000/login'),
-=======
-          Uri.parse('https://d7b9-102-210-244-74.ngrok-free.app/api/chp/login'),
->>>>>>> c05641fc93ea43e5fb1f3331c04ff49c47b83021
+          Uri.parse('https://3f41-102-210-244-74.ngrok-free.app/api/chp/login'),
           body: jsonEncode({
             'email': event.email,
             'password': event.password,
@@ -53,10 +28,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         emit(LoginFailure(error: 'Error: $e'));
       }
-<<<<<<< HEAD
-      });*/
-=======
-    });
->>>>>>> c05641fc93ea43e5fb1f3331c04ff49c47b83021
-  }
-}
+    }
+      ); } }
