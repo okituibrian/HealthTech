@@ -19,7 +19,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
     emit(ResetPasswordLoading());
     try {
       var response = await http.post(
-        Uri.parse('https://d7b9-102-210-244-74.ngrok-free.app/api/chp/resetpassword'),
+        Uri.parse('https://3f41-102-210-244-74.ngrok-free.app/api/chp/resetpassword'),
         body: jsonEncode({
           'resetCode': event.resetCode,
           'password': event.password,
