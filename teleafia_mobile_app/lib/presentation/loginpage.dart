@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teleafia_mobile_app/presentation/changepassword.dart';
 import 'package:teleafia_mobile_app/presentation/chp_signupform.dart';
 import 'package:teleafia_mobile_app/presentation/forgotpassword.dart';
-import 'package:teleafia_mobile_app/presentation/landingpage.dart';
-import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart';
-//import 'package:teleafia_mobile_app/bloc/loginBloc/login_event.dart';
+import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart ';
+
+
 import 'dart:async';
+
+import '../bloc/loginbloc/login_bloc.dart';
+
 
 
 class Login extends StatefulWidget {
@@ -17,10 +21,10 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   @override
-  Color maroon = Color(0xFF982B15);
+  Color maroon   = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
+  //final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class _LoginState extends State<Login> {
         ),
       );
     } else if (state is LoginSuccess){
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>Welcome()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>ChangePassword()));
     } else if (state is LoginFailure) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -138,11 +142,11 @@ class _LoginState extends State<Login> {
             final loginBloc = BlocProvider.of<LoginBloc>(context);
             String email = emailController.text;
             String phoneNumber = phoneNumberController.text;
-            String password = passwordController.text;
+            //String password = passwordController.text;
             if (email.isNotEmpty) {
               loginBloc.add(LoginButtonWhenPressedWithEmail(email: email, password: password));
-            }else if (phoneNumber.isNotEmpty) {
-              loginBloc.add(LoginButtonWhenPressedWithPhone(phoneNumber: phoneNumber, password: password));
+           /* }else if (phoneNumber.isNotEmpty) {
+              loginBloc.add(LoginButtonWhenPressedWithPhone(phoneNumber: phoneNumber, password: password));*/
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -191,6 +195,7 @@ class _LoginState extends State<Login> {
 
                 ElevatedButton(onPressed:(){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => PatientSignupPage()));
+
                 },
                   child: Text('SIGNUP',
                     style: TextStyle(

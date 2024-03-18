@@ -30,7 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit (LoginFailure(error:'Error: $e'));
       }
     });
-    on<LoginButtonWhenPressedWithPhone>((event, emit) async {
+    /*on<LoginButtonWhenPressedWithPhone>((event, emit) async {
       emit(LoginLoading());
       try {
         var response = await http.post(
@@ -51,6 +51,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       catch (e) {
         emit (LoginFailure(error: 'Error: $e'));
       }
-      });
+      });*/
   }
 }

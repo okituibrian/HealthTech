@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_mobile_app/presentation/loginpage.dart';
 
 
 class Verify extends StatefulWidget {
@@ -89,7 +90,10 @@ class _VerifyState extends State<Verify> {
               ),
               SizedBox(height: 10.0),
 
-              ElevatedButton(onPressed: (){},
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (Context)=> Login()));
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: maroon,
                 ),
@@ -103,7 +107,9 @@ class _VerifyState extends State<Verify> {
 
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 2.0,200.0, 10.0),
-                child: ElevatedButton(onPressed: (){},
+                child: ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (Context)=> Login()));
+                },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: maroon,
                   ),

@@ -28,7 +28,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         if (response.statusCode == 200) {
           emit(RegisterSuccess());
         } else {
-          emit(RegisterFailure(error: 'registration failed'));
+          emit(RegisterFailure(error: 'registration not successful'));
         }
       } catch (e) {
         emit(RegisterFailure(error: 'Error: $e'));
