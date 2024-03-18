@@ -13,6 +13,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoading());
       try {
         var response = await http.post(
+<<<<<<< HEAD
             Uri.parse('http://localhost:4000/login'),
             body: jsonEncode({
               'email': event.email,
@@ -35,22 +36,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         var response = await http.post(
           Uri.parse('http://localhost:4000/login'),
+=======
+          Uri.parse('https://d7b9-102-210-244-74.ngrok-free.app/api/chp/login'),
+>>>>>>> c05641fc93ea43e5fb1f3331c04ff49c47b83021
           body: jsonEncode({
-            'email': event.phoneNumber,
-            'password':event.password,
+            'email': event.email,
+            'password': event.password,
           }),
           headers: {'Content-Type': 'application/json'},
         );
         if (response.statusCode == 200) {
           emit(LoginSuccess());
-        }else {
+        } else {
           emit(LoginFailure(error: 'login failed'));
         }
-
-    }
-      catch (e) {
-        emit (LoginFailure(error: 'Error: $e'));
+      } catch (e) {
+        emit(LoginFailure(error: 'Error: $e'));
       }
+<<<<<<< HEAD
       });*/
+=======
+    });
+>>>>>>> c05641fc93ea43e5fb1f3331c04ff49c47b83021
   }
 }

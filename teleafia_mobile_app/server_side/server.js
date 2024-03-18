@@ -33,8 +33,7 @@ app.post('/register', async (req, res) => {
       password,
       confirm_password,
     });
-
-    //console.log('User registered:', newUser);
+    console.log('User registered:', newUser);
     res.json({ success: true, message: 'Registration Successful' });
   } catch (error) {
     console.error('Error registering user:', error);

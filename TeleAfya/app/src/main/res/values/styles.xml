@@ -1,0 +1,5 @@
+<resources>
+    <style name="ButtonFontStyle" parent="TextAppearance.AppCompat.Button">
+        <item name="android:fontFamily">@font/Lexend-Medium</item>
+    </style>
+</resources>
