@@ -38,7 +38,7 @@ class _LoginState extends State<Login> {
         ),
       );
     } else if (state is LoginSuccess){
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>Welcome()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>ChangePassword()));
     } else if (state is LoginFailure) {
       SchedulerBinding.instance.addPostFrameCallback((_){
         ScaffoldMessenger.of(context).showSnackBar(
