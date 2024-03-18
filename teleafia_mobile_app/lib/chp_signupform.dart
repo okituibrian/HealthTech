@@ -47,7 +47,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
           if (state is RegisterLoading) {
             return Center(
               child: CircularProgressIndicator(
-                color: Colors.blue,
+                color: maroon,
               ),
             );
           } else if (state is RegisterSuccess) {

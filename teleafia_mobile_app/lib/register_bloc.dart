@@ -21,7 +21,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             'id': event.id,
             'location': event.location,
             'password': event.password,
-            'confirm_password': event.confirm_password
+            'confirm_password': event.confirm_password,
           }),
           headers: {'Content-Type': 'application/json'},
         );

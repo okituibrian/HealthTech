@@ -78,14 +78,19 @@ class _LoginState extends State<Login> {
           Container(
             height: 35.0,
             child: TextField(
-              decoration: InputDecoration( prefixIcon:Icon(Icons.contact_emergency,
+              decoration: InputDecoration(
+                prefixIcon:Icon(Icons.contact_emergency,
                   color: maroon),
                 hintText: 'Email/Mobile',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(color: maroon),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(color: maroon),
                 ),
               ),
-
             ),
           ),
 
@@ -97,9 +102,13 @@ class _LoginState extends State<Login> {
               decoration: InputDecoration(prefixIcon:Icon(Icons.lock,
                   color: maroon),
                 hintText: 'Password',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(color: maroon),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(color: maroon ),
                 ),
               ),
 

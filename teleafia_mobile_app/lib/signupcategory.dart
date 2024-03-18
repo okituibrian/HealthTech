@@ -23,7 +23,7 @@ class _EquityafiaLogoState extends State<EquityafiaLogo> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Center(
-                child: Image.asset('assets/Afialogo.jpg',
+                child: Image.asset('assets/logo.png',
                   width: 150,
                   height: 100,
                   fit: BoxFit.cover,
