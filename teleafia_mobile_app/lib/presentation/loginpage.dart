@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_mobile_app/presentation/changepassword.dart';
+import 'package:teleafia_mobile_app/presentation/chp_dashboard.dart';
 import 'package:teleafia_mobile_app/presentation/forgotpassword.dart';
 import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart';
 
@@ -26,6 +27,7 @@ class _LoginState extends State<Login> {
   @override
   Color maroon   = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
+  Color yellow = Color(0xFFFF9D16);
   final TextEditingController emailController = TextEditingController();
   //final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -44,7 +46,7 @@ class _LoginState extends State<Login> {
               ),
             );
           } else if (state is LoginSuccess){
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>ChangePassword()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>ChpDashboard()));
           } else if (state is LoginFailure) {
             SchedulerBinding.instance.addPostFrameCallback((_){
               ScaffoldMessenger.of(context).showSnackBar(
@@ -202,25 +204,20 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    /* SizedBox(height: 10.0),
-
-            Row(
-              children: [
-                Text('To create account'),
-
-
-                ElevatedButton(onPressed:(){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PatientSignupPage()));
-
-                },
-                  child: Text('SIGNUP',
-                    style: TextStyle(
-                      color: maroon,
+                    SizedBox(height: 10,),
+                    ElevatedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
+                    },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: yellow,
+                      ),
+                      child: Text('Change password',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                        ),
+                      ),
                     ),
-                  ),
-                ) ,
-              ],
-            ),*/
                   ],
                 ),
               ),

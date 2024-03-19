@@ -138,19 +138,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                       ),
                       SizedBox(height: 10.0),
-                      TextButton(
-                        onPressed: () {
-                          // Navigate to the alternative way screen
-                        },
-                        child: Text(
-                          'Try another way',
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 12.0,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ],
