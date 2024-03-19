@@ -1,22 +1,63 @@
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
-import 'package:teleafia_mobile_app/presentation/forgotpassword_verifcation.dart';
+//import 'package:teleafia_mobile_app/presentation/forgotpassword_verifcation.dart';
+import 'package:teleafia_mobile_app/presentation/resetpassword.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
+
 
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+   // Define the controller
   Color maroon = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
 
+  final TextEditingController emailController =TextEditingController();
+
+  void postToDatabase() async{
+  String email = emailController.text;
+if (email.isNotEmpty) {
+
+  String apiUrl = 'https://5696-102-210-244-74.ngrok-free.app/api/chp/forgotpasswor';
+  Map<String, String> data = {
+    'email': email,};
+try{
+var response = await http.put(Uri.parse(apiUrl),
+body: data,
+);
+if(response.statusCode == 200){
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword()));
+} else{
+  Text('email not found, please enter a valid email address');
+}
+
+
+} 
+catch(e){Text('Error: $e');
+}
+
+  
+  
+} 
+
+else{
+  Text('please enter email');
+
+}
+
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: background,
+        backgroundColor:background,
       ),
       body: Center(
         child: Container(
@@ -62,8 +103,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             Container(
               height: 30.0,
               child: TextField(
+                controller: emailController, // Assign the controller here
                 decoration: InputDecoration(suffixIcon: Icon(Icons.email_rounded),
-                  hintText: 'Enter Email or Phone Number',
+                  hintText: 'Enter Email',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide(color: maroon,),
@@ -71,18 +113,26 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(20.0),
-              child: TextButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Verify()));
+            ElevatedButton(
+              onPressed: (){
+                      
+                       //  String email = emailController.text,
+                        postToDatabase();
+            
+                      ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Sending email to database...'),
+                  ),
+                );
               },
-                style: TextButton.styleFrom(backgroundColor: maroon,),
-                child: Text('Send', style: TextStyle(
-                  fontWeight: FontWeight.normal, color: Colors.white,
-                ),
-
-                ),),
-            ),
+            
+              style: TextButton.styleFrom(backgroundColor: maroon,),
+              child: Text('Send', style: TextStyle(
+                fontWeight: FontWeight.normal, color: Colors.white,
+              ),
+              ),
+            
+              ),
             Column(
               children: [
                 Text('Try another way',
@@ -104,3 +154,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
