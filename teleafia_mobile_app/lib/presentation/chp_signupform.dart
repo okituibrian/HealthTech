@@ -33,8 +33,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   final TextEditingController idNumberController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-  TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
           if (state is RegisterLoading) {
             return Center(
               child: CircularProgressIndicator(
-                color: Colors.blue,
+                color: maroon,
               ),
             );
           } else if (state is RegisterSuccess) {
