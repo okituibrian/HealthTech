@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:teleafia_mobile_app/presentation/chp_dashboard.dart';
 import 'package:teleafia_mobile_app/presentation/landingpage.dart';
 
 
@@ -22,10 +23,9 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background,
-        appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: background,
-    ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Center(
@@ -130,8 +130,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                               String confirmPassword = confirmPasswordController.text;
 
                               if (newPassword == confirmPassword) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) =>Welcome()));
-                                // Call the function to send data to the server
                                 postDataToServer(originalPassword, newPassword);
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -168,7 +166,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   void postDataToServer(String originalPassword, String newPassword) async {
     // Define your API endpoint
-    String apiUrl = 'http://localhost:4000/register';
+    String apiUrl = 'https://062d-102-210-244-74.ngrok-free.app/api/chp/changepassword';
 
     // Example data payload
     Map<String, String> data = {
@@ -185,15 +183,23 @@ class _ChangePasswordState extends State<ChangePassword> {
 
       // Check if request was successful
       if (response.statusCode == 200) {
-        // Handle success
-        print('Password reset successful');
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>ChpDashboard()));
       } else {
-        // Handle error
-        print('Error: ${response.reasonPhrase}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${response.reasonPhrase}'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+
       }
     } catch (error) {
-      // Handle any errors that occur during the process
-      print('Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $error'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 }
