@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
   @override
   Color maroon   = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
+  Color redaccent = Color(0xFFE1231A);
   final TextEditingController emailController = TextEditingController();
   //final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -203,25 +204,20 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    /* SizedBox(height: 10.0),
-
-            Row(
-              children: [
-                Text('To create account'),
-
-
-                ElevatedButton(onPressed:(){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PatientSignupPage()));
-
-                },
-                  child: Text('SIGNUP',
-                    style: TextStyle(
-                      color: maroon,
+                    SizedBox(height: 10,),
+                    ElevatedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
+                    },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: maroon,
+                      ),
+                      child: Text('Change password',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                        ),
+                      ),
                     ),
-                  ),
-                ) ,
-              ],
-            ),*/
                   ],
                 ),
               ),
