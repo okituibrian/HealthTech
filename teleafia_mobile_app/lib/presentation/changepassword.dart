@@ -16,7 +16,7 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   Color maroon = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
-  final TextEditingController initialPasswordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
@@ -74,9 +74,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                         Container(
                           height: 40.0,
                           child: TextField(
-                            controller: initialPasswordController,
+                            controller: emailController,
                             decoration: InputDecoration(
-                              hintText: 'Please Enter the original Password',
+                              hintText: 'Please Enter your email',
                               fillColor: maroon,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -125,12 +125,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                           padding: EdgeInsets.all(20.0),
                           child: TextButton(
                             onPressed: () {
-                              String originalPassword = initialPasswordController.text;
+                              String email = emailController.text;
                               String newPassword = newPasswordController.text;
                               String confirmPassword = confirmPasswordController.text;
 
                               if (newPassword == confirmPassword) {
-                                postDataToServer(originalPassword, newPassword);
+                                postDataToServer(email, newPassword);
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -164,19 +164,19 @@ class _ChangePasswordState extends State<ChangePassword> {
     );
   }
 
-  void postDataToServer(String originalPassword, String newPassword) async {
-    // Define your API endpoint
+  void postDataToServer(email, String newPassword) async {
+    // Backend active API endpoint
     String apiUrl = 'https://062d-102-210-244-74.ngrok-free.app/api/chp/changepassword';
 
     // Example data payload
     Map<String, String> data = {
-      'originalPassword': originalPassword,
+      'email': email,
       'newPassword': newPassword,
     };
 
     // Make a POST request
     try {
-      var response = await http.post(
+      var response = await http.put(
         Uri.parse(apiUrl),
         body: data,
       );
