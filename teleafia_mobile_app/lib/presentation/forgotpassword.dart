@@ -40,16 +40,11 @@ if(response.statusCode == 200){
 } 
 catch(e){Text('Error: $e');
 }
-
   
-  
-} 
-
+}
 else{
   Text('please enter email');
-
 }
-
   }
 
   

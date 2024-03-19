@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_mobile_app/presentation/changepassword.dart';
+import 'package:teleafia_mobile_app/presentation/chp_dashboard.dart';
 import 'package:teleafia_mobile_app/presentation/forgotpassword.dart';
 import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart';
 
@@ -44,7 +45,7 @@ class _LoginState extends State<Login> {
               ),
             );
           } else if (state is LoginSuccess){
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>ChangePassword()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>ChpDashboard()));
           } else if (state is LoginFailure) {
             SchedulerBinding.instance.addPostFrameCallback((_){
               ScaffoldMessenger.of(context).showSnackBar(
