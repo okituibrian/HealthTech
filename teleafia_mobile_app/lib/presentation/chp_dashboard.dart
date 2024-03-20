@@ -14,7 +14,7 @@ class _ChpDashboardState extends State<ChpDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-      
+
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(20.0),
@@ -26,7 +26,7 @@ class _ChpDashboardState extends State<ChpDashboard> {
               border: Border.all(
                 color: maroon,
                 width: 3.0,
-                
+
                 style: BorderStyle.solid,
               ),
             ),
@@ -83,65 +83,73 @@ class _ChpDashboardState extends State<ChpDashboard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.home, color: maroon),
-                              SizedBox(height: 4), // Adjust spacing between icon and text
-                              Text(
-                                'Add household', style: TextStyle(color: maroon),
-                                
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                //Navigator.push(context, MaterialPageRoute(builder: context()=>SocioEconomicsState));
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.home, color: maroon),
+                                  SizedBox(height: 4), // Adjust spacing between icon and text
+                                  Text(
+                                    'Add household', style: TextStyle(color: maroon),
+
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
+                            )),
                         Expanded(
                           flex: 1,
                           child: Container(
                             width: 30,
-                            height: 100, 
+                            height: 100,
                             decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0XFFEFBF24),
-                                spreadRadius: 3,
-                                blurRadius: 3,
-                                offset: Offset(0, 0),
-                              ),
-                            ],
-                          ),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0XFFEFBF24),
+                                  spreadRadius: 3,
+                                  blurRadius: 3,
+                                  offset: Offset(0, 0),
+                                ),
+                              ],
+                            ),
                             child: ElevatedButton(
                               onPressed: () {
-                                //Navigator.push(context, MaterialPageRoute(builder: context()=>SocialEconomicsState));
+                                //Navigator.push(context, MaterialPageRoute(builder: context()=>SocioEconomicsState));
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: CircleBorder(),
-                                padding: EdgeInsets.all(0),  
-                                backgroundColor: maroon,                               
-                                  // Adjust blur as needed
-                                  // Specify the shadow color
-                                  // You can adjust other boxShadow properties like offset, spreadRadius, etc.                                
+                                padding: EdgeInsets.all(0),
+                                backgroundColor: maroon,
+                                // Adjust blur as needed
+                                // Specify the shadow color
+                                // You can adjust other boxShadow properties like offset, spreadRadius, etc.
                               ),
                               child: Text('Start', style: TextStyle(color: Colors.white),),
                             ),
                           ),
                         ),
                         Expanded(
-                            flex: 1,
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Navigator.push(context, MaterialPageRoute(builder: context()=>SocioEconomicsState));
+                            },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [                                
+                              children: [
                                 Icon(Icons.person_add_sharp, color: maroon),
                                 SizedBox(height: 4), // Adjust spacing between icon and text
                                 Text(
-                                  'Add household members', style: TextStyle(color: maroon),                                  
+                                  'Add household members', style: TextStyle(color: maroon),
                                 ),
                               ],
                             ),
                           ),
-                      ],
+                        )],
                     ),
                   ],
                 ),
