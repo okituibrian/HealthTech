@@ -15,39 +15,33 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Color maroon = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
 
-  final TextEditingController emailController =TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
-  void postToDatabase() async{
+  void postToDatabase() async {
     String email = emailController.text;
     if (email.isNotEmpty) {
-
-      String apiUrl = 'https://5696-102-210-244-74.ngrok-free.app/api/chp/forgotpasswor';
+      String apiUrl = 'https://5696-102-210-244-74.ngrok-free.app/api/chp/forgotpassword';
       Map<String, String> data = {
         'email': email,};
-      try{
+      try {
         var response = await http.put(Uri.parse(apiUrl),
           body: data,
         );
-        if(response.statusCode == 200){
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword()));
-        } else{
+        if (response.statusCode == 200) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ResetPassword()));
+        } else {
           Text('email not found, please enter a valid email address');
         }
-
-
       }
-      catch(e){Text('Error: $e');
+      catch (e) {
+        Text('Error: $e');
       }
-
-
-
     }
 
-    else{
+    else {
       Text('please enter email');
-
     }
-
   }
 
 
@@ -55,13 +49,19 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:background,
+        backgroundColor: background,
       ),
       body: Center(
         child: Container(
           color: background,
-          width: MediaQuery.of(context).size.width *0.96,
-          height: MediaQuery.of(context).size.height *0.96,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width * 0.96,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.96,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -108,26 +108,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                         height: 40.0,
                         child: TextField(
-                          textAlignVertical:TextAlignVertical.center,
-                          controller: emailController, // Assign the controller here
-                          decoration: InputDecoration(prefixIcon: Icon(Icons.email_rounded, color: maroon),
+                          textAlignVertical: TextAlignVertical.center,
+                          controller: emailController,
+                          // Assign the controller here
+                          decoration: InputDecoration(prefixIcon: Icon(
+                              Icons.email_rounded, color: maroon),
                               hintText: 'Enter Email',
                               contentPadding: EdgeInsets.all(0.0),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide(color: maroon, width:1.0),
+                                borderSide: BorderSide(
+                                    color: maroon, width: 1.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide(color: maroon, width:1.0),
+                                borderSide: BorderSide(
+                                    color: maroon, width: 1.0),
                               )
                           ),
                         ),
                       ),
                       SizedBox(height: 20.0,),
                       ElevatedButton(
-                        onPressed: (){
-
+                        onPressed: () {
                           //  String email = emailController.text,
                           postToDatabase();
 
@@ -156,3 +159,4 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       ),
     );
   }
+}
