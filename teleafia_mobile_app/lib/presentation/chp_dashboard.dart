@@ -1,5 +1,7 @@
 import'package:flutter/material.dart';
 
+import'package:flutter/material.dart';
+
 class ChpDashboard extends StatefulWidget {
   const ChpDashboard({super.key});
 
@@ -14,6 +16,18 @@ class _ChpDashboardState extends State<ChpDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
+      appBar: AppBar(
+
+        backgroundColor: background,
+        actions: [
+          IconButton(onPressed: (){},
+            icon: Icon(Icons.person,
+              color: maroon,),
+          ),
+        ],
+      ),
+
+
 
       body: SingleChildScrollView(
         child: Container(
