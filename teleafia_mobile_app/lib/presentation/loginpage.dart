@@ -114,10 +114,12 @@ class _LoginState extends State<Login> {
                     Container(
                       height: 35.0,
                       child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
                         controller: emailController,
                         decoration: InputDecoration( prefixIcon:Icon(Icons.contact_emergency,
                             color: maroon),
                           hintText: 'Email',
+                          contentPadding: EdgeInsets.all(10.0),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15.0),
                             borderSide: BorderSide(color: maroon),
@@ -137,10 +139,12 @@ class _LoginState extends State<Login> {
                     Container(
                       height: 35.0,
                       child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
                         controller: passwordController,
                         decoration: InputDecoration(prefixIcon:Icon(Icons.lock,
                             color: maroon),
                           hintText: 'Password',
+                          contentPadding: EdgeInsets.all(10.0),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15.0),
                             borderSide: BorderSide(color: maroon),
