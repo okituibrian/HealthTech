@@ -1,9 +1,9 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:meta/meta.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'presentation/resetpassword.dart'; // Import 'dart:convert' for jsonEncode
 part 'resetpassword_event.dart';
 part 'resetpassword_state.dart';
 
@@ -19,11 +19,12 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
     emit(ResetPasswordLoading());
     try {
       var response = await http.post(
-        Uri.parse('https://3f41-102-210-244-74.ngrok-free.app/api/chp/resetpassword'),
+        Uri.parse('https://0ce5-102-210-244-74.ngrok-free.app/api/chp/resetpassword'),
         body: jsonEncode({
           'resetCode': event.resetCode,
           'password': event.password,
           'confirmPassword': event.confirmPassword,
+
         }),
         headers: {'Content-Type': 'application/json'},
       );

@@ -7,6 +7,7 @@ class SubmitResetPassword extends ResetPasswordEvent {
   final String resetCode;
   final String password;
   final String confirmPassword;
+  
 
   SubmitResetPassword({required this.resetCode, required this.password, required this.confirmPassword});
 }

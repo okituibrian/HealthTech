@@ -54,7 +54,7 @@ class _VerifyState extends State<Verify> {
 
               SizedBox(height: 10.0),
 
-              Text('Enter the OTP sent via phone or email',
+              Text('Enter the OTP sent to your Email',
                 style: TextStyle(
                   fontSize: 18.0,
                 ),),

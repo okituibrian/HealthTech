@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:teleafia_mobile_app/presentation/patientconsent.dart';
 
 class MedicalReport extends StatefulWidget {
   const MedicalReport({super.key});
@@ -27,9 +28,8 @@ class _MedicalReportState extends State<MedicalReport> {
             child: Column(
                 children: [
                   Center(
-                    child: Image.asset('assets/Afialogo.jpg',
-                      width: 100,
-                      height: 70,
+                    child: Image.asset('assets/logo.png',
+                      
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -485,7 +485,10 @@ class _MedicalReportState extends State<MedicalReport> {
                   SizedBox(height: 5.0,),
                   Container(
                     padding: EdgeInsets.all(20.0),
-                    child: TextButton(onPressed: (){},
+                    child: TextButton(onPressed: (){
+
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PatientConsent()));
+                    },
                       style: TextButton.styleFrom(backgroundColor: maroon,
                         minimumSize: Size(300, 40),
                       ),

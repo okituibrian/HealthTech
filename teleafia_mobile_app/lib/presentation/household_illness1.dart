@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:teleafia_mobile_app/presentation/household_health_profile.dart';
+
+import 'medical_report.dart';
 
 class HouseHoldIllness1 extends StatefulWidget {
   const HouseHoldIllness1({super.key});
@@ -45,6 +48,9 @@ class _HouseHoldIllness1State extends State<HouseHoldIllness1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: background,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SafeArea(
@@ -67,7 +73,7 @@ class _HouseHoldIllness1State extends State<HouseHoldIllness1> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 10.0),
+                                                                                                                  const SizedBox(height: 10.0),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +109,7 @@ class _HouseHoldIllness1State extends State<HouseHoldIllness1> {
                       height: 40.0,
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.0),
+                          borderRadius: BorderRadius.circular(15.0),
                           border: Border.all(color: maroon), // Add border styling
                         ),
                         child: DropdownButton<String>(
@@ -255,6 +261,7 @@ class _HouseHoldIllness1State extends State<HouseHoldIllness1> {
                         hintText: 'Outline the kind of medication treatment',
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: maroon),
+
                         ),
                       ),
                     ),
@@ -363,7 +370,10 @@ class _HouseHoldIllness1State extends State<HouseHoldIllness1> {
                         ),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => MedicalReport()));
+
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: background,
                             ),
@@ -380,7 +390,9 @@ class _HouseHoldIllness1State extends State<HouseHoldIllness1> {
                     ),
                     SizedBox(height: 40.0),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HouseholdIllness()));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,
                       ),

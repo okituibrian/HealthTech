@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:teleafia_mobile_app/presentation/wash.dart';
 
 
 
@@ -14,66 +16,29 @@ class _SocioEconomicState extends State<SocioEconomic> {
   Color background = const Color(0xFFFCF4F4);
   Color maroon = const Color(0xFF982B15);
 
-  double _progressValue = 0.1; // Set initial progress value
-  int _selectedRadio = -1;
-  String? _selectedOption;
-  String? _selectedOption1;
-  String? _selectedOption2;
-  String? _selectedOption3;
-  String? _selectedOption4;
-  String? _selectedOption5;
+  double _progressValue = 0.2; // Set initial progress value
+  //int _selectedRadio = -1;
+  String? _selectedhouseholdIncomeLevel;
+  String? _selectedhouseholdAnnualIncome;
+  String? _selectedhouseholdPrimarySourceOfIncome;
+  String? _selectedtypeOfResidence;
+  String? _selectedtypeOfResidenceOwnership;
+  //String? _selectedhouseholdAmmenities ;
 
-  List<String> _options = [
-    'Bellow Poverty Line',
-    'Low Income',
-    'Moderate Income',
-    'High Income',
-    'Prefer Not to Say',
-  ];
-  List<String> _options1 = [
-    'ksh 10000 - ksh 20000',
-    'ksh 20000 - ksh 30000',
-    'ksh 30000 - ksh 40000',
-    'More than  ksh 30000',
-  ];
-  List<String> _options2 = [
-    'Employment / Salary',
-    'Self-Employment / Business',
-    'Govt Assistant',
-    'Retirement / Pension',
-  ];
-  List<String> _options3 = [
-    'House',
-    'Apartment',
-    'Condominium',
-    'Other (specify)',
-  ];
-  List<String> _options4 = [
-    'Owned',
-    'Rented',
-    'Govt Housing',
-    'Other (specify)',
-  ];
-  List<String> _options5 = [
-    'Household Amenities',
-  ];
+  bool _householdAmmenities1 = false;
+  bool _householdAmmenities2 = false;
+  bool _householdAmmenities3 = false;
+  bool _householdAmmenities4 = false;
+  bool _householdAmmenities5 = false;
+  bool _householdAmmenities6 = false;
 
-  bool _checkBox1 = false;
-  bool _checkBox2 = false;
-  bool _checkBox3 = false;
-  bool _checkBox4 = false;
-  bool _checkBox5 = false;
-  bool _checkBox6 = false;
-
-  void _handleRadioValueChange(int? value) {
-    setState(() {
-      _selectedRadio = value!;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: background,
+      appBar: AppBar(
+        backgroundColor: background,),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SafeArea(
@@ -110,6 +75,7 @@ class _SocioEconomicState extends State<SocioEconomic> {
                           ),
                         ),
                         SizedBox(height: 10.0),
+
                         LinearProgressIndicator(
                           value: _progressValue,
                           backgroundColor: Colors.grey[300],
@@ -118,215 +84,217 @@ class _SocioEconomicState extends State<SocioEconomic> {
                       ],
                     ),
                     SizedBox(height: 10.0),
-                    DropdownButtonFormField<String>(
-                      value: _selectedOption,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedOption = newValue;
-                        });
-                      },
-                      items: _options
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            children: [
-                              Icon(Icons.arrow_drop_down, color: maroon),
-                              SizedBox(width: 10),
-                              Text(value),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                    TextField(
+                      controller: TextEditingController(text: _selectedhouseholdIncomeLevel?? ''),
                       decoration: InputDecoration(
-                        hintText: 'Household Income Level',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
+                          hintText: 'Household income level',
+                          suffixIcon: PopupMenuButton<String>(
+                            icon: Icon(Icons.arrow_drop_down),
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                'Bellow Poverty Line',
+                                'Low Income',
+                                'Moderate Income',
+                                'High Income',
+                                'Prefer Not to Say',
+                              ].map((String option) {
+                                return PopupMenuItem(
+                                  value: option,
+                                  child: Text(option),
+                                );
+                              }).toList();
+                            },
+                            onSelected: (String? value){
+                              setState(() {
+                                _selectedhouseholdIncomeLevel = value;
+                              });
+                            },
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          )
                       ),
                     ),
+
                     SizedBox(height: 10.0),
-                    DropdownButtonFormField<String>(
-                      value: _selectedOption1,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedOption1 = newValue;
-                        });
-                      },
-                      items: _options1
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            children: [
-                              Icon(Icons.arrow_drop_down, color: maroon),
-                              SizedBox(width: 10),
-                              Text(value),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+
+
+                    TextField(
+                      controller: TextEditingController(text: _selectedhouseholdAnnualIncome?? ''),
                       decoration: InputDecoration(
-                        hintText: 'Household Annual Income',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                    DropdownButtonFormField<String>(
-                      value: _selectedOption2,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedOption2 = newValue;
-                        });
-                      },
-                      items: _options2
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            children: [
-                              Icon(Icons.arrow_drop_down, color: maroon),
-                              SizedBox(width: 10),
-                              Text(value),
-                            ],
+                          hintText: 'Household Annual Income',
+                          suffixIcon: PopupMenuButton<String>(
+                            icon: Icon(Icons.arrow_drop_down),
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                'ksh 10000 - ksh 20000',
+                                'ksh 20000 - ksh 30000',
+                                'ksh 30000 - ksh 40000',
+                                'More than  ksh 30000',
+                              ].map((String option) {
+                                return PopupMenuItem(
+                                  value: option,
+                                  child: Text(option),
+                                );
+                              }).toList();
+                            },
+                            onSelected: (String? value){
+                              setState(() {
+                                _selectedhouseholdAnnualIncome = value;
+                              });
+                            },
                           ),
-                        );
-                      }).toList(),
-                      decoration: InputDecoration(
-                        hintText: 'Household Primary Source Of Income',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                    DropdownButtonFormField<String>(
-                      value: _selectedOption3,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedOption3 = newValue;
-                        });
-                      },
-                      items: _options3
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            children: [
-                              Icon(Icons.arrow_drop_down, color: maroon),
-                              SizedBox(width: 10),
-                              Text(value),
-                            ],
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        );
-                      }).toList(),
-                      decoration: InputDecoration(
-                        hintText: ' Type of Residence',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                    DropdownButtonFormField<String>(
-                      value: _selectedOption4,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedOption4 = newValue;
-                        });
-                      },
-                      items: _options4
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            children: [
-                              Icon(Icons.arrow_drop_down, color: maroon),
-                              SizedBox(width: 10),
-                              Text(value),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      decoration: InputDecoration(
-                        hintText: 'Type of Residence Ownership',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          )
                       ),
                     ),
                     SizedBox(height: 10.0),
 
-                    DropdownButtonFormField<String>(
-                      value: _selectedOption5,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedOption5 = newValue;
-                        });
-                      },
-                      items: _options5
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            children: [
-                              Icon(Icons.arrow_drop_down, color: maroon),
-                              SizedBox(width: 10),
-                              Text(value),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+
+                    TextField(
+                      controller: TextEditingController(text: _selectedhouseholdPrimarySourceOfIncome?? ''),
                       decoration: InputDecoration(
-                        hintText: 'Household Amenities',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: maroon),
-                        ),
+                          hintText: 'Household Primary source of Income',
+                          suffixIcon: PopupMenuButton<String>(
+                            icon: Icon(Icons.arrow_drop_down),
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                'Employment / Salary',
+                                'Self-Employment / Business',
+                                'Govt Assistant',
+                                'Retirement / Pension',
+                              ].map((String option) {
+                                return PopupMenuItem(
+                                  value: option,
+                                  child: Text(option),
+                                );
+                              }).toList();
+                            },
+                            onSelected: (String? value){
+                              setState(() {
+                                _selectedhouseholdPrimarySourceOfIncome = value;
+                              });
+                            },
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          )
                       ),
                     ),
+
                     SizedBox(height: 10.0),
+
+                    TextField(
+                      controller: TextEditingController(text: _selectedtypeOfResidence?? ''),
+                      decoration: InputDecoration(
+                          hintText: 'Type of residence',
+                          suffixIcon: PopupMenuButton<String>(
+                            icon: Icon(Icons.arrow_drop_down),
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                'House',
+                                'Apartment',
+                                'Condominium',
+                                'Other (specify)',
+                              ].map((String option) {
+                                return PopupMenuItem(
+                                  value: option,
+                                  child: Text(option),
+                                );
+                              }).toList();
+                            },
+                            onSelected: (String? value){
+                              setState(() {
+                                _selectedtypeOfResidence = value;
+                              });
+                            },
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          )
+                      ),
+                    ),
+
+                    SizedBox(height: 10.0),
+
+                    TextField(
+                      controller: TextEditingController(text: _selectedtypeOfResidenceOwnership?? ''),
+                      decoration: InputDecoration(
+                          hintText: 'Type of residence ownership',
+                          suffixIcon: PopupMenuButton<String>(
+                            icon: Icon(Icons.arrow_drop_down),
+                            itemBuilder: (BuildContext context) {
+                              return [
+                              'Owned',
+                              'Rented',
+                              'Govt Housing',
+                              'Other (specify)',
+                              ].map((String option) {
+                                return PopupMenuItem(
+                                  value: option,
+                                  child: Text(option),
+                                );
+                              }).toList();
+                            },
+                            onSelected: (String? value){
+                              setState(() {
+                                _selectedtypeOfResidenceOwnership = value;
+                              });
+                            },
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: maroon),
+                            borderRadius: BorderRadius.circular(10.0),
+                          )
+                      ),
+                    ),
+
+                    SizedBox(height: 10.0),
+
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 10, 500, 10),
+                      height: 40,
+                      //width: 2000,
+                      child: Text('What are your household amenities? please select below',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),),
+                    ),
 
                     Row(
                       children: [
                         Expanded(
                           child: CheckboxListTile(
                             title: Text('Running water'),
-                            value: _checkBox1,
+                            value: _householdAmmenities1,
                             onChanged: (bool? value) {
                               setState(() {
-                                _checkBox1 = value!;
+                                _householdAmmenities1 = value!;
                               });
                             },
                             activeColor: maroon,
@@ -335,10 +303,10 @@ class _SocioEconomicState extends State<SocioEconomic> {
                         Expanded(
                           child: CheckboxListTile(
                             title: Text('Cooling'),
-                            value: _checkBox2,
+                            value: _householdAmmenities2,
                             onChanged: (bool? value) {
                               setState(() {
-                                _checkBox2 = value!;
+                                _householdAmmenities2 = value!;
                               });
                             },
                             activeColor: maroon,
@@ -351,10 +319,10 @@ class _SocioEconomicState extends State<SocioEconomic> {
                         Expanded(
                           child: CheckboxListTile(
                             title: Text('Electricity'),
-                            value: _checkBox3,
+                            value: _householdAmmenities3,
                             onChanged: (bool? value) {
                               setState(() {
-                                _checkBox3 = value!;
+                                _householdAmmenities3 = value!;
                               });
                             },
                             activeColor: maroon,
@@ -363,10 +331,10 @@ class _SocioEconomicState extends State<SocioEconomic> {
                         Expanded(
                           child: CheckboxListTile(
                             title: Text('Internet/Wifi'),
-                            value: _checkBox4,
+                            value: _householdAmmenities4,
                             onChanged: (bool? value) {
                               setState(() {
-                                _checkBox4 = value!;
+                                _householdAmmenities4 = value!;
                               });
                             },
                             activeColor: maroon,
@@ -379,10 +347,10 @@ class _SocioEconomicState extends State<SocioEconomic> {
                         Expanded(
                           child: CheckboxListTile(
                             title: Text('Heating Water'),
-                            value: _checkBox5,
+                            value: _householdAmmenities5,
                             onChanged: (bool? value) {
                               setState(() {
-                                _checkBox5 = value!;
+                                _householdAmmenities5 = value!;
                               });
                             },
                             activeColor: maroon,
@@ -391,10 +359,10 @@ class _SocioEconomicState extends State<SocioEconomic> {
                         Expanded(
                           child: CheckboxListTile(
                             title: Text('Other (Specify)'),
-                            value: _checkBox6,
+                            value: _householdAmmenities6,
                             onChanged: (bool? value) {
                               setState(() {
-                                _checkBox6 = value!;
+                                _householdAmmenities6 = value!;
                               });
                             },
                             activeColor: maroon,
@@ -404,7 +372,9 @@ class _SocioEconomicState extends State<SocioEconomic> {
                     ),
                     SizedBox(height: 10.0),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Wash()));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,
                       ),

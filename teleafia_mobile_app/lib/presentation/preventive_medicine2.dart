@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:teleafia_mobile_app/presentation/chp_lastscreen.dart';
 
 class PreventiveMedicineTwo extends StatefulWidget {
   const PreventiveMedicineTwo({super.key});
@@ -35,7 +36,7 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineTwo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Image.asset('Assets/equiafia logo.png',
+                    child: Image.asset('Assets/logo.png',
                       width: 120,
                       height: 50,
                       fit: BoxFit.cover,
@@ -279,7 +280,9 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineTwo> {
                   ),
                   Center(
                     child: ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => LastScreen()));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,
                         minimumSize: Size(200, 50),

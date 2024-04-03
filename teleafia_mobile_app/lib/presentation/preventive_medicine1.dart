@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:teleafia_mobile_app/presentation/preventive_medicine2.dart';
 //import 'package:teleafia_mobile_app//preventive_medicine2.dart';
 
 class PreventiveMedicineOne extends StatefulWidget {
@@ -36,7 +37,7 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('Assets/equiafia logo.png',
+                  Image.asset('Assets/logo.png',
                     width: 120,
                     height: 50,
                     fit: BoxFit.cover,
@@ -316,7 +317,7 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
                       Center(
                         child: ElevatedButton(
                           onPressed: (){
-                          //  Navigator.push(context, MaterialPageRoute(builder: (context)=>PreventiveMedicineTwo()));
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=>PreventiveMedicineTwo()));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: maroon,

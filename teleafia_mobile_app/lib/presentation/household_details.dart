@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teleafia_mobile_app/presentation/household_illness1.dart';
 
 class HouseHoldDetails extends StatefulWidget {
   const HouseHoldDetails({super.key});
@@ -19,6 +20,8 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: background,),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SafeArea(
@@ -207,7 +210,9 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                     SizedBox(height: 40.0),
 
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HouseHoldIllness1()));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,
                       ),

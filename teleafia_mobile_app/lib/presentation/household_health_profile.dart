@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_mobile_app/presentation/preventive_medicine1.dart';
 
 class HouseholdIllness extends StatefulWidget {
   const HouseholdIllness({super.key});
@@ -19,17 +20,17 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(
-      // backgroundColor: background,),
+      appBar: AppBar(
+       backgroundColor: background,),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.asset('assets/Afialogo.jpg',
-                  width: 100,
-                  height: 100,
+                child: Image.asset('assets/logo.png',
+                  /*width: 100,
+                  height: 100,*/
                   fit: BoxFit.cover,
                 ),
               ),
@@ -75,6 +76,8 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
               ),
               SizedBox(height: 10.0,),
               Container(
+                height: 40,
+                width: 900,
                 child:
                 Text('What preventive measures does your household take to prevent'
                     ' the risk of illnesses?',
@@ -86,59 +89,60 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
                 ),
               ),
               SizedBox(height: 10.0,),
-              Row(
-                children: [
-                  Container(
-                    height: 30,
-                    width: 1245,
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.center,
-                      decoration: InputDecoration(
-                        hintText: 'Preventive measures',
-                        contentPadding: EdgeInsets.all(5.0),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.menu),
-                          onPressed: () {
-                            showMenu(
-                              context: context,
-                              position: RelativeRect.fromLTRB(100, 100, 0, 0),
-                              items: [
-                                CheckedPopupMenuItem(
-                                  checked: false,
-                                  value: 'Handwashing with soap and water',
-                                  child: Text('Handwashing with soap and water'),),
-                                CheckedPopupMenuItem(
-                                  checked: false,
-                                  value: 'Regular disinfection of surfaces',
-                                  child: Text('Regular disinfection of surfaces'),),
+              
+              Container(
+                height: 40,
+                child: TextField(
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    hintText: 'Preventive measures',
+                    //contentPadding: EdgeInsets.all(1.0),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () {
+                        showMenu(
+                          context: context,
+                          position: RelativeRect.fromLTRB(100, 100, 0, 0),
+                          items: [
+                            CheckedPopupMenuItem(
+                              checked: false,
+                              value: 'Handwashing with soap and water',
+                              child: Text('Handwashing with soap and water'),),
+                            CheckedPopupMenuItem(
+                              checked: false,
+                              value: 'Regular disinfection of surfaces',
+                              child: Text('Regular disinfection of surfaces'),),
 
-                                CheckedPopupMenuItem(
-                                  checked: false,
-                                  value: 'Vaccination',
-                                  child: Text('Vaccination'),
-                                ),
-                                CheckedPopupMenuItem(
-                                  checked: false,
-                                  value: 'Safe food handling practices',
-                                  child: Text('Safe food handling practices'),
-                                ), CheckedPopupMenuItem(
-                                  checked: false,
-                                  value: 'Adequate ventilation in living spaces',
-                                  child: Text('Adequate ventilation in living spaces'),
-                                ),
-                                CheckedPopupMenuItem(
-                                  checked: false,
-                                  value: 'Others(Specify)',
-                                  child: Text('Others(Specify)'),
-                                ),],);},),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: maroon),
-                          borderRadius: BorderRadius.circular(10.0),),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: maroon),
-                          borderRadius: BorderRadius.circular(10.0),),
-                      ),),),],),
+                            CheckedPopupMenuItem(
+                              checked: false,
+                              value: 'Vaccination',
+                              child: Text('Vaccination'),
+                            ),
+                            CheckedPopupMenuItem(
+                              checked: false,
+                              value: 'Safe food handling practices',
+                              child: Text('Safe food handling practices'),
+                            ), CheckedPopupMenuItem(
+                              checked: false,
+                              value: 'Adequate ventilation in living spaces',
+                              child: Text('Adequate ventilation in living spaces'),
+                            ),
+                            CheckedPopupMenuItem(
+                              checked: false,
+                              value: 'Others(Specify)',
+                              child: Text('Others(Specify)'),
+                            ),],);},),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: maroon),
+                      borderRadius: BorderRadius.circular(10.0),),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: maroon),
+                      borderRadius: BorderRadius.circular(10.0),),
+                  ),),
+              ),
               SizedBox(height: 10.0,),
+
+              
               Container(
                 child:
                 Text('Are there any barriers to accessing healthcare services'
@@ -198,7 +202,9 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
               SizedBox(height: 150.0,),
               Container(
                 padding: EdgeInsets.all(20.0),
-                child: TextButton(onPressed: (){},
+                child: TextButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PreventiveMedicineOne()));
+                },
                   style: TextButton.styleFrom(backgroundColor: maroon,
                     minimumSize: Size(500, 40),
                   ),

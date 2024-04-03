@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 
-class Verify extends StatefulWidget {
-  const Verify({super.key});
+class Verify1 extends StatefulWidget {
+  const Verify1({super.key});
 
   @override
-  State<Verify> createState() => _VerifyState();
+  State<Verify1> createState() => _Verify1State();
 }
 
-class _VerifyState extends State<Verify> {
+class _Verify1State extends State<Verify1> {
   @override
   Color maroon = Color(0xFF982B15); // Define your colors here
   Color background = Color(0xFFFCF4F4);
