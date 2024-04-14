@@ -24,7 +24,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     String email = emailController.text;
     if (email.isNotEmpty) {
-      String apiUrl = 'https://0ce5-102-210-244-74.ngrok-free.app/api/chp/forgotpassword';
+      String apiUrl = 'https://b87f-102-210-244-74.ngrok-free.app/api/chp/forgotpassword';
       Map<String, String> data = {
         'email': email,
       };
@@ -131,16 +131,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               hintText: 'Enter Email',
                               contentPadding: EdgeInsets.all(0.0),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                                borderRadius: BorderRadius.circular(10.0),
                                 borderSide: BorderSide(color: maroon, width: 1.0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                                borderRadius: BorderRadius.circular(10.0),
                                 borderSide: BorderSide(color: maroon, width: 1.0),
                               )
                           ),
                         ),
                       ),
+
                       SizedBox(height: 20.0,),
 
                       ElevatedButton(
@@ -148,7 +149,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           postToDatabase();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Sending OTP to the email..'),
+                              content: Text('please check your email for OTP reset code'),
                               backgroundColor: Color(0xFF982B15), // Maroon background color
                             ),
                           );

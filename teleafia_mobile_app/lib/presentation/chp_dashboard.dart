@@ -184,7 +184,7 @@ class _ChpDashboardState extends State<ChpDashboard> {
                             ),
                             child: ElevatedButton(
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => SocioEconomic()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => HouseHoldDetails()));
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: CircleBorder(),

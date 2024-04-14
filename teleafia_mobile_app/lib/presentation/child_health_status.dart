@@ -1,8 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:teleafia_mobile_app/presentation/preventive_medicine1.dart';
 import 'package:teleafia_mobile_app/shared/bottom_nav.dart';
 import 'package:teleafia_mobile_app/shared/header.dart';
 import 'package:teleafia_mobile_app/shared/health_promoter_quiz.dart';
+
+import 'maternal_child_health.dart';
 
 
 void main() {
@@ -48,6 +51,7 @@ class ChildHealthStatusState extends State<ChildHealthStatus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: background,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -115,7 +119,12 @@ class ChildHealthStatusState extends State<ChildHealthStatus> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
+        bottomNavigationBar: BottomNavBar(
+            screen: PreventiveMedicineOne(),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PreventiveMedicineOne()));
+            })
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_mobile_app/presentation/child_health_status.dart';
 import 'package:teleafia_mobile_app/presentation/preventive_medicine1.dart';
 
 class HouseholdIllness extends StatefulWidget {
@@ -199,23 +200,25 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
               SizedBox(height: 5.0,),
               Text('Kindly proceed to fill the health status for'
                   ' household children below the age of 5years'),
-              SizedBox(height: 150.0,),
-              Container(
-                padding: EdgeInsets.all(20.0),
-                child: TextButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PreventiveMedicineOne()));
-                },
-                  style: TextButton.styleFrom(backgroundColor: maroon,
-                    minimumSize: Size(500, 40),
+              SizedBox(height: 100.0,),
+
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChildHealthStatus()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: maroon,
                   ),
-                  child: Center(
-                    child: Text('Next',
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white,
-                      ),
+                  child: Text(
+                    'NEXT',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10.0,
                     ),
-                  ),),),
+                  ),
+                ),
+              ),
 
             ] ),
       ),

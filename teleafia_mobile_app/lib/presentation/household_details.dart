@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teleafia_mobile_app/presentation/household_illness1.dart';
+import 'package:teleafia_mobile_app/presentation/socioeconomic_status.dart';
 
 class HouseHoldDetails extends StatefulWidget {
   const HouseHoldDetails({super.key});
@@ -211,7 +212,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
 
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HouseHoldIllness1()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SocioEconomic()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,

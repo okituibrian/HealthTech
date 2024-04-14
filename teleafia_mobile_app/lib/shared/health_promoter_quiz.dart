@@ -38,62 +38,32 @@ class HealthPromoterQuizState extends State<HealthPromoterQuiz> {
     );
   }
 
-  Widget GenerateCheckBoxQuestionWidget(
-    String question,
-    String hint,
-    List<String> options,
-    List<String> selectedOptions,
-    Function(List<String>) onChanged,
-  ) {
+  Widget GenerateTextfield(String hintText) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 10.0),
-          Text(question, style: TextStyle(fontWeight: FontWeight.w600)),
-          SizedBox(
-            height: 40.0,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: maroon),
-                borderRadius: BorderRadius.circular(4.0),
-                color: Colors.white,
-              ),
-              child: ListView.builder(
-                itemCount: options.length,
-                itemBuilder: (context, index) {
-                  final value = options[index];
-                  return CheckboxListTile(
-                    title: Text(
-                      value,
-                      style: TextStyle(color: maroon),
-                    ),
-                    value: selectedOptions.contains(value),
-                    onChanged: (newValue) {
-                      // Toggle the selection status of the option
-                      List<String> updatedOptions = List.from(selectedOptions);
-                      if (newValue != null) {
-                        if (newValue) {
-                          updatedOptions.add(value); // Add the value if checked
-                        } else {
-                          updatedOptions
-                              .remove(value); // Remove the value if unchecked
-                        }
-                        onChanged(
-                            updatedOptions); // Notify parent widget about changes
-                      }
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                    activeColor: maroon,
-                  );
-                },
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: Container(
+        margin: EdgeInsets.all(5),
+        height: 40,
+        decoration: BoxDecoration(
+          border: Border.all(color: maroon),
+          borderRadius: BorderRadius.circular(4.0),
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 30.0,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: hintText,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 10.0),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -133,7 +103,7 @@ class HealthPromoterQuizState extends State<HealthPromoterQuiz> {
     );
   }
 
-  Widget GenerateQuestionWidget(
+  Widget GenerateQuestionWidget1(
       String question,
       String hint,
       List<String> options,
@@ -184,9 +154,192 @@ class HealthPromoterQuizState extends State<HealthPromoterQuiz> {
     );
   }
 
+  Widget GenerateQuestionWidget(
+    String question,
+    String hint,
+    List<String> options,
+    String? selectedOption,
+    Function(String?) onChanged,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10.0),
+          Text(question, style: TextStyle(fontWeight: FontWeight.w600)),
+          SizedBox(height: 10.0),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4.0),
+              border: Border.all(color: maroon),
+              color: Colors.white,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: hint,
+                      border: InputBorder.none,
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    controller: TextEditingController(text: selectedOption),
+                    readOnly: true,
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                DropdownButton<String>(
+                  value: selectedOption,
+                  onChanged: onChanged, // Pass onChanged callback here
+                  items: options.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  icon: Icon(Icons.arrow_drop_down, color: maroon),
+                  underline: SizedBox(),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10.0),
+        ],
+      ),
+    );
+  }
+
+  Widget GenerateTextfieldDropdownWidget(String hint, List<String> options,
+      String? selectedOption, Function(String?) onChanged) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10.0),
+          SizedBox(
+            height: 40.0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4.0),
+                border: Border.all(color: maroon),
+                color: Colors.white,
+              ),
+              child: DropdownButton<String>(
+                hint: Text(hint),
+                value: selectedOption,
+                onChanged: onChanged, // Pass onChanged callback here
+                items: options.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(color: maroon),
+                    ),
+                  );
+                }).toList(),
+                style: TextStyle(color: maroon),
+                dropdownColor: background,
+                icon: Icon(Icons.arrow_drop_down, color: maroon),
+                elevation: 2,
+                underline: SizedBox(),
+                isExpanded: true,
+                iconSize: 30.0,
+              ),
+            ),
+          ),
+          SizedBox(height: 10.0),
+        ],
+      ),
+    );
+  }
+
+  Widget GenerateTextfieldWithOptions(
+    String hint,
+    List<String> options,
+    List<String?> selectedOptions,
+    Function(String?) onChanged,
+  ) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+      color: background,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DropdownButtonFormField<String>(
+                  value: null,
+                  onChanged: onChanged,
+                  items: options.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: selectedOptions.contains(value),
+                            onChanged: (_) {
+                              setState(() {
+                                if (selectedOptions.contains(value)) {
+                                  selectedOptions.remove(value);
+                                } else {
+                                  selectedOptions.add(value);
+                                }
+                              });
+                              onChanged(value);
+                            },
+                            activeColor: maroon,
+                          ),
+                          Text(
+                            value,
+                            style: TextStyle(color: maroon),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  style: TextStyle(color: maroon),
+                  decoration: InputDecoration(
+                    hintText: selectedOptions.isNotEmpty
+                        ? selectedOptions.join(', ')
+                        : hint,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: maroon),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: maroon),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: maroon),
+                    ),
+                  ),
+                  dropdownColor: background,
+                  icon: Icon(Icons.menu, color: maroon),
+                  isExpanded: true,
+                  iconSize: 20.0,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // Function to generate question and options
   Widget GenerateQuestionWithOptions(
     String question,
+    String hint,
     List<String> options,
     List<String?> selectedOptions,
     Function(String?) onChanged,
@@ -240,7 +393,7 @@ class HealthPromoterQuizState extends State<HealthPromoterQuiz> {
                   decoration: InputDecoration(
                     hintText: selectedOptions.isNotEmpty
                         ? selectedOptions.join(', ')
-                        : 'Enlist the type of illness...',
+                        : hint,
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                     border: OutlineInputBorder(
@@ -318,6 +471,21 @@ Widget Function(String) getHeadline() {
   };
 }
 
+Widget Function(String) getGenerateTextfield() {
+  return (String hintText) {
+    return HealthPromoterQuizState().GenerateTextfield(hintText);
+  };
+}
+
+Widget Function(String, List<String>, String?, Function(String?))
+    getGenerateTextfieldDropdownWidget() {
+  return (String hint, List<String> options, String? selectedOption,
+      Function(String?) onChanged) {
+    return HealthPromoterQuizState().GenerateTextfieldDropdownWidget(
+        hint, options, selectedOption, onChanged);
+  };
+}
+
 // Function that returns the buildYesNoQuiz function
 Widget Function(String, bool?, ValueChanged<bool?>) getBuildYesNoQuiz() {
   return (String question, bool? selectedOption,
@@ -337,13 +505,22 @@ Widget Function(String, String, List<String>, String?, Function(String?))
   };
 }
 
-// Function that returns the GenerateCheckBoxQuestionWidget function
 Widget Function(String, List<String>, List<String>, Function(String?))
-    getGenerateQuestionWithOptions() {
-  return (String question, List<String> options, List<String> selectedOptions,
+    getGenerateTextfieldWithOptions() {
+  return (String hint, List<String> options, List<String> selectedOptions,
       Function(String?) onChanged) {
+    return HealthPromoterQuizState().GenerateTextfieldWithOptions(
+        hint, options, selectedOptions, onChanged);
+  };
+}
+
+// Function that returns the GenerateCheckBoxQuestionWidget function
+Widget Function(String, String, List<String>, List<String>, Function(String?))
+    getGenerateQuestionWithOptions() {
+  return (String question, String hint, List<String> options,
+      List<String> selectedOptions, Function(String?) onChanged) {
     return HealthPromoterQuizState().GenerateQuestionWithOptions(
-        question, options, selectedOptions, onChanged);
+        question, hint, options, selectedOptions, onChanged);
   };
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_mobile_app/presentation/preventive_medicine1.dart';
 import 'package:teleafia_mobile_app/shared/bottom_nav.dart';
 import 'package:teleafia_mobile_app/shared/header.dart';
 import 'package:teleafia_mobile_app/shared/health_promoter_quiz.dart';
@@ -141,7 +142,12 @@ class MaternalAndChildHealthState extends State<MaternalAndChildHealth> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
+        bottomNavigationBar: BottomNavBar(
+            screen: MaternalAndChildHealth(),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PreventiveMedicineOne()));
+            })
     );
   }
 }
