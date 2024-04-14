@@ -2,10 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workarea_patient/Bloc/cart_state.dart';
-import 'package:workarea_patient/presentation/cart_provider.dart';
 
-import '../presentation/cart_model.dart';
+import '../../e-dawa cart/cart_model.dart';
+import '../../e-dawa cart/cart_provider.dart';
+import 'cart_state.dart';
+
 
 class CartEvent extends Equatable {
   @override

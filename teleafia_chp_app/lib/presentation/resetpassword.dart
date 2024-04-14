@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_mobile_app/presentation/forgotpassword.dart';
-import 'package:teleafia_mobile_app/resetpassword_bloc.dart';
 
+
+import '../bloc/resetpassword bloc/resetpassword_bloc.dart';
 import 'loginpage.dart';
 
 class ResetPassword extends StatefulWidget {

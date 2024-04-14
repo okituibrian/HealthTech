@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:workarea_patient/presentation/cart_model.dart';
+
+import '../../e-dawa cart/cart_model.dart';
+
 
 // Import the Item class if it's defined in a separate file
 // import 'item.dart';
