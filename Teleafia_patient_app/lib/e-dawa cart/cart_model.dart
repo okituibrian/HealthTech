@@ -16,11 +16,11 @@ class Cart {
   });
 
   Cart.fromMap(Map<dynamic, dynamic> res)
-      : id = res['id'],
+      : id = int.tryParse(res['id'].toString()),
         productId = res["productId"],
         productName = res["productName"],
         productDescription = res["productDescription"],
-        productPrice = res['productPrice'],
+        productPrice = int.tryParse(res['productPrice'].toString()),
         productImage = res["productImage"]?.toString(); // Ensure productImage is cast to String
 
   Map<String, Object?> toMap() {
