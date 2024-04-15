@@ -43,6 +43,9 @@ dependencies:
   shared_preferences: ^2.2.2
   hive: ^2.2.3
   uuid: ^4.4.0
+  image_picker: ^1.0.7
+  file_picker: 8.0.0+1
+
 
 
 

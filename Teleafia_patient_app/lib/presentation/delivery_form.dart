@@ -156,9 +156,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
 
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => SocioEconomic()));
-                        },
+                        onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           backgroundColor: maroon,
                         ),

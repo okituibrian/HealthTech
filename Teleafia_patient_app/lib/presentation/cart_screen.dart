@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:badges/badges.dart' as badges;
+import 'package:teleafia_partient/presentation/payment.dart';
 
 import '../e-dawa cart/cart_model.dart';
 import '../e-dawa cart/cart_provider.dart';
@@ -73,7 +74,7 @@ class _CartScreenState extends State<CartScreen> {
                 minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => DeliveryForm()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Payment()));
               },
               child: Text(
                 'Proceed to Checkout',

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:teleafia_partient/presentation/Productlist_screen.dart';
+import 'package:teleafia_partient/presentation/pharmacy.dart';
 import '../shared/bottom_nav.dart';
 
 
@@ -126,7 +127,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
                     PaymentsScreen(),
                   ),
                   healthClientServices(context, 'Specialists',
-                      'assets/specialists.PNG', ProductList()),
+                      'assets/specialists.PNG', Pharmacy()),
                   healthClientServices(context, 'Health Records',
                       'assets/my_health_records.PNG', PaymentsScreen()),
                 ],
