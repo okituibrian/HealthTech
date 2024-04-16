@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teleafia_partient/Bloc/loginbloc/login_bloc.dart';
-import 'package:teleafia_partient/presentation/changepassword.dart';
-import 'package:teleafia_partient/presentation/chp_signupform.dart';
-import 'package:teleafia_partient/presentation/dashboard.dart';
-import 'package:teleafia_partient/presentation/forgotpassword.dart';
+import 'package:teleafia_patient/Bloc/loginbloc/login_bloc.dart';
+import 'package:teleafia_patient/presentation/changepassword.dart';
+import 'package:teleafia_patient/presentation/chp_signupform.dart';
+import 'package:teleafia_patient/presentation/dashboard.dart';
+import 'package:teleafia_patient/presentation/forgotpassword.dart';
+import 'package:teleafia_patient/presentation/request_otp.dart';
+import 'package:teleafia_patient/presentation/verify_otp_page.dart';
 
 
 class Login extends StatefulWidget {
@@ -27,13 +29,20 @@ class _LoginState extends State<Login> {
       body: SingleChildScrollView(
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
-            if (state is LoginFailure) {
+            if (state is LoginEmailNotVerified) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Failed to login, please try again'),
+                  content: Text(state.error), // Show the error message from the state
                   duration: Duration(seconds: 3),
                 ),
               );
+              // Navigate to VerifyOTPPage
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => RequestOtp()),
+                );
+              });
             } else if (state is LoginSuccess) {
               // Navigate to ChpDashboard page
               WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -42,8 +51,16 @@ class _LoginState extends State<Login> {
                   MaterialPageRoute(builder: (context) => HealthClientDashboard()),
                 );
               });
+            } else if (state is LoginFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Failed to login, please try again'), // Show the error message from the state
+                  duration: Duration(seconds: 3),
+                ),
+              );
             }
           },
+
           builder: (context, state) {
             if (state is LoginLoading) {
               return Center(

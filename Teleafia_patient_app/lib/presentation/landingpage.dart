@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_partient/presentation/loginpage.dart';
+import 'package:teleafia_patient/presentation/loginpage.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({super.key});

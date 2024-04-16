@@ -1,20 +1,20 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:teleafia_patient/presentation/resetpassword.dart';
+import 'package:teleafia_patient/presentation/verify_otp_page.dart';
 
 
 
 
 
-class ForgotPassword extends StatefulWidget {
-  const ForgotPassword({Key? key}) : super(key: key);
+class RequestOtp extends StatefulWidget {
+  const RequestOtp({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPassword> createState() => _ForgotPasswordState();
+  State<RequestOtp> createState() => _ForgotPasswordState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
+class _ForgotPasswordState extends State<RequestOtp> {
   Color maroon = Color(0xFF982B15);
   Color background = Color(0xFFFCF4F4);
   final TextEditingController emailController = TextEditingController();
@@ -24,7 +24,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     String email = emailController.text;
     if (email.isNotEmpty) {
-      String apiUrl = 'https://a8dc-105-161-14-229.ngrok-free.app/api/forgotpassword';
+      String apiUrl = 'https://e886-102-210-244-74.ngrok-free.app/api/auth/patient/resendotp';
       Map<String, String> data = {
         'email': email,
       };
@@ -39,7 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         );
 
         if (response.statusCode == 200) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Verify()));
         }
         else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -96,7 +96,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               Column(
                 children: [
                   Text(
-                    'Not verified? Request OTP to verify your acoount',
+                    'Account Not verified? ',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15.0,

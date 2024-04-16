@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_partient/presentation/pharmacy.dart';
+import 'package:teleafia_patient/presentation/pharmacy.dart';
 
 class Submitpresc extends StatefulWidget {
   const Submitpresc({super.key});

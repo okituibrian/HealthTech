@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:teleafia_partient/presentation/prescription_file.dart';
+import 'package:teleafia_patient/presentation/prescription_file.dart';
 
 import '../Bloc/prescriptionbloc/prescription_bloc.dart';
 

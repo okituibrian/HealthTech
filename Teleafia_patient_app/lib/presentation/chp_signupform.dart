@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:teleafia_partient/Bloc/registerbloc/register_bloc.dart';
-import 'package:teleafia_partient/presentation/verify_otp_page.dart';
+import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
+import 'package:teleafia_patient/presentation/verify_otp_page.dart';
 //import 'package:trial_app/login_page.dart';
 
 //void main() {

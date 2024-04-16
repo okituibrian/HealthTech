@@ -1,6 +1,6 @@
 {
-    "name": "teleafia_partient",
-    "short_name": "teleafia_partient",
+    "name": "teleafia_patient",
+    "short_name": "teleafia_patient",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

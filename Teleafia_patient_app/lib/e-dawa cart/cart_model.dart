@@ -1,36 +1,41 @@
 class Cart {
-  late final int? id;
-  final String? productId;
-  final String? productName;
-  final String? productDescription;
-  final int? productPrice;
-  final String? productImage; // Ensure productImage is of type String
+  final int id;
+  final String productId;
+  final String productNames;
+  final String productDescriptions;
+  final int productPrices;
+  final String productImages;
 
   Cart({
     required this.id,
     required this.productId,
-    required this.productName,
-    required this.productDescription,
-    required this.productPrice,
-    required this.productImage,
+    required this.productNames,
+    required this.productDescriptions,
+    required this.productPrices,
+    required this.productImages,
   });
 
-  Cart.fromMap(Map<dynamic, dynamic> res)
-      : id = int.tryParse(res['id'].toString()),
-        productId = res["productId"],
-        productName = res["productName"],
-        productDescription = res["productDescription"],
-        productPrice = int.tryParse(res['productPrice'].toString()),
-        productImage = res["productImage"]?.toString(); // Ensure productImage is cast to String
+  // Factory constructor to create Cart instance from a map
+  factory Cart.fromMap(Map<String, dynamic> map) {
+    return Cart(
+      id: map['id'] as int,
+      productId: map['productId'] as String,
+      productNames: map['productName'] as String,
+      productDescriptions: map['productDescription'] as String,
+      productPrices: map['productPrice'] as int,
+      productImages: map['productImage'] as String,
+    );
+  }
 
-  Map<String, Object?> toMap() {
+  // Convert Cart instance to a map
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'productId': productId,
-      'productName': productName,
-      'productDescription': productDescription,
-      'productPrice': productPrice,
-      'productImage': productImage,
+      'productName': productNames,
+      'productDescription': productDescriptions,
+      'productPrice': productPrices,
+      'productImage': productImages,
     };
   }
 }

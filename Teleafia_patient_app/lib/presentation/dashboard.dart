@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:teleafia_partient/presentation/Productlist_screen.dart';
-import 'package:teleafia_partient/presentation/pharmacy.dart';
+import 'package:teleafia_patient/presentation/Productlist_screen.dart';
+import 'package:teleafia_patient/presentation/pharmacy.dart';
 import '../shared/bottom_nav.dart';
 
 

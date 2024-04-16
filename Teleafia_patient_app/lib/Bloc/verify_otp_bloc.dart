@@ -17,7 +17,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
     emit(VerifyOtpLoading());
     try {
       var response = await http.post(
-        Uri.parse('https://a8dc-105-161-14-229.ngrok-free.app/api/auth/patient/verifyotp'),
+        Uri.parse('https://e886-102-210-244-74.ngrok-free.app/api/auth/patient/verifyotp'),
         body: jsonEncode({
           'enteredOtp': event.enteredOtp,
         }),

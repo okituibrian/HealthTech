@@ -1,4 +1,4 @@
-# teleafia_partient
+# teleafia_patient
 
 A new Flutter project.
 

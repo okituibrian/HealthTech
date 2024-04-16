@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_partient/presentation/Productlist_screen.dart';
-import 'package:teleafia_partient/presentation/prescription.dart';
+import 'package:teleafia_patient/presentation/Productlist_screen.dart';
+import 'package:teleafia_patient/presentation/prescription.dart';
 
 class Pharmacy extends StatefulWidget {
   const Pharmacy({super.key});

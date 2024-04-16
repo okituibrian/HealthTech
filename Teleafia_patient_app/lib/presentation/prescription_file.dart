@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:teleafia_partient/presentation/submit_presc.dart';
+import 'package:teleafia_patient/presentation/submit_presc.dart';
 
 class Upload extends StatefulWidget {
   final File imageFile;

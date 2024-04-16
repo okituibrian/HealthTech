@@ -1,9 +1,11 @@
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
-import 'package:teleafia_partient/Bloc/verify_otp_bloc.dart';
-import 'package:teleafia_partient/presentation/loginpage.dart';
+import 'package:teleafia_patient/presentation/loginpage.dart';
+import '../Bloc/verify_otp_bloc.dart';
+
+
+
 
 
 class Verify extends StatefulWidget {
@@ -36,7 +38,6 @@ class _VerifyState extends State<Verify> {
           child: BlocListener<VerifyOtpBloc, VerifyOtpState>(
             listener: (context, state) {
               if (state is VerifyOtpSuccess) {
-                // Handle successful verification, navigate to next screen, etc.
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
               } else if (state is VerifyOtpFailure) {
                 // Handle failure, show error message, etc.

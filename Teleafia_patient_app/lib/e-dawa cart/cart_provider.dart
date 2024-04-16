@@ -24,7 +24,7 @@ class CartProvider with ChangeNotifier {
   double calculateTotalPrice(List<Cart> cartItems) {
     double total = 0.0;
     for (var cartItem in cartItems) {
-      total += cartItem.productPrice as double;
+      total += cartItem.productPrices as double;
     }
     return total;
   }
@@ -71,8 +71,8 @@ class CartProvider with ChangeNotifier {
     await db.removeCartItem(cartItem.id.toString());
 
     // Update the total price by subtracting the price of the removed item
-    if (cartItem.productPrice != null && cartItem.productPrice is int) {
-      removetotalPrice(cartItem.productPrice!);
+    if (cartItem.productPrices != null && cartItem.productPrices is int) {
+      removetotalPrice(cartItem.productPrices!);
     }
 
     // Update the counter only if it's greater than 0

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teleafia_partient/Bloc/resetpasswordbloc/resetpassword_bloc.dart';
-import 'package:teleafia_partient/presentation/forgotpassword.dart';
+import 'package:teleafia_patient/Bloc/resetpasswordbloc/resetpassword_bloc.dart';
+import 'package:teleafia_patient/presentation/forgotpassword.dart';
 
 
 import 'loginpage.dart';

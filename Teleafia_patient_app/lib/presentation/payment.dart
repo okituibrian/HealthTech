@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_partient/presentation/delivery_form.dart';
+import 'package:teleafia_patient/presentation/delivery_form.dart';
 
 class Payment extends StatefulWidget {
   const Payment({super.key});

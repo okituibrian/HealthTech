@@ -1,4 +1,4 @@
-package com.example.teleafia_partient
+package com.example.teleafia_patient
 
 import io.flutter.embedding.android.FlutterActivity
 

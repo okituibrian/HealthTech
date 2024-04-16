@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:badges/badges.dart' as badges;
-import 'package:teleafia_partient/presentation/payment.dart';
+import 'package:teleafia_patient/presentation/payment.dart';
 
 import '../e-dawa cart/cart_model.dart';
 import '../e-dawa cart/cart_provider.dart';
@@ -57,32 +57,26 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width * 1.0,
-        height: MediaQuery.of(context).size.height * 1.0,
-        child: Column(
-          children: [
-            Expanded(
-              child: _buildBody(context),
+      body: Column(
+        children: [
+          Expanded(
+            child: _buildBody(context),
+          ),
+          _buildBottomNavigationBar(),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(maroon),
+              minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
             ),
-            Expanded(
-              child: _buildBottomNavigationBar(),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Payment()));
+            },
+            child: Text(
+              'Proceed to Checkout',
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(maroon),
-                minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Payment()));
-              },
-              child: Text(
-                'Proceed to Checkout',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: HealthClientFooter(),
     );
@@ -98,7 +92,7 @@ class _CartScreenState extends State<CartScreen> {
           final cartItem = widget.cartItems[index];
           return ListTile(
             leading: Image.network(
-              cartItem.productImage ?? '',
+              cartItem.productImages ?? '',
               width: 50,
               loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                 if (loadingProgress == null) return child;
@@ -113,18 +107,18 @@ class _CartScreenState extends State<CartScreen> {
               errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
             ),
             title: Text(
-              cartItem.productName ?? '',
+              cartItem.productNames ?? '',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  ': ${cartItem.productDescription ?? ''}',
+                  ': ${cartItem.productDescriptions ?? ''}',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
                 ),
                 Text(
-                  'Price: Ksh. ${cartItem.productPrice ?? '0'}',
+                  'Price: Ksh. ${cartItem.productPrices ?? '0'}',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: maroon),
                 ),
               ],
@@ -145,7 +139,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildBottomNavigationBar() {
     int totalItems = widget.cartItems.length;
-    double totalPrice = widget.cartItems.fold(0, (previous, current) => previous + (current.productPrice ?? 0));
+    double totalPrice = widget.cartItems.fold(0, (previous, current) => previous + (current.productPrices ?? 0));
 
     return Padding(
       padding: const EdgeInsets.all(40.0),
