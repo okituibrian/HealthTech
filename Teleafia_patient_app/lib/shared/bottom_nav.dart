@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_patient/presentation/dashboard.dart';
+import 'package:teleafia_patient/presentation/profile.dart';
 
+class HealthClientFooter extends StatefulWidget {
+  @override
+  State<HealthClientFooter> createState() => _HealthClientFooterState();
+}
 
-class HealthClientFooter extends StatelessWidget {
+class _HealthClientFooterState extends State<HealthClientFooter> {
   Widget bottomNavigatorButtons(BuildContext context, double width,
       String title, String imagePath, Widget destination) {
     return BottomAppBar(
@@ -61,7 +67,7 @@ class HealthClientFooter extends StatelessWidget {
             context,
             45,
             'Explore',
-            'assets/explore.jpg',
+            'assets/explore.PNG',
             ExploreScreen(),
           ),
           bottomNavigatorButtons(
@@ -69,20 +75,20 @@ class HealthClientFooter extends StatelessWidget {
             49,
             'Payments',
             'assets/payments.PNG',
-            PaymentsScreen(),
+            ExploreScreen(),
           ),
           bottomNavigatorButtons(
             context,
             55,
             'Home',
             'assets/home.PNG',
-            PaymentsScreen(),
+            HealthClientDashboard(),
           ),
           bottomNavigatorButtons(
             context,
             49,
             'Customer Care',
-            'assets/customer_care.jpg',
+            'assets/customer_care.PNG',
             CustomerCareScreen(),
           ),
           bottomNavigatorButtons(
@@ -90,16 +96,12 @@ class HealthClientFooter extends StatelessWidget {
             45,
             'Profile',
             'assets/profile.PNG',
-            PaymentsScreen(),
-
+            HealthClientProfile(),
           ),
         ],
       ),
     );
   }
-}
-
-class HealthClientDashboard {
 }
 
 class ExploreScreen extends StatelessWidget {
@@ -116,30 +118,16 @@ class ExploreScreen extends StatelessWidget {
   }
 }
 
-class PaymentsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Payments'),
-      ),
-      body: Center(
-        child: Text('Payments Screen'),
-      ),
-    );
-  }
-}
-
 class CustomerCareScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Customer Care'),
-        ),
-        body: Center(
-            child: Text('Customer Care Screen'),
-           ),
-        );
-    }
+      appBar: AppBar(
+        title: Text('Customer Care'),
+      ),
+      body: Center(
+        child: Text('Customer Care Screen'),
+      ),
+    );
+  }
 }

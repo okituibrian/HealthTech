@@ -67,7 +67,7 @@ class _PharmacyState extends State<Pharmacy> {
           SizedBox(height: 10.0,),
           ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
-            child: Image.asset('assets/pharmacy.jpg',
+            child: Image.asset('assets/pharmacy1.jpg',
               width: 300,
               height: 150,
               fit: BoxFit.cover,

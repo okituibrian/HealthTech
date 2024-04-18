@@ -22,14 +22,14 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   Color background = const Color(0xFFFCF4F4);
-  final Color maroon = const Color(0xFF982B15);
+  final Color maroon = const Color(0xFFc00100);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
-        title: Text('My e-Dawa Cart', style: TextStyle(color: Colors.white)),
+        title: Text('My eDawa Cart', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: maroon,
         actions: [
@@ -45,7 +45,8 @@ class _CartScreenState extends State<CartScreen> {
                     builder: (context) {
                       return Consumer<CartProvider>(
                         builder: (context, cartProvider, child) {
-                          return Text(cartProvider.counter.toString(), style: TextStyle(color: Colors.white));
+                          return Text(cartProvider.counter.toString(),
+                              style: TextStyle(color: Colors.white));
                         },
                       );
                     },
@@ -69,7 +70,8 @@ class _CartScreenState extends State<CartScreen> {
               minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Payment()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Payment()));
             },
             child: Text(
               'Proceed to Checkout',
@@ -94,12 +96,14 @@ class _CartScreenState extends State<CartScreen> {
             leading: Image.network(
               cartItem.productImages ?? '',
               width: 50,
-              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
                 if (loadingProgress == null) return child;
                 return Center(
                   child: CircularProgressIndicator(
                     value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
                         : null,
                   ),
                 );
@@ -108,18 +112,25 @@ class _CartScreenState extends State<CartScreen> {
             ),
             title: Text(
               cartItem.productNames ?? '',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   ': ${cartItem.productDescriptions ?? ''}',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
                 ),
                 Text(
                   'Price: Ksh. ${cartItem.productPrices ?? '0'}',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: maroon),
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold, color: maroon),
                 ),
               ],
             ),
@@ -139,14 +150,16 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildBottomNavigationBar() {
     int totalItems = widget.cartItems.length;
-    double totalPrice = widget.cartItems.fold(0, (previous, current) => previous + (current.productPrices ?? 0));
+    double totalPrice = widget.cartItems.fold(
+        0, (previous, current) => previous + (current.productPrices ?? 0));
 
     return Padding(
       padding: const EdgeInsets.all(40.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(20.0),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(color: maroon),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -161,19 +174,28 @@ class _CartScreenState extends State<CartScreen> {
                   Text(
                     'ORDER DETAILS',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: maroon),
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: maroon),
                   ),
                   SizedBox(height: 20),
                   Text(
                     'Products: $totalItems',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: maroon),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: maroon),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Total : Ksh. $totalPrice',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: maroon),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: maroon),
                   ),
                 ],
               ),

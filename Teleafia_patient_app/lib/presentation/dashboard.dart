@@ -1,9 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:teleafia_patient/presentation/Productlist_screen.dart';
+import 'package:teleafia_patient/presentation/cart_screen.dart';
+import 'package:teleafia_patient/presentation/medical_services.dart';
+import 'package:teleafia_patient/presentation/my_appointments.dart';
+import 'package:teleafia_patient/presentation/my_health_records.dart';
+import 'package:teleafia_patient/presentation/payment.dart';
 import 'package:teleafia_patient/presentation/pharmacy.dart';
 import '../shared/bottom_nav.dart';
-
 
 const backgroundColor = Color(0xFFFCF4F4);
 const maroon = Color(0xFFc00100);
@@ -93,7 +96,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
             height: 230,
             decoration: BoxDecoration(
               borderRadius:
-              BorderRadius.circular(10.0), // Border radius applied here
+                  BorderRadius.circular(10.0), // Border radius applied here
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(
@@ -124,12 +127,12 @@ class _PatientDashboardState extends State<PatientDashboard> {
                     context,
                     'Medical Services',
                     'assets/medical_services.PNG',
-                    PaymentsScreen(),
+                    MedicalServices(),
                   ),
-                  healthClientServices(context, 'Specialists',
-                      'assets/specialists.PNG', Pharmacy()),
+                  healthClientServices(context, 'eDawa',
+                      'assets/pharm_journey.PNG', ProductList()),
                   healthClientServices(context, 'Health Records',
-                      'assets/my_health_records.PNG', PaymentsScreen()),
+                      'assets/my_health_records.PNG', MedicalRecord()),
                 ],
               ),
             ],
@@ -141,7 +144,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   healthClientServices(context, 'My Appointments',
-                      'assets/my_appointments.PNG', PaymentsScreen()),
+                      'assets/my_appointments.PNG', MyAppointments()),
                   healthClientServices(context, 'Medical Centers',
                       'assets/medical_centers.PNG', ExploreScreen()),
                   healthClientServices(context, 'About Us',
@@ -183,7 +186,7 @@ Widget healthClientServices(
           decoration: BoxDecoration(
             color: maroon,
             borderRadius:
-            BorderRadius.circular(10.0), // Border radius applied here
+                BorderRadius.circular(10.0), // Border radius applied here
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -249,12 +252,12 @@ class CustomerCareScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Customer Care'),
-        ),
-        body: Center(
-            child: Text('Customer Care Screen'),
-            ),
-       );
-    }
+      appBar: AppBar(
+        title: Text('Customer Care'),
+      ),
+      body: Center(
+        child: Text('Customer Care Screen'),
+      ),
+    );
+  }
 }
