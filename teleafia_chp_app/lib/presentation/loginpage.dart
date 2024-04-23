@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teleafia_mobile_app/presentation/changepassword.dart';
-import 'package:teleafia_mobile_app/presentation/chp_dashboard.dart';
-import 'package:teleafia_mobile_app/presentation/forgotpassword.dart';
-import 'package:teleafia_mobile_app/bloc/loginbloc/login_bloc.dart';
+import 'package:teleafia_chp_app/presentation/changepassword.dart';
+import 'package:teleafia_chp_app/presentation/chp_dashboard.dart';
+import 'package:teleafia_chp_app/presentation/forgotpassword.dart';
+import 'package:teleafia_chp_app/bloc/loginbloc/login_bloc.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key});
+  const Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -33,7 +33,6 @@ class _LoginState extends State<Login> {
                 ),
               );
             } else if (state is LoginSuccess) {
-              // Navigate to ChpDashboard page
               WidgetsBinding.instance!.addPostFrameCallback((_) {
                 Navigator.pushReplacement(
                   context,

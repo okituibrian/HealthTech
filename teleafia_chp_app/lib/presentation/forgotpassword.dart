@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:teleafia_mobile_app/presentation/resetpassword.dart';
-import 'package:teleafia_mobile_app/presentation/verifypage.dart';
+import 'package:teleafia_chp_app/presentation/resetpassword.dart';
+import 'package:teleafia_chp_app/presentation/verifypage.dart';
 
 
 
@@ -24,7 +24,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     String email = emailController.text;
     if (email.isNotEmpty) {
-      String apiUrl = 'https://b87f-102-210-244-74.ngrok-free.app/api/chp/forgotpassword';
+      String apiUrl = 'https://b3e3-102-210-244-74.ngrok-free.app/api/auth/chp/forgotpassword';
       Map<String, String> data = {
         'email': email,
       };
@@ -39,6 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         );
 
         if (response.statusCode == 200) {
+          emailController.clear();
           Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword()));
         }
         else {
@@ -131,28 +132,25 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               hintText: 'Enter Email',
                               contentPadding: EdgeInsets.all(0.0),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide(color: maroon, width: 1.0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide(color: maroon, width: 1.0),
                               )
                           ),
                         ),
                       ),
-
                       SizedBox(height: 20.0,),
 
                       ElevatedButton(
                         onPressed: () {
                           postToDatabase();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('please check your email for OTP reset code'),
-                              backgroundColor: Color(0xFF982B15), // Maroon background color
-                            ),
+                          CircularProgressIndicator(
+                           color: maroon,
                           );
+
                         },
                         style: TextButton.styleFrom(backgroundColor: maroon),
                         child: Text(

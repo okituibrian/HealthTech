@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:teleafia_mobile_app/presentation/preventive_medicine2.dart';
+import 'package:teleafia_chp_app/presentation/preventive_medicine2.dart';
 //import 'package:teleafia_mobile_app//preventive_medicine2.dart';
+import 'package:teleafia_chp_app/models.dart';
 
 class PreventiveMedicineOne extends StatefulWidget {
-  const PreventiveMedicineOne({super.key});
+  final CombinedFormData formData;
+  const PreventiveMedicineOne({Key? key, required this.formData}) : super(key: key);
 
   @override
   State<PreventiveMedicineOne> createState() => _PreventiveMedicineOneState();
@@ -74,7 +76,7 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
                           child:LinearProgressIndicator(
                             value: 0.5,
                             valueColor: AlwaysStoppedAnimation<Color>(maroon),
-                            minHeight: 10.0,
+                            minHeight: 5.0,
                           ),),),
 
                       SizedBox(
@@ -88,54 +90,51 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
                       SizedBox(
                         height: 5.0,
                       ),
-                      Row(
+                     /* Row(
                         children: [
                           Expanded(
-                            child: RadioListTile(
+                            child:  RadioListTile<String>(
                               title: Text('Regular'),
-                              value: 1,
-                              groupValue: groupValue,
-                              onChanged: (int? value){
+                              value: 'Regular',
+                              groupValue: widget.formData.preventiveMedicine1Data.frequencyOfPreventiveHealthCareActivities,
+                              onChanged: (String? value) {
                                 setState(() {
-                                  groupValue = value;
-                                  rating = value;
+                                  widget.formData.preventiveMedicine1Data.frequencyOfPreventiveHealthCareActivities = value?? '';
                                 });
                               },
-
+                              activeColor: maroon,
                             ),
                           ),
                           SizedBox(
                             width: 20.0,
                           ),
                           Expanded(
-                            child: RadioListTile(
-                              title: Text('Occassionaly'),
-                              value: 2,
-                              groupValue: groupValue,
-                              onChanged: (int? value){
+                            child: RadioListTile<String>(
+                              title: Text('Occassional'),
+                              value: 'Occassional',
+                              groupValue: widget.formData.preventiveMedicine1Data.frequencyOfPreventiveHealthCareActivities,
+                              onChanged: (String? value) {
                                 setState(() {
-                                  groupValue = value;
-                                  rating = value;
+                                  widget.formData.preventiveMedicine1Data.frequencyOfPreventiveHealthCareActivities = value?? '';
                                 });
                               },
-
+                              activeColor: maroon,
                             ),
                           ),
                           SizedBox(
                             width: 20.0,
                           ),
                           Expanded(
-                            child: RadioListTile(
+                            child:  RadioListTile<String>(
                               title: Text('Rarely'),
-                              value: 3,
-                              groupValue: groupValue,
-                              onChanged: (int? value){
+                              value: 'Rarely',
+                              groupValue: widget.formData.preventiveMedicine1Data.frequencyOfPreventiveHealthCareActivities,
+                              onChanged: (String? value) {
                                 setState(() {
-                                  groupValue = value;
-                                  rating = value;
+                                  widget.formData.preventiveMedicine1Data.frequencyOfPreventiveHealthCareActivities = value?? '';
                                 });
                               },
-
+                              activeColor: maroon,
                             ),
                           ),
                           SizedBox(
@@ -143,17 +142,16 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
 
                           ),
                           Expanded(
-                            child: RadioListTile(
+                            child:  RadioListTile<String>(
                               title: Text('Never'),
-                              value: 4,
-                              groupValue: groupValue,
-                              onChanged: (int? value){
+                              value: 'Never',
+                              groupValue: widget.formData.preventiveMedicine1Data.frequencyOfPreventiveHealthCareActivities,
+                              onChanged: (String? value) {
                                 setState(() {
-                                  groupValue = value;
-                                  rating = value;
+                                  widget.formData.preventiveMedicine1Data.frequencyOfPreventiveHealthCareActivities = value?? '';
                                 });
                               },
-
+                              activeColor: maroon,
                             ),
                           ),
 
@@ -163,14 +161,27 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
                         height: 5.0,),
                       Text('What factors, if any, prevent you from engaging in preventive healthcare activities more regularly?'),
                       Container(
-                        height: 30.0,
+                        height: 40.0,
                         child: TextField(
                           decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
                             hintText: 'Outline the factors',
-                            border: OutlineInputBorder(
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: maroon, width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: maroon, width: 1.0,),
+
                             ),
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              widget.formData.preventiveMedicine1Data.factorsHinderingPreventiveHealthCareActivities = value;
+                            });
+                          },
                         ),
                       ),
                       Text('Do you engage in regular physical activity or exercise?'),
@@ -178,43 +189,44 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
                         children: [
                           Expanded(
                             flex: 1,
-                            child: RadioListTile(
-                                title: Text('Yes regularly'),
-                                value: 1,
-                                groupValue: groupValue1,
-                                onChanged: (int? value){
-                                  setState(() {
-                                    groupValue1 = value;
-                                    rating = value;
-                                  }); }
+                            child:RadioListTile<String>(
+                              title: Text('Never'),
+                              value: 'Never',
+                              groupValue: widget.formData.preventiveMedicine1Data.regularPhysicalActivityEngagement,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  widget.formData.preventiveMedicine1Data.regularPhysicalActivityEngagement = value?? '';
+                                });
+                              },
+                              activeColor: maroon,
                             ),
                           ),
                           Expanded(
                             flex: 1,
-                            child: RadioListTile(
-                                title: Text('Yes, ocassionaly'),
-                                value: 2,
-                                groupValue: groupValue1,
-                                onChanged: (int? value){
-                                  setState(() {
-                                    groupValue1 = value;
-                                    rating = value;
-                                  });
-                                }
+                            child: RadioListTile<String>(
+                              title: Text('Yes, Occassional'),
+                              value: 'Yes, Ocassional',
+                              groupValue: widget.formData.preventiveMedicine1Data.regularPhysicalActivityEngagement,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  widget.formData.preventiveMedicine1Data.regularPhysicalActivityEngagement = value?? '';
+                                });
+                              },
+                              activeColor: maroon,
                             ),
                           ),
                           Expanded(
                             flex: 1,
-                            child: RadioListTile(
-                                title: Text('No'),
-                                value: 3,
-                                groupValue: groupValue1,
-                                onChanged: (int? value){
-                                  setState(() {
-                                    groupValue1 = value;
-                                    rating = value;
-                                  });
-                                }
+                            child: RadioListTile<String>(
+                              title: Text('No'),
+                              value: 'No',
+                              groupValue: widget.formData.preventiveMedicine1Data.regularPhysicalActivityEngagement,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  widget.formData.preventiveMedicine1Data.regularPhysicalActivityEngagement = value?? '';
+                                });
+                              },
+                              activeColor: maroon,
                             ),
                           ),
                         ],
@@ -224,15 +236,27 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
                         height: 15.0,
                       ),
                       Container(
-                        height: 20.0,
+                        height: 40.0,
                         child: TextField(
                           decoration: InputDecoration(
-                            hintText: 'Kindly select an option',
-                            border: OutlineInputBorder(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Outline the factors',
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: maroon, width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: maroon, width: 1.0,),
+
                             ),
                           ),
-
+                          onChanged: (value) {
+                            setState(() {
+                              widget.formData.preventiveMedicine1Data.fruitsAndVegetablesConsumptionPerDay = value;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(
@@ -242,36 +266,38 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
                         children: [
                           Expanded(
                               flex: 2,
-                              child: Text('Have you faced any barriers in accessing primary healthcare services in the past year?')),
+                              child: Text('Do you smoke tobacco or use any other form of nicotine products??')),
                           Expanded(
                             flex: 1,
-                            child: RadioListTile(
-                                title: Text('Yes'),
-                                value: 1,
-                                groupValue: groupValue2,
-                                onChanged: (int? value){
-                                  setState(() {
-                                    groupValue2 = value;
-                                    rating = value;
-                                  }); }
+                            child:  RadioListTile<String>(
+                              title: Text('Yes'),
+                              value: 'Yes',
+                              groupValue: widget.formData.preventiveMedicine1Data.tobaccoAndNicotineUsage,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  widget.formData.preventiveMedicine1Data.tobaccoAndNicotineUsage = value?? '';
+                                });
+                              },
+                              activeColor: maroon,
                             ),
                           ),
                           Expanded(
                             flex: 1,
-                            child: RadioListTile(
-                                title: Text('No'),
-                                value: 2,
-                                groupValue: groupValue2,
-                                onChanged: (int? value){
-                                  setState(() {
-                                    groupValue2 = value;
-                                    rating = value;
-                                  });
-                                }
+                            child: RadioListTile<String>(
+                              title: Text('No'),
+                              value: 'No',
+                              groupValue: widget.formData.preventiveMedicine1Data.tobaccoAndNicotineUsage,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  widget.formData.preventiveMedicine1Data.tobaccoAndNicotineUsage = value?? '';
+                                });
+                              },
+                              activeColor: maroon,
                             ),
                           ),
                         ],
                       ),
+                      SizedBox(height: 20.0,),
                       Text('Do you consume alcoholic beverages?'),
                       SizedBox(
                         height: 5.0,
@@ -279,45 +305,56 @@ class _PreventiveMedicineOneState extends State<PreventiveMedicineOne> {
                       Row(
                         children: [
                           Expanded(
-                              flex: 2,
-                              child: Text('Have you faced any barriers in accessing primary healthcare services in the past year?')),
-                          Expanded(
                             flex: 1,
-                            child: RadioListTile(
-                                title: Text('Yes regularly'),
-                                value: 1,
-                                groupValue: groupValue3,
-                                onChanged: (int? value){
-                                  setState(() {
-                                    groupValue3 = value;
-                                    rating = value;
-                                  }); }
+                            child: RadioListTile<String>(
+                              title: Text('Yes,Regularly'),
+                              value: 'Yes,Regularly',
+                              groupValue: widget.formData.preventiveMedicine1Data.alcoholConsumption,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  widget.formData.preventiveMedicine1Data.alcoholConsumption = value?? '';
+                                });
+                              },
+                              activeColor: maroon,
                             ),
                           ),
                           Expanded(
                             flex: 1,
-                            child: RadioListTile(
-                                title: Text('Yes, ocassionaly'),
-                                value: 2,
-                                groupValue: groupValue3,
-                                onChanged: (int? value){
-                                  setState(() {
-                                    groupValue3 = value;
-                                    rating = value;
-                                  });
-                                }
+                            child:RadioListTile<String>(
+                              title: Text('Yes,Occassionally'),
+                              value: 'Yes,Occassionally',
+                              groupValue: widget.formData.preventiveMedicine1Data.alcoholConsumption,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  widget.formData.preventiveMedicine1Data.alcoholConsumption = value?? '';
+                                });
+                              },
+                              activeColor: maroon,
                             ),
                           ),
-
+                          Expanded(
+                            flex: 1,
+                            child:RadioListTile<String>(
+                              title: Text('No'),
+                              value: 'No',
+                              groupValue: widget.formData.preventiveMedicine1Data.alcoholConsumption,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  widget.formData.preventiveMedicine1Data.alcoholConsumption = value?? '';
+                                });
+                              },
+                              activeColor: maroon,
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(
+                     */ SizedBox(
                         height: 20.0,
                       ),
                       Center(
                         child: ElevatedButton(
                           onPressed: (){
-                           Navigator.push(context, MaterialPageRoute(builder: (context)=>PreventiveMedicineTwo()));
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=>PreventiveMedicineTwo(formData: widget.formData)));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: maroon,

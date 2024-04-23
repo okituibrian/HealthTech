@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_mobile_app/presentation/household_details.dart';
-import 'package:teleafia_mobile_app/presentation/memberdetails.dart';
-import 'package:teleafia_mobile_app/presentation/socioeconomic_status.dart';
-import 'package:teleafia_mobile_app/presentation/loginpage.dart';
-
+import 'package:teleafia_chp_app/presentation/household_details.dart';
+import 'package:teleafia_chp_app/presentation/memberdetails.dart';
+import 'package:teleafia_chp_app/presentation/socioeconomic_status.dart';
+import 'package:teleafia_chp_app/presentation/loginpage.dart';
 
 class ChpDashboard extends StatefulWidget {
-   ChpDashboard({Key? key}) : super(key: key); // Fixed syntax for super constructor
+  const ChpDashboard({Key? key}) : super(key: key);
 
   @override
   State<ChpDashboard> createState() => _ChpDashboardState();
@@ -15,22 +14,6 @@ class ChpDashboard extends StatefulWidget {
 class _ChpDashboardState extends State<ChpDashboard> {
   Color background = Color(0xFFFCF4F4);
   Color maroon = Color(0xFF982B15);
-
-  /*void _handleLogout() async {
-
-    // For example, if Wilson is using shared preferences to store session data:
-    //SharedPreferences prefs = await SharedPreferences.getInstance();
-    //await prefs.clear(); // Clear all stored data
-
-    // Navigate to the login screen
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => LoginPage()),
-    // );
-
-    print('User logged out!');
-  }*/
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +30,10 @@ class _ChpDashboardState extends State<ChpDashboard> {
                 showMenu<String>(
                   context: context,
                   position: RelativeRect.fromLTRB(
-                    MediaQuery.of(context).size.width - 50, 0, 0, 0,
+                    MediaQuery.of(context).size.width - 50,
+                    0,
+                    0,
+                    0,
                   ),
                   items: [
                     PopupMenuItem<String>(
@@ -77,12 +63,9 @@ class _ChpDashboardState extends State<ChpDashboard> {
               ),
             ),
             SizedBox(width: 10),
-            
           ],
         ),
       ),
-
-
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(20.0),
@@ -109,7 +92,6 @@ class _ChpDashboardState extends State<ChpDashboard> {
                   ),
                 ),
                 SizedBox(height: 20.0),
-
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30),
                   child: Image.asset(
@@ -118,7 +100,6 @@ class _ChpDashboardState extends State<ChpDashboard> {
                   ),
                 ),
                 SizedBox(height: 1),
-
                 Text(
                   'Community Health\n Promotion',
                   style: TextStyle(
@@ -128,7 +109,6 @@ class _ChpDashboardState extends State<ChpDashboard> {
                   ),
                 ),
                 SizedBox(height: 10),
-
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
@@ -195,25 +175,6 @@ class _ChpDashboardState extends State<ChpDashboard> {
                                 'Start',
                                 style: TextStyle(color: Colors.white),
                               ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => HouseHoldDetails()));
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.person_add_sharp, color: maroon),
-                                SizedBox(height: 4),
-                                Text(
-                                  'Add household members',
-                                  style: TextStyle(color: maroon),
-                                ),
-                              ],
                             ),
                           ),
                         ),

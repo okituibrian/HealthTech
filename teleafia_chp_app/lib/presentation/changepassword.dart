@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:http/http.dart' as http;
-import 'package:teleafia_mobile_app/presentation/chp_dashboard.dart';
+import 'package:teleafia_chp_app/presentation/chp_dashboard.dart';
 
 import 'loginpage.dart';
 
@@ -193,7 +194,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   void postDataToServer(String email, String newPassword) async {
     // Backend active API endpoint
-    String apiUrl = 'https://b87f-102-210-244-74.ngrok-free.app/api/chp/changepassword';
+    String apiUrl = 'https://0ce5-102-210-244-74.ngrok-free.app/api/chp/changepassword';
 
     // Data payload
     Map<String, String> data = {

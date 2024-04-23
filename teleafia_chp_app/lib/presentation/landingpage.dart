@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_mobile_app/presentation/loginpage.dart';
+import 'package:teleafia_chp_app/presentation/loginpage.dart';
+import 'package:teleafia_chp_app/models.dart';
 
 class Welcome extends StatefulWidget {
-  const Welcome({super.key});
+  const Welcome({Key? key}) : super(key: key);
 
   @override
   State<Welcome> createState() => _WelcomeState();

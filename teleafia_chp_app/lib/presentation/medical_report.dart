@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:teleafia_mobile_app/presentation/patientconsent.dart';
+import 'package:teleafia_chp_app/presentation/patientconsent.dart';
 
 class MedicalReport extends StatefulWidget {
   const MedicalReport({super.key});

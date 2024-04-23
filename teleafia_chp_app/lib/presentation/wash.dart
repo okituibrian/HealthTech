@@ -1,9 +1,13 @@
+/*
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teleafia_mobile_app/presentation/household_illness1.dart';
+import 'package:teleafia_mobile_app/presentation/preventive_medicine1.dart';
+import 'package:teleafia_mobile_app/models.dart';
 
 class Wash extends StatefulWidget {
-  const Wash({super.key});
+  final CombinedFormData formData;
+  const Wash({Key? key, required this.formData}) : super(key: key);
 
   @override
   State<Wash> createState() => _WashState();
@@ -24,14 +28,6 @@ class _WashState extends State<Wash> {
   String? _selectedcleaningFrequencyOfSanitationFacility;
   String? _selectedaccessibilityOfHandwashingFacility;
   String? _selectedhouseholdMembersHandwashingFrequency;
-
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +73,8 @@ class _WashState extends State<Wash> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    */
+/*children: [
                       Text(
                         'Water And Sanitation Hygiene',
                         style: TextStyle(
@@ -92,8 +89,7 @@ class _WashState extends State<Wash> {
                         backgroundColor: Colors.grey[300],
                         valueColor: AlwaysStoppedAnimation<Color>(maroon),
                       ),
-                    ],
-                  ),
+
                   SizedBox(height: 10.0),
 
                   Text(
@@ -108,10 +104,12 @@ class _WashState extends State<Wash> {
                   Container(
                       height: 20.0,
                       width: 900,
-                      child: Text('What is your primary source of drinking water?')) ,
-                  Container(
-                    height: 40.0,
-                    child: TextField(
+                      child: Text('What is your primary source of drinking water?'))*//*
+
+                  //Container(
+                    //height: 40.0,
+                  */
+/*  child: TextField(
                       controller: TextEditingController(text: _selectedsourceOfDrinkingWater ?? ''),
                       decoration: InputDecoration(
                           hintText: 'Outline the source(s)',
@@ -150,6 +148,11 @@ class _WashState extends State<Wash> {
                             borderRadius: BorderRadius.circular(10.0),
                           )
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          widget.formData.washData.sourceOfDrinkingWater = value;
+                        });
+                      },
                     ),
                   ),
 
@@ -194,7 +197,14 @@ class _WashState extends State<Wash> {
                             borderRadius: BorderRadius.circular(10.0),
                           )
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          widget.formData.washData.reliabilityOfWaterSupply = value;
+                        });
+                      },
                     ),
+                    ),
+              ]
                   ),
 
                   SizedBox(height: 10.0),
@@ -205,39 +215,39 @@ class _WashState extends State<Wash> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: RadioListTile<String>(
+                          child:   RadioListTile<String>(
                             title: Text('Yes'),
                             value: 'Yes',
-                            groupValue: _selectedtreatingConsumptionWater,
+                            groupValue: widget.formData.washData.treatingConsumptionWater,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedtreatingConsumptionWater = value;
+                                widget.formData.washData.treatingConsumptionWater = value?? '';
                               });
                             },
                             activeColor: maroon,
                           ),
                         ),
                         Expanded(
-                          child: RadioListTile<String>(
+                          child:   RadioListTile<String>(
                             title: Text('No'),
                             value: 'No',
-                            groupValue: _selectedtreatingConsumptionWater,
+                            groupValue: widget.formData.washData.treatingConsumptionWater,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedtreatingConsumptionWater = value;
+                                widget.formData.washData.treatingConsumptionWater = value?? '';
                               });
                             },
                             activeColor: maroon,
                           ),
                         ),
                         Expanded(
-                          child: RadioListTile<String>(
+                          child:   RadioListTile<String>(
                             title: Text('Sometimes'),
                             value: 'Sometimes',
-                            groupValue: _selectedtreatingConsumptionWater,
+                            groupValue: widget.formData.washData.treatingConsumptionWater,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedtreatingConsumptionWater = value;
+                                widget.formData.washData.treatingConsumptionWater = value?? '';
                               });
                             },
                             activeColor: maroon,
@@ -289,15 +299,14 @@ class _WashState extends State<Wash> {
                             borderRadius: BorderRadius.circular(10.0),
                           )
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          widget.formData.washData.waterTreatmentMethods = value;
+                        });
+                      },
                     ),
                   ),
-
-
-
-
-
                   SizedBox(height: 10.0),
-
                   Text(
                     'Sanitation Facilities',
                     style: TextStyle(
@@ -305,7 +314,6 @@ class _WashState extends State<Wash> {
                       fontSize: 30.0,
                     ),
                   ),
-
                   SizedBox(height: 10.0),
                   Container(
                       height: 20.0,
@@ -351,12 +359,14 @@ class _WashState extends State<Wash> {
                             borderRadius: BorderRadius.circular(10.0),
                           )
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          widget.formData.washData.typeOfSanitationFacility = value;
+                        });
+                      },
                     ),
                   ),
-
-
                   SizedBox(height: 10.0),
-
                   Container(
                       height: 40,
                       width: 900,
@@ -370,10 +380,10 @@ class _WashState extends State<Wash> {
                           child: RadioListTile<String>(
                             title: Text('Yes'),
                             value: 'Yes',
-                            groupValue: _selectedshareOfSanitationFacility,
+                            groupValue: widget.formData.washData.shareOfSanitationFacility,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedshareOfSanitationFacility = value;
+                                widget.formData.washData.shareOfSanitationFacility = value?? '';
                               });
                             },
                             activeColor: maroon,
@@ -383,10 +393,10 @@ class _WashState extends State<Wash> {
                           child: RadioListTile<String>(
                             title: Text('No'),
                             value: 'No',
-                            groupValue: _selectedshareOfSanitationFacility,
+                            groupValue: widget.formData.washData.shareOfSanitationFacility,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedshareOfSanitationFacility = value;
+                                widget.formData.washData.shareOfSanitationFacility = value?? '';
                               });
                             },
                             activeColor: maroon,
@@ -395,11 +405,8 @@ class _WashState extends State<Wash> {
                       ],
                     ),
                   ),
-
                   SizedBox(height: 10.0),
-
                   Container(
-
                       width: 900,
                       child: Text('How often is the sanitation facility cleaned?')),
                   Container(
@@ -408,45 +415,39 @@ class _WashState extends State<Wash> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: RadioListTile<String>(
+                          child:RadioListTile<String>(
                             title: Text('Daily'),
                             value: 'Daily',
-                            groupValue: _selectedcleaningFrequencyOfSanitationFacility,
+                            groupValue: widget.formData.washData.cleaningFrequencyOfSanitationFacility,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedcleaningFrequencyOfSanitationFacility = value;
-
-                              }
-
-                              );
-
+                                widget.formData.washData.cleaningFrequencyOfSanitationFacility = value?? '';
+                              });
                             },
                             activeColor: maroon,
-
                           ),
                         ),
                         Expanded(
                           child: RadioListTile<String>(
                             title: Text('Weekly'),
                             value: 'Weekly',
-                            groupValue: _selectedcleaningFrequencyOfSanitationFacility,
+                            groupValue: widget.formData.washData.cleaningFrequencyOfSanitationFacility,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedcleaningFrequencyOfSanitationFacility = value;
+                                widget.formData.washData.cleaningFrequencyOfSanitationFacility = value?? '';
                               });
                             },
                             activeColor: maroon,
-
                           ),
                         ),
                         Expanded(
                           child: RadioListTile<String>(
                             title: Text('Monthly'),
                             value: 'Monthly',
-                            groupValue: _selectedcleaningFrequencyOfSanitationFacility,
+                            groupValue: widget.formData.washData.cleaningFrequencyOfSanitationFacility,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedcleaningFrequencyOfSanitationFacility = value;
+                                widget.formData.washData.cleaningFrequencyOfSanitationFacility = value?? '';
                               });
                             },
                             activeColor: maroon,
@@ -456,10 +457,10 @@ class _WashState extends State<Wash> {
                           child: RadioListTile<String>(
                             title: Text('Rarely'),
                             value: 'Rarely',
-                            groupValue: _selectedcleaningFrequencyOfSanitationFacility,
+                            groupValue: widget.formData.washData.cleaningFrequencyOfSanitationFacility,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedcleaningFrequencyOfSanitationFacility = value;
+                                widget.formData.washData.cleaningFrequencyOfSanitationFacility = value?? '';
                               });
                             },
                             activeColor: maroon,
@@ -490,13 +491,13 @@ class _WashState extends State<Wash> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: RadioListTile<String>(
+                          child:RadioListTile<String>(
                             title: Text('Yes'),
                             value: 'Yes',
-                            groupValue: _selectedaccessibilityOfHandwashingFacility,
+                            groupValue: widget.formData.washData.accessibilityOfHandWashingFacility,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedaccessibilityOfHandwashingFacility = value;
+                                widget.formData.washData.accessibilityOfHandWashingFacility = value?? '';
                               });
                             },
                             activeColor: maroon,
@@ -506,10 +507,10 @@ class _WashState extends State<Wash> {
                           child: RadioListTile<String>(
                             title: Text('No'),
                             value: 'No',
-                            groupValue: _selectedaccessibilityOfHandwashingFacility,
+                            groupValue: widget.formData.washData.accessibilityOfHandWashingFacility,
                             onChanged: (String? value) {
                               setState(() {
-                                _selectedaccessibilityOfHandwashingFacility = value;
+                                widget.formData.washData.accessibilityOfHandWashingFacility = value?? '';
                               });
                             },
                             activeColor: maroon,
@@ -561,6 +562,11 @@ class _WashState extends State<Wash> {
                             borderRadius: BorderRadius.circular(10.0),
                           )
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          widget.formData.washData.householdMemberHandWashingFrequency = value;
+                        });
+                      },
                     ),
                   ),
 
@@ -568,7 +574,7 @@ class _WashState extends State<Wash> {
 
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HouseHoldIllness1()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PreventiveMedicineOne(formData: widget.formData)));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: maroon,
@@ -589,4 +595,4 @@ class _WashState extends State<Wash> {
       ),
     );
   }
-}
+}*/

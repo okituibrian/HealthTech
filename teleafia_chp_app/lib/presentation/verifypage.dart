@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teleafia_mobile_app/presentation/loginpage.dart';
+import 'package:teleafia_chp_app/presentation/loginpage.dart';
 
 
 class Verify extends StatefulWidget {

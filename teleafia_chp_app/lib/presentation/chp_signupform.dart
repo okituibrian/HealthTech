@@ -1,5 +1,5 @@
-import 'package:teleafia_mobile_app/bloc/registerbloc/register_bloc.dart';
-import 'package:teleafia_mobile_app/presentation/verifypage.dart';
+import 'package:teleafia_chp_app/bloc/registerbloc/register_bloc.dart';
+import 'package:teleafia_chp_app/presentation/verifypage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 //import 'package:trial_app/login_page.dart';
