@@ -25,10 +25,12 @@ class _ProductListState extends State<ProductList> {
   late DBHelper dbHelper;
   final uuid = Uuid();
 
+  List<String> productId = [];
+  List<String> productImages = [];
   List<String> productNames = [];
   List<String> productDescriptions = [];
   List<int> productPrices = [];
-  List<String> productImages = [];
+
 
   @override
   void initState() {
@@ -40,39 +42,48 @@ class _ProductListState extends State<ProductList> {
   Future<void> initDbAndLoadProducts() async {
     await dbHelper.initDatabase();
     await fetchProductDataFromBackend(); // Call the method to fetch products from the backend
-   // getProductDataFromDatabase(); // Load products from local database
+    // getProductDataFromDatabase(); // Load products from local database
   }
 
 
   Future<void> fetchProductDataFromBackend() async {
     try {
-      final response = await http.get(Uri.parse('https://e886-102-210-244-74.ngrok-free.app/api/product/viewallproducts'));
+      final response = await http.get(Uri.parse(
+          'https://b3e3-102-210-244-74.ngrok-free.app/api/product/viewallproducts'));
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
-        final List<dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic>? responseData = jsonDecode(response.body);
 
-        setState(() {
-          productNames = []; // Clear existing data
-          productDescriptions = [];
-          productPrices = [];
-          productImages = [];
+        if (responseData != null) {
+          setState(() {
+            productId.clear();
+            productImages.clear();
+            productNames.clear();
+            productDescriptions.clear();
+            productPrices.clear();
 
-          // Iterate over the fetched products and add them to the lists
-          for (var productData in responseData) {
-            final Product product = Product.fromMap(productData);
-            productNames.add(product.name);
-            productDescriptions.add(product.description);
-            productPrices.add(product.price);
-            productImages.add(product.image);
-          }
-        });
+            for (var productData in responseData) {
+              if (productData != null && productData is Map<String, dynamic>) {
+                final Product product = Product.fromMap(productData);
+                productId.add(product.id ?? '');
+                productImages.add(product.imageUrl ?? '');
+                productNames.add(product.name ?? '');
+                productDescriptions.add(product.description ?? '');
+                productPrices.add(int.parse(product.price.toString() ?? '0'));
+              }
+            }
+          });
+        }
       } else {
-        throw Exception('Failed to fetch products data');
+        throw Exception('Failed to fetch product data');
       }
     } catch (error) {
       print('Error fetching product data: $error');
-      // Handle error accordingly
     }
   }
+
 
 
   @override
@@ -172,7 +183,7 @@ class _ProductListState extends State<ProductList> {
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
                                       onTap: () {
-                                        addToCart(index as Product);
+                                        addToCart(index as int);
                                       },
                                       child: Container(
                                         height: 35,
@@ -210,26 +221,51 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
-  void addToCart(Product product) {
-    int uniqueId = DateTime
-        .now()
-        .millisecondsSinceEpoch;
-    dbHelper.insert(
-      Cart(
-        id: uniqueId,
-        productId: uuid.v4(),
-        productNames: product.name,
-        productDescriptions: product.description,
-        productPrices: product.price,
-        productImages: product.image,
-      ),
-    ).then((value) {
-      print('Product is added to cart');
-      cart.addtotalPrice(double.parse(product.price.toString()));
-      cart.addCounter();
-      cart.notifyListeners();
-    }).catchError((error) {
-      print('Error inserting product into cart: $error');
-    });
+  void addToCart(int index) async {
+    // Check if the product already exists in the cart
+    bool productExists = await dbHelper.checkProductExists(productId[index]);
+
+    if (productExists) {
+      // If the product already exists, show a popup
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Product Already in Cart',
+              style: TextStyle(color: maroon),),
+            content: Text('This product is already in your cart.',
+            style: TextStyle(color: Colors.black),),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // If the product does not exist, add it to the cart
+      dbHelper.insert(
+        Cart(
+          productId: productId[index],
+          productImages: productImages[index],
+          productNames: productNames[index],
+          productDescriptions: productDescriptions[index],
+          productPrices: productPrices[index],
+        ),
+      ).then((value) {
+        // After adding the product to the cart, update counters and notify listeners
+        print('Product is added to cart');
+        cart.addtotalPrice(double.parse(productPrices[index].toString()));
+        cart.addCounter();
+        cart.notifyListeners();
+      }).catchError((error) {
+        print('Error inserting product into cart: $error');
+      });
+    }
   }
+
 }

@@ -18,13 +18,17 @@ class CartProvider with ChangeNotifier {
 
   Future<List<Cart>> getData() async {
     _cart = db.getCartlist();
+    // Fetch the cart items and initialize the counter
+    cartItems = await _cart;
+    _counter = cartItems.length;
     return _cart;
   }
+
 
   double calculateTotalPrice(List<Cart> cartItems) {
     double total = 0.0;
     for (var cartItem in cartItems) {
-      total += cartItem.productPrices as double;
+      total += cartItem.quantity * (cartItem.productPrices ?? 0);
     }
     return total;
   }
@@ -48,7 +52,6 @@ class CartProvider with ChangeNotifier {
   }
 
 
-
   int getCounter(List<Cart> cartItems) {
     return cartItems.length;
   }
@@ -64,20 +67,25 @@ class CartProvider with ChangeNotifier {
   }
 
   void removeFromCart(Cart cartItem) async {
-    // Remove the cartItem from the cartItems list
-    cartItems.remove(cartItem);
+    if (cartItem.quantity > 0) {
+      // Decrement the quantity in the cart item
+      cartItem.quantity--;
 
-    // Remove the item from the database
-    await db.removeCartItem(cartItem.id.toString());
+      // If quantity becomes 0, delete the item from the database
+      if (cartItem.quantity == 0) {
+        await db.deleteCartItem(cartItem.productId);
+      } else {
+        // Update the quantity in the database
+        await db.updateCartItemQuantity(cartItem.productId, cartItem.quantity);
+      }
 
-    // Update the total price by subtracting the price of the removed item
-    if (cartItem.productPrices != null && cartItem.productPrices is int) {
+      // Update the total price
       removetotalPrice(cartItem.productPrices!);
-    }
 
-    // Update the counter only if it's greater than 0
-    if (_counter > 0) {
-      _counter--;
+      // If quantity becomes 0, decrement the counter
+      if (cartItem.quantity == 0) {
+        _counter--;
+      }
     }
 
     // Notify listeners to rebuild the UI
@@ -85,4 +93,18 @@ class CartProvider with ChangeNotifier {
   }
 
 
+  void addToCart(Cart cartItem) async {
+    // Increment the quantity in the cart item
+    cartItem.quantity++;
+
+    // Update the quantity in the database
+    await db.updateCartItemQuantity(cartItem.productId, cartItem.quantity);
+
+    // Convert productPrices to double before passing it to addtotalPrice
+    double productPrice = cartItem.productPrices!.toDouble();
+    addtotalPrice(productPrice); // Update the total price
+
+    // Notify listeners to rebuild the UI
+    notifyListeners();
+  }
 }

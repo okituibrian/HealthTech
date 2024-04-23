@@ -23,15 +23,17 @@ class DBHelper {
     // Create the 'cart' table
     await db.execute(
       'CREATE TABLE cart ('
-          'id VARCHAR UNIQUE, '
-          'productId VARCHAR, '
-          'productName TEXT, '
-          'productDescription TEXT, '
-          'productPrice INTEGER, '
-          'productImage TEXT'
+          'productId TEXT,'
+          'productImages TEXT,'
+          'productNames TEXT,'
+          'productDescriptions TEXT,'
+          'productPrices INTEGER,'
+          'quantity INTEGER' // Add a comma if there are more columns
           ')',
     );
   }
+
+
 
   Future<void> insert(Cart cart) async {
     await initDatabase(); // Ensure _db is initialized
@@ -51,25 +53,9 @@ class DBHelper {
 
   Future<void> removeCartItem(String id) async {
     await initDatabase(); // Ensure _db is initialized
-    await _db.delete('cart', where: 'id = ?', whereArgs: [id]);
+    await _db.delete('cart', where: 'productid = ?', whereArgs: [id]);
   }
 
-  Future<List<Product>> getProductsFromApi() async {
-    try {
-      final apiUrl = 'YOUR_API_URL_HERE'; // Replace with your API endpoint
-      final response = await http.get(Uri.parse(apiUrl));
-
-      if (response.statusCode == 200) {
-        final List<dynamic> responseData = jsonDecode(response.body);
-        return responseData.map((productData) => Product.fromMap(productData)).toList();
-      } else {
-        throw Exception('Failed to fetch products data from API');
-      }
-    } catch (error) {
-      print('Error fetching products data from API: $error');
-      throw Exception('Failed to fetch products data from API');
-    }
-  }
 
   static Future<void> addToCart(Product product) async {
     int uniqueId = DateTime.now().millisecondsSinceEpoch;
@@ -77,12 +63,16 @@ class DBHelper {
     await dbHelper.initDatabase();
     await dbHelper.insert(
       Cart(
-        id: uniqueId,
-        productId: product.id,
+
+        productId:product.id,
+        productImages: product.imageUrl,
         productNames: product.name,
         productDescriptions: product.description,
         productPrices: product.price,
-        productImages: product.image,
+
+
+
+
       ),
     );
   }
@@ -97,5 +87,54 @@ class DBHelper {
       print('Error adding products to cart: $error');
       throw Exception('Failed to add products to cart');
     }
+  }
+
+  Future<void> addCartItem(String id) async {
+    await initDatabase(); // Ensure _db is initialized
+    final existingCartItem = await _db.query('cart', where: 'productId = ?', whereArgs: [id]);
+
+    if (existingCartItem.isNotEmpty) {
+      // If the item already exists in the cart, update its quantity
+      final currentQuantity = existingCartItem[0]['quantity'] as int? ?? 0; // Get the current quantity
+      await _db.update('cart', {'quantity': currentQuantity + 1}, where: 'productId = ?', whereArgs: [id]);
+    } else {
+      // If the item does not exist in the cart, insert it with a quantity of 1
+      await _db.insert('cart', {'productId': id, 'quantity': 1});
+    }
+  }
+
+  Future<bool> checkProductExists(String productId) async {
+    try {
+      await initDatabase(); // Ensure _db is initialized
+      final List<Map<String, dynamic>> existingProduct = await _db.query(
+        'cart',
+        where: 'productId = ?',
+        whereArgs: [productId],
+      );
+      // If the existingProduct list is not empty, the product exists
+      return existingProduct.isNotEmpty;
+    } catch (error) {
+      print('Error checking product existence: $error');
+      return false; // Return false in case of any error
+    }
+  }
+
+  // Update the quantity of a product in the database
+  Future<void> updateCartItemQuantity(String productId, int quantity) async {
+    // Update statement
+    await _db.update(
+      'cart',
+      {'quantity': quantity},
+      where: 'productId = ?',
+      whereArgs: [productId],
+    );
+  }
+
+  Future<void> deleteCartItem(String productId) async {
+    await _db.delete(
+      'cart',
+      where: 'productId = ?',
+      whereArgs: [productId],
+    );
   }
 }
