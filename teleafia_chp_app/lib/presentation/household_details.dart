@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HouseHoldDetails extends StatefulWidget {
+
   HouseHoldDetails({Key? key}) : super(key: key);
 
   @override
@@ -38,7 +39,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
       });
 
       // Post data to backend
-      var url = Uri.parse('https://647c-102-210-244-74.ngrok-free.app/api/create/household');
+      var url = Uri.parse('https://b3e3-102-210-244-74.ngrok-free.app/api/create/household');
       var response = await http.post(
         url,
         body: jsonData,
@@ -114,11 +115,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           ),
                         ),
                         SizedBox(height: 10.0),
-                        LinearProgressIndicator(
-                          value: _progressValue,
-                          backgroundColor: Colors.grey[300],
-                          valueColor: AlwaysStoppedAnimation<Color>(maroon),
-                        ),
                       ],
                     ),
                     SizedBox(height: 10.0),
@@ -155,7 +151,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.all(10.0),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Nationality',
@@ -183,7 +179,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.all(10.0),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'County',
@@ -211,7 +207,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         decoration:  InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.all(10.0),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'SubCounty',
@@ -239,7 +235,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         decoration:  InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.all(10.0),
                           fillColor: Colors.white,
                           hintText: 'Constituency',
                           labelText: 'Constituency',
@@ -266,7 +262,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         decoration:  InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.all(10.0),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Ward',
@@ -294,7 +290,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         decoration:  InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.all(10.0),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Community Unit',
@@ -322,7 +318,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.all(10.0),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Household size',
@@ -350,7 +346,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         decoration:  InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.all(10.0),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Number of children under 5years',
@@ -374,7 +370,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                     ),
                     SizedBox(height: 40.0),
                     ElevatedButton(
-                      onPressed: _isSubmitting ? null : _submitForm,
+                      onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SocioEconomic(formData: formData)),);},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,
                         minimumSize: Size(200, 50),
@@ -384,7 +380,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                         color: maroon,
                       )
                           : Text(
-                        'Submit',
+                        'Next',
                         style: TextStyle(
                           color: Colors.white,
                         ),

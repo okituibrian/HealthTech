@@ -22,7 +22,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
         if (response.statusCode == 200) {
           emit(LoginSuccess());
-        } else {
+        } else if (response.statusCode == 409){
+          emit(ChangePasswordRequiredState());
+        }
+        else {
           emit(LoginFailure(error: 'login failed'));
         }
       } catch (e) {

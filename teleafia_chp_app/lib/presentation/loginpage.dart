@@ -39,6 +39,8 @@ class _LoginState extends State<Login> {
                   MaterialPageRoute(builder: (context) => ChpDashboard()),
                 );
               });
+            } else if (state is ChangePasswordRequiredState) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()),);
             }
           },
           builder: (context, state) {
@@ -99,7 +101,7 @@ class _LoginState extends State<Login> {
                       ),
                       SizedBox(height: 10.0),
                       Container(
-                        height: 35.0,
+                        height: 40.0,
                         child: TextField(
                           textAlignVertical: TextAlignVertical.center,
                           controller: emailController,
@@ -109,13 +111,14 @@ class _LoginState extends State<Login> {
                               color: Color(0xFF982B15),
                             ),
                             hintText: 'Email',
+                            labelText: 'Email',
                             contentPadding: EdgeInsets.all(10.0),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Color(0xFF982B15)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Color(0xFF982B15)),
                             ),
                           ),
@@ -123,7 +126,7 @@ class _LoginState extends State<Login> {
                       ),
                       SizedBox(height: 10.0),
                       Container(
-                        height: 35.0,
+                        height: 40.0,
                         child: TextField(
                           textAlignVertical: TextAlignVertical.center,
                           controller: passwordController,
@@ -134,13 +137,14 @@ class _LoginState extends State<Login> {
                               color: Color(0xFF982B15),
                             ),
                             hintText: 'Password',
+                            labelText: 'password',
                             contentPadding: EdgeInsets.all(10.0),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Color(0xFF982B15)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(color: Color(0xFF982B15)),
                             ),
                           ),
@@ -201,28 +205,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10.0),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChangePassword(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF982B15),
-                        ),
-                        child: Text(
-                          'Change password',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ]
                   ),
                 ),
               );

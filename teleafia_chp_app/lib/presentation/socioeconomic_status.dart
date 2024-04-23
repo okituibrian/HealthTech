@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -48,7 +49,7 @@ class _SocioEconomicState extends State<SocioEconomic> {
       });
 
       // Post data to backend
-      var url = Uri.parse('https://b2d0-102-210-244-74.ngrok-free.app/api/create/household');
+      var url = Uri.parse('https://b3e3-102-210-244-74.ngrok-free.app/api/create/household');
       var response = await http.post(
         url,
         body: jsonData,
@@ -62,7 +63,7 @@ class _SocioEconomicState extends State<SocioEconomic> {
       });
 
       // Check response status
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         // Data submitted successfully
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Form data submitted successfully')),
@@ -548,6 +549,7 @@ bool _isFormDataValid(CombinedFormData formData) {
 
   return isHouseholdDetailsValid  && isSocioEconomicValid;
 }
+
 
 
 
