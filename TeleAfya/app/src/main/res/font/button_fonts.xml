@@ -1,0 +1,7 @@
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        android:font="@font/Lexend-Medium"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
+
+</font-family>
