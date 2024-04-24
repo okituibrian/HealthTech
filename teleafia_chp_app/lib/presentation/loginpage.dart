@@ -15,6 +15,10 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  String? errorMessage;
+
+  Color maroon = Color(0xFF982B15);
+  Color background = Color(0xFFFCF4F4);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +30,9 @@ class _LoginState extends State<Login> {
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Failed to login, please try again'),
-                  duration: Duration(seconds: 3),
-                ),
-              );
+              setState(() {
+                errorMessage = state.error;
+              });
             } else if (state is LoginSuccess) {
               WidgetsBinding.instance!.addPostFrameCallback((_) {
                 Navigator.pushReplacement(
@@ -53,6 +54,8 @@ class _LoginState extends State<Login> {
             } else {
               return SafeArea(
                 child: Container(
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: MediaQuery.of(context).size.height * 1,
                   color: Color(0xFFFCF4F4),
                   padding: EdgeInsets.all(5.0),
                   child: Column(
@@ -99,6 +102,18 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 10.0),
+                      if (errorMessage != null)
+                        Center(
+                          child: Text(
+                            errorMessage!,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16.0,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
                       SizedBox(height: 10.0),
                       Container(
                         height: 40.0,

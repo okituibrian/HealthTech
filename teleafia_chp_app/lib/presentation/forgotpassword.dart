@@ -24,7 +24,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     String email = emailController.text;
     if (email.isNotEmpty) {
-      String apiUrl = 'https://b3e3-102-210-244-74.ngrok-free.app/api/auth/chp/forgotpassword';
+      String apiUrl = 'https://a939-102-210-244-74.ngrok-free.app/api/auth/chp/forgotpassword';
       Map<String, String> data = {
         'email': email,
       };
@@ -76,8 +76,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       body: Center(
         child: Container(
           color: background,
-          width: MediaQuery.of(context).size.width * 0.96,
-          height: MediaQuery.of(context).size.height * 0.96,
+          width: MediaQuery.of(context).size.width * 1,
+          height: MediaQuery.of(context).size.height * 1,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

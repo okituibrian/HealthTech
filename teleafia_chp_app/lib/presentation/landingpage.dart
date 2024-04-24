@@ -63,7 +63,7 @@ class _WelcomeState extends State<Welcome> {
                     ),
                   ),
                   SizedBox(
-                    height: 10.0,
+                    height: 3.0,
                   ),
                   TextButton(
                     onPressed: () {

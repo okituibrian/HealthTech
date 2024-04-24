@@ -36,11 +36,11 @@ class _ChangePasswordState extends State<ChangePassword> {
               width: MediaQuery
                   .of(context)
                   .size
-                  .width * 0.96,
+                  .width * 1,
               height: MediaQuery
                   .of(context)
                   .size
-                  .height * 0.96,
+                  .height * 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -194,7 +194,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   void postDataToServer(String email, String newPassword) async {
     // Backend active API endpoint
-    String apiUrl = 'https://b3e3-102-210-244-74.ngrok-free.app/api/auth/chp/changepassword';
+    String apiUrl = 'https://a939-102-210-244-74.ngrok-free.app/api/auth/chp/changepassword';
 
     // Data payload
     Map<String, String> data = {
