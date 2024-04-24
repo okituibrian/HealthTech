@@ -94,6 +94,8 @@ class _SocioEconomicState extends State<SocioEconomic> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Container(
+              width: MediaQuery.of(context).size.width * 1,
+              height: MediaQuery.of(context).size.height * 1,
               color: background,
               padding: const EdgeInsets.all(5.0),
               child: Center(
