@@ -130,7 +130,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
                     MedicalServices(),
                   ),
                   healthClientServices(context, 'eDawa',
-                      'assets/pharm_journey.PNG', ProductList()),
+                      'assets/pharm_journey.PNG', Pharmacy()),
                   healthClientServices(context, 'Health Records',
                       'assets/my_health_records.PNG', MedicalRecord()),
                 ],
