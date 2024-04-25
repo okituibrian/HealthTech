@@ -1,41 +1,49 @@
 class Cart {
-  final int id;
+
   final String productId;
+  final String productImages;
   final String productNames;
   final String productDescriptions;
   final int productPrices;
-  final String productImages;
+  int quantity;
+
 
   Cart({
-    required this.id,
+
     required this.productId,
+    required this.productImages,
     required this.productNames,
     required this.productDescriptions,
     required this.productPrices,
-    required this.productImages,
+    this.quantity = 1,
+
   });
 
   // Factory constructor to create Cart instance from a map
   factory Cart.fromMap(Map<String, dynamic> map) {
     return Cart(
-      id: map['id'] as int,
-      productId: map['productId'] as String,
-      productNames: map['productName'] as String,
-      productDescriptions: map['productDescription'] as String,
-      productPrices: map['productPrice'] as int,
-      productImages: map['productImage'] as String,
+
+      productId: map['productId'] as String? ?? '', // Handle nullable productId
+      productImages: map['productImages'] as String? ?? '', // Handle nullable productImages
+      productNames: map['productNames'] as String? ?? '', // Handle nullable productNames
+      productDescriptions: map['productDescriptions'] as String? ?? '', // Handle nullable productDescriptions
+      productPrices: map['productPrices'] as int? ?? 0, // Handle nullable productPrices
+      quantity: map['quantity'] as int? ?? 0,
     );
   }
+
 
   // Convert Cart instance to a map
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+
       'productId': productId,
-      'productName': productNames,
-      'productDescription': productDescriptions,
-      'productPrice': productPrices,
-      'productImage': productImages,
+      'productImages': productImages,
+      'productNames': productNames,
+      'productDescriptions': productDescriptions,
+      'productPrices': productPrices,
+      'quantity':quantity,
+
     };
   }
 }
