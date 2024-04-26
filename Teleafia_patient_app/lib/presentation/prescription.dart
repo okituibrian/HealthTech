@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:teleafia_patient/presentation/prescription_file.dart';
-
 import '../Bloc/prescriptionbloc/prescription_bloc.dart';
+import 'package:teleafia_patient/presentation/prescription_file.dart';
 
 class Prescription extends StatefulWidget {
   const Prescription({Key? key}) : super(key: key);
@@ -93,23 +92,18 @@ class _PrescriptionState extends State<Prescription> {
                               FilePickerResult? result = await FilePicker
                                   .platform.pickFiles(
                                 type: FileType.custom,
-                                allowedExtensions: [
-                                  'jpg',
-                                  'png',
-                                  'pdf'
-                                ], // Specify the file types you want to allow
+                                allowedExtensions: ['jpg', 'png', 'pdf'],
                               );
 
                               if (result != null) {
                                 PlatformFile file = result.files.first;
-                                if (file.path != null) {
-                                  File selectedImage = File(file.path!);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Upload(imageFile: selectedImage)),);
-                                }
+                                File selectedImage = File(file.path!);
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) =>
+                                        Upload(imageFile: selectedImage)),);
                               }
-                              BlocProvider.of<PrescriptionBloc>(context).add(PickImageEvent());
-                            },
-                          ),
+                            } ),
+                     //   BlocProvider.of<PrescriptionBloc>(context).add(PickImageEvent()),}),
                           Text('Upload your prescription',
                             style: TextStyle(
                               fontSize: 12.0,
