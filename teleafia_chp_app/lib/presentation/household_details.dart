@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HouseHoldDetails extends StatefulWidget {
-
   HouseHoldDetails({Key? key}) : super(key: key);
 
   @override
@@ -22,62 +21,25 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
   CombinedFormData formData = CombinedFormData(
     householdDetailsData: HouseholdDetailsFormData(),
     socioEconomicData: SocioEconomicFormData(),
-   /* householdIllnessData: HouseholdIllnessFormData(),
-    washData: WashFormData(),
-    preventiveMedicine1Data: PreventiveMedicine1FormData(),
-    preventiveMedicine2Data: PreventiveMedicine2FormData(),
-   // childHealthStatusData: ChildHealthStatusFormData(),
-    householdHealthProfileData: HouseholdHealthProfileFormData(),*/
   );
-  Future<void> _submitForm() async {
-    // Validate form data
-    if (_isFormDataValid(formData)) {
-      // Convert form data to JSON string
-      String jsonData = jsonEncode(formData.toJson());
-      setState(() {
-        _isSubmitting = true; // Set submitting state to true
-      });
-
-      // Post data to backend
-      var url = Uri.parse('https://b3e3-102-210-244-74.ngrok-free.app/api/create/household');
-      var response = await http.post(
-        url,
-        body: jsonData,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-
-      setState(() {
-        _isSubmitting = false; // Reset submitting state
-      });
-
-      // Check response status
-      if (response.statusCode == 200) {
-        // Data submitted successfully
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Form data submitted successfully')),
-        );
-        // Optionally, you can navigate to another screen or show a success message here
-      } else {
-        // Error submitting data
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error submitting form data: ${response.statusCode}')),
-        );
-      }
-    } else {
-      // Show error message if form data is incomplete
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill in all required fields.')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: background,
       appBar: AppBar(
         backgroundColor: background,
+        title: Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: Image.asset(
+              'assets/logo.png',
+              width: 200,
+              height: 80,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -86,7 +48,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
             child: Container(
               width: MediaQuery.of(context).size.width * 1,
               height: MediaQuery.of(context).size.height * 1,
-
               color: background,
               padding: const EdgeInsets.all(5.0),
               child: Center(
@@ -95,15 +56,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 10.0),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Image.asset(
-                        'assets/logo.png',
-                        width: 200,
-                        height: 80,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
                     const SizedBox(height: 10.0),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -138,7 +90,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -166,7 +117,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -194,7 +144,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -209,7 +158,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                       height: 40.0,
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
-                        decoration:  InputDecoration(
+                        decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(10.0),
                           filled: true,
                           fillColor: Colors.white,
@@ -222,7 +171,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -239,6 +187,7 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                         textAlignVertical: TextAlignVertical.center,
                         decoration:  InputDecoration(
                           contentPadding: EdgeInsets.all(10.0),
+                          filled: true,
                           fillColor: Colors.white,
                           hintText: 'Constituency',
                           labelText: 'Constituency',
@@ -249,7 +198,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -277,7 +225,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -305,7 +252,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -333,7 +279,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -361,7 +306,6 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(color: maroon, width: 1.0,),
-
                           ),
                         ),
                         onChanged: (value) {
@@ -373,23 +317,24 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
                     ),
                     SizedBox(height: 40.0),
                     ElevatedButton(
-                      onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SocioEconomic(formData: formData)),);},
+                      onPressed: () {
+                        // Navigate to SocioEconomic screen and pass formData
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SocioEconomic(formData: formData)),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,
                         minimumSize: Size(200, 50),
                       ),
-                      child: _isSubmitting
-                          ? CircularProgressIndicator(
-                        color: maroon,
-                      )
-                          : Text(
+                      child: Text(
                         'Next',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -398,19 +343,5 @@ class _HouseHoldDetailsState extends State<HouseHoldDetails> {
         ),
       ),
     );
-  }
-
-  // Helper method to validate form data
-  bool _isFormDataValid(CombinedFormData formData) {
-    // Check if all required fields are filled
-    return formData.householdDetailsData.householdNumber?.isNotEmpty == true &&
-        formData.householdDetailsData.nationality?.isNotEmpty == true &&
-        formData.householdDetailsData.county?.isNotEmpty == true &&
-        formData.householdDetailsData.subCounty?.isNotEmpty == true &&
-        formData.householdDetailsData.constituency?.isNotEmpty == true &&
-        formData.householdDetailsData.ward?.isNotEmpty == true &&
-        formData.householdDetailsData.communityUnit?.isNotEmpty == true &&
-        formData.householdDetailsData.householdSize?.isNotEmpty == true &&
-        formData.householdDetailsData.numberOfUnderFive?.isNotEmpty == true;
   }
 }

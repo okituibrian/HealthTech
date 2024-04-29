@@ -49,7 +49,7 @@ class _SocioEconomicState extends State<SocioEconomic> {
       });
 
       // Post data to backend
-      var url = Uri.parse('https://b3e3-102-210-244-74.ngrok-free.app/api/create/household');
+      var url = Uri.parse('https://3b88-102-210-244-74.ngrok-free.app/api/create/household');
       var response = await http.post(
         url,
         body: jsonData,
@@ -88,7 +88,19 @@ class _SocioEconomicState extends State<SocioEconomic> {
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
-        backgroundColor: background,),
+        backgroundColor: background,
+        title: Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: Image.asset(
+              'assets/logo.png',
+              width: 200,
+              height: 80,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SafeArea(
@@ -103,39 +115,16 @@ class _SocioEconomicState extends State<SocioEconomic> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10.0),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Image.asset(
-                        'assets/logo.png',
-                        width: 200,
-                        height: 80,
-                        fit: BoxFit.cover,
+                    Text(
+                      'Social economic status',
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                        color: maroon,
                       ),
                     ),
-                    const SizedBox(height: 10.0),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Social economic status',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                            color: maroon,
-                          ),
-                        ),
-                        SizedBox(height: 10.0),
-
-                        LinearProgressIndicator(
-                          value: _progressValue,
-                          backgroundColor: Colors.grey[300],
-                          valueColor: AlwaysStoppedAnimation<Color>(maroon),
-                        ),
-                      ],
-                    ),
                     SizedBox(height: 10.0),
+
                     Container(
                       height: 40.0,
                       child: TextField(
