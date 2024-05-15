@@ -13,12 +13,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       emit(RegisterLoading());
       try {
         var response = await http.post(
-          Uri.parse('https://861c-102-210-244-74.ngrok-free.app/api/auth/patient/register'),
+          Uri.parse('https://3b88-102-210-244-74.ngrok-free.app/api/auth/patient/register'),
           body: jsonEncode({
             'name': event.name,
             'email': event.email,
             'phoneNumber': event.phoneNumber,
-            'idNumber': event.idNumber,
+            'idNumber': event.idNumber, // Include the idNumber here
             'location': event.location,
             'password': event.password,
             'confirm_password': event.confirm_password,
@@ -27,17 +27,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         );
         if (response.statusCode == 200) {
           emit(RegisterSuccess());
-        } else (e){
-
-          emit(RegisterFailure(error: 'Error: $e'));
-
-
-
-        };
+        } else {
+          emit(RegisterFailure(error: 'Error: ${response.reasonPhrase}'));
+        }
       } catch (e) {
         emit(RegisterFailure(error: 'Error: $e'));
       }
     });
   }
 }
-

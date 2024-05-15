@@ -49,7 +49,7 @@ class _ProductListState extends State<ProductList> {
   Future<void> fetchProductDataFromBackend() async {
     try {
       final response = await http.get(Uri.parse(
-          'https://4266-102-210-244-74.ngrok-free.app/api/product/viewallproducts'));
+          'https://6feb-102-210-244-74.ngrok-free.app/api/product/viewallproducts'));
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
 
@@ -112,7 +112,7 @@ class _ProductListState extends State<ProductList> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CartScreen(cartItems: cartItems, cartProvider: cart),
+                        CartScreen(cartItems: cartItems, cartProvider: cart, idNumber: '',),
                   ),
                 );
               },
@@ -254,7 +254,7 @@ class _ProductListState extends State<ProductList> {
           productImages: productImages[index],
           productNames: productNames[index],
           productDescriptions: productDescriptions[index],
-          productPrices: productPrices[index],
+          productPrices: productPrices[index], selected: true,
         ),
       ).then((value) {
         // After adding the product to the cart, update counters and notify listeners

@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:teleafia_patient/presentation/delivery_form.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 
 class Payment extends StatefulWidget {
-  const Payment({super.key});
+  final String billingId;
+
+  const Payment({super.key, required this.billingId});
 
   @override
   State<Payment> createState() => _PaymentState();
 }
 
+
 class _PaymentState extends State<Payment> {
   Color background = Color(0xFFFCF4F4);
   Color maroon = Color(0xFFc00100);
   Color darkMaron = Color(0XFF850808);
+  final TextEditingController mobileNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +30,7 @@ class _PaymentState extends State<Payment> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             HealthClientHeader(heading: 'Payment Method'),
-            SizedBox(
-              height: 5.0,
-            ),
+            SizedBox(height: 5.0),
             Container(
               width: 300,
               height: 30,
@@ -47,12 +50,10 @@ class _PaymentState extends State<Payment> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 20.0,
-            ),
+            SizedBox(height: 20.0),
             Container(
               width: 350,
-              height: 80,
+              height: 100,
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: maroon, width: 0.5),
@@ -74,43 +75,40 @@ class _PaymentState extends State<Payment> {
                         children: [
                           Container(
                             width: 180,
-                            height: 30,
+                            height: 40,
                             child: TextField(
+                              controller: mobileNumberController,
                               decoration: InputDecoration(
-                                  hintText: 'Enter phone number',
-                                  contentPadding: EdgeInsets.all(2.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: maroon, width: 0.5),
-                                    borderRadius: BorderRadius.circular(4.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: maroon, width: 0.5),
-                                    borderRadius: BorderRadius.circular(4.0),
-                                  )),
+                                hintText: 'Enter phone number',
+                                contentPadding: EdgeInsets.all(2.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: maroon, width: 0.5),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: maroon, width: 0.5),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                              ),
                             ),
                           ),
-                          SizedBox(
-                            height: 3.0,
-                          ),
+                          SizedBox(height: 3.0),
                           Container(
-                            width: 180,
-                            height: 30,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  hintText: 'Enter amount',
-                                  contentPadding: EdgeInsets.all(2.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: maroon, width: 0.5),
-                                    borderRadius: BorderRadius.circular(4.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: maroon, width: 0.5),
-                                    borderRadius: BorderRadius.circular(4.0),
-                                  )),
+                            child: TextButton(
+                              onPressed: () {
+                                postNumberToServer();
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: maroon,
+                                minimumSize: Size(60, 40),
+                              ),
+                              child: Text(
+                                'Pay',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -120,9 +118,7 @@ class _PaymentState extends State<Payment> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10.0,
-            ),
+            SizedBox(height: 10.0),
             Container(
               width: 350,
               height: 300,
@@ -157,33 +153,7 @@ class _PaymentState extends State<Payment> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Container(
-                    width: 300,
-                    height: 30,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Enter Amount',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.grey,
-                            width: 1.0,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.grey,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
+                  SizedBox(height: 5.0),
                   Container(
                     width: 300,
                     height: 30,
@@ -205,9 +175,7 @@ class _PaymentState extends State<Payment> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
+                  SizedBox(height: 5.0),
                   Container(
                     width: 300,
                     height: 30,
@@ -229,17 +197,14 @@ class _PaymentState extends State<Payment> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Container(
                     padding: EdgeInsets.all(10.0),
                     child: TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => DeliveryForm()),
+                          MaterialPageRoute(builder: (context) => DeliveryForm()),
                         );
                       },
                       style: TextButton.styleFrom(
@@ -263,5 +228,51 @@ class _PaymentState extends State<Payment> {
       ),
       bottomNavigationBar: HealthClientFooter(),
     );
+  }
+
+  void postNumberToServer() async {
+    // Backend active API endpoint
+    String mobileNumber = mobileNumberController.text;
+    print("Mobile Number: $mobileNumber");
+    String apiUrl = 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
+
+    // Data payload
+    Map<String, String> data = {
+      'mobileNumber': mobileNumberController.text,
+    };
+
+    // Make a POST request
+    try {
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        body: data,
+      );
+
+      // Check if request was successful
+      if (response.statusCode == 200) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DeliveryForm()));
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('please wait for Mpesa to reply'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${response.reasonPhrase}'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $error'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 }

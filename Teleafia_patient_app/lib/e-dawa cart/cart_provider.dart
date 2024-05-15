@@ -107,4 +107,15 @@ class CartProvider with ChangeNotifier {
     // Notify listeners to rebuild the UI
     notifyListeners();
   }
+
+  void removeFromTotal(double price) {
+    _totalPrice -= price;
+    if (_totalPrice < 0) {
+      _totalPrice = 0; // Set total price to zero if it becomes negative
+    }
+    notifyListeners();
+  }
+
+
+  void addToTotal(int i) {}
 }

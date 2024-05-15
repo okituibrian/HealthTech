@@ -28,8 +28,8 @@ class DBHelper {
           'productNames TEXT,'
           'productDescriptions TEXT,'
           'productPrices INTEGER,'
-          'quantity INTEGER' // Add a comma if there are more columns
-          ')',
+          'quantity INTEGER,'
+          'selected BOOL'          ')',
     );
   }
 
@@ -69,6 +69,7 @@ class DBHelper {
         productNames: product.name,
         productDescriptions: product.description,
         productPrices: product.price,
+        selected: true,
 
 
 

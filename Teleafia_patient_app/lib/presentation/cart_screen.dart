@@ -1,29 +1,33 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:teleafia_patient/presentation/dashboard.dart';
 import 'package:teleafia_patient/presentation/payment.dart';
 import '../e-dawa cart/cart_model.dart';
 import '../e-dawa cart/cart_provider.dart';
 import '../shared/bottom_nav.dart';
-import 'delivery_form.dart';
+
 
 class CartScreen extends StatefulWidget {
   final CartProvider cartProvider;
   final List<Cart> cartItems;
+  final String idNumber;
 
-  CartScreen({required this.cartProvider, required this.cartItems});
+  CartScreen({required this.cartProvider, required this.cartItems, this.idNumber = '321456789'});
+
 
   @override
   _CartScreenState createState() => _CartScreenState();
 }
+
 
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('my edawa cart', style: TextStyle(color: Colors.white)),
+        title: Text('My E-Dawa Cart', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF982B15), // Maroon color
         actions: [
@@ -63,56 +67,82 @@ class _CartScreenState extends State<CartScreen> {
                   itemBuilder: (context, index) {
                     final cartItem = cartItems[index];
                     return ListTile(
-                      leading: Image.network(
-                        cartItem.productImages ?? '',
-                        width: 100,
-                        height: 100,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Icon(Icons.error),
+                      leading: Checkbox(
+                        value: cartItem.selected,
+                        onChanged: (value) {
+                          setState(() {
+                            cartItem.selected = value!;
+                            // Update total price based on selection
+                            if (value) {
+                              cartProvider.addToTotal(cartItem.productPrices ?? 0);
+                            } else {
+                              cartProvider.removeFromTotal(cartItem.productPrices.toDouble());
+                            }
+                          });
+                        },
+                        activeColor: Colors.red, // Update active color
                       ),
-                      title: Text(
-                        cartItem.productNames ?? '',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      title: Row(
                         children: [
-                          Text(
-                            ': ${cartItem.productDescriptions ?? ''}',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue),
+                          Expanded(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.network(
+                                  cartItem.productImages ?? '',
+                                  width: 100,
+                                  height: 100,
+                                  errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        cartItem.productNames ?? '',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        cartItem.productDescriptions ?? '',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'Price: Ksh. ${cartItem.productPrices ?? '0'}',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            'Price: Ksh. ${cartItem.productPrices ?? '0'}',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red),
-                          ),
-                        ],
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.remove_circle),
-                            onPressed: () {
-                              if (cartItem.quantity > 0) {
-                                cartProvider.removeFromCart(cartItem);
-                              }
-                            },
-                          ),
-                          Text('${cartItem.quantity}'),
-                          IconButton(
-                            icon: Icon(Icons.add_circle),
-                            onPressed: () {
-                              cartProvider.addToCart(cartItem);
-                            },
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove_circle),
+                                onPressed: () {
+                                  if (cartItem.quantity > 0) {
+                                    cartProvider.removeFromCart(cartItem);
+                                  }
+                                },
+                              ),
+                              Text('${cartItem.quantity}'),
+                              IconButton(
+                                icon: Icon(Icons.add_circle),
+                                onPressed: () {
+                                  cartProvider.addToCart(cartItem);
+                                },
+                              ),
+                              SizedBox(width: 10), // Add some spacing
+                              Text(
+                                'Total: Ksh. ${cartItem.productPrices * cartItem.quantity}',
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -124,15 +154,19 @@ class _CartScreenState extends State<CartScreen> {
               SizedBox(height: 10.0),
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor:
-                  MaterialStateProperty.all<Color>(Colors.red), // Change color
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                   minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Payment()),
-                  );
+                  String idNumber = widget.idNumber;
+                  List<Map<String, dynamic>> products = widget.cartItems.map((cartItem) {
+                    return {
+                      'productId': cartItem.productId,
+                      'quantity': cartItem.quantity.toString(),
+                    };
+                  }).toList();
+
+                  checkout(context, widget.idNumber, products);
                 },
                 child: Text(
                   'Proceed to Checkout',
@@ -144,14 +178,17 @@ class _CartScreenState extends State<CartScreen> {
           );
         },
       ),
-
       bottomNavigationBar: HealthClientFooter(),
     );
   }
 
   Widget _buildBottomNavigationBar(BuildContext context, CartProvider cartProvider) {
-    int totalItems = cartProvider.cartItems.length;
-    double totalPrice = cartProvider.totalPrice;
+    // Filter cart items based on selected status
+    List<Cart> selectedCartItems = cartProvider.cartItems.where((item) => item.selected).toList();
+
+    // Calculate total items and total price for selected items
+    int totalItems = selectedCartItems.length;
+    double totalPrice = selectedCartItems.fold(0, (previous, current) => previous + (current.productPrices * current.quantity));
 
     return Padding(
       padding: const EdgeInsets.all(40.0),
@@ -160,8 +197,8 @@ class _CartScreenState extends State<CartScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20.0),
           border: Border.all(
-            color: maroon, // Specify the color of the border
-            width: 4.0, // Specify the width of the border
+            color: Colors.red, // Update border color
+            width: 4.0,
           ),
         ),
         child: Column(
@@ -177,39 +214,101 @@ class _CartScreenState extends State<CartScreen> {
                   Text(
                     'ORDER DETAILS',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red, // Change color
-                    ),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.red),
                   ),
                   SizedBox(height: 20),
                   Text(
                     'Products: $totalItems',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red, // Change color
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Total : Ksh. $totalPrice',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red, // Change color
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 10.0,),
-
+            SizedBox(
+              height: 10.0,
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> products) async {
+  print('ID Number: $idNumber');
+  // Data payload
+  Map<String, dynamic> data = {
+    'idNumber': 321456789,
+    'products': products,
+  };
+
+  // Convert data payload to JSON
+  String jsonData = jsonEncode(data);
+
+  // API endpoint
+  String apiUrl = 'https://6feb-102-210-244-74.ngrok-free.app/api/billings/addbillings';
+
+  print('Sending data to Wilson API:');
+  print(data);
+  print(idNumber);
+
+  try {
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonData,
+    );
+
+    // Check if request was successful
+    if (response.statusCode == 201 && response.body != null) {
+      var responseData = jsonDecode(response.body);
+      var billingId = responseData['billingId'];
+      if (billingId != null) {
+        // Navigate to the next screen (e.g., Login screen)
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId)));
+
+        // Show a success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Payment successful'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        // Show an error message if the billingId is null
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: Billing ID is null'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } else {
+      // Show an error message if the request was not successful
+      print('Error: ${response.statusCode}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${response.reasonPhrase}'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  } catch (error) {
+    // Show an error message if an exception occurred
+    print('Error: $error');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Error: $error'),
+        duration: Duration(seconds: 2),
       ),
     );
   }
