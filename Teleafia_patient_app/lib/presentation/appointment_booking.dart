@@ -18,17 +18,55 @@ class _BookAppointmentState extends State<BookAppointment> {
   final Color darkMaron = Color(0XFF850808);
   final List<String> _options1 = ['myself', 'others'];
   String? _selectedOption1;
-  final List<String> _medicalServices = [
-    'Dentist',
-    'Physician',
-    'Ophthalmology and optics',
-    'Physiotherapy',
-    'Minor surgery',
-    'Urology',
-    'ENT',
-    'Orthopedics',
-    'Pediatrics',
-  ];
+
+  List<String> _medicalServices = [];
+  Map<String, String> _serviceMap = {};
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMedicalServices();
+  }
+
+  Future<void> fetchMedicalServices() async {
+    const apiUrl = 'https://358a-102-210-244-74.ngrok-free.app/api/getservices'; // Replace with your actual API URL
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+        print('Success: ${response.statusCode} => Medical services updated');
+        final responseBody = json.decode(response.body);
+        print('Response body: $responseBody');  // Log the entire response body
+
+        // Check the structure of the response
+        if (responseBody is List) {
+          // If the responseBody is a List, it means the services are directly in the response
+          final List<dynamic> services = responseBody;
+          print('Services data: $services');
+          setState(() {
+            _serviceMap = {for (var item in services) item['name']: item['serviceId']};
+            _medicalServices = _serviceMap.keys.toList();
+          });
+        } else if (responseBody is Map<String, dynamic> && responseBody.containsKey('services')) {
+          // If the responseBody is a Map and contains a 'services' key, extract the services
+          final List<dynamic> services = responseBody['services'];
+          print('Services data: $services');
+          setState(() {
+            _serviceMap = {for (var item in services) item['name']: item['serviceId']};
+            _medicalServices = _serviceMap.keys.toList();
+          });
+        } else {
+          print('Unexpected response structure: $responseBody');
+        }
+      } else {
+        print('Failed to fetch medical services: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching medical services: $error');
+    }
+  }
+
+
   String? _selectedService;
   final List<String> _gender1 = ['female', 'male'];
   final List<String> _bookingMethod = ['physical', 'virtual'];
@@ -104,8 +142,7 @@ class _BookAppointmentState extends State<BookAppointment> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                controller:
-                TextEditingController(text: formatTime(selectedStartTime)),
+                controller: TextEditingController(text: formatTime(selectedStartTime)),
                 readOnly: true,
                 decoration: InputDecoration(
                   hintText: 'Select Time',
@@ -116,7 +153,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                     context: context,
                     initialTime: selectedStartTime,
                   );
-                  if (pickedTime != null && pickedTime != selectedStartTime)
+                  if (pickedTime != null && pickedTime != selectedStartTime) {
                     setState(() {
                       selectedStartTime = pickedTime;
                       // Adjust the calculation to ensure the end time remains within the valid range
@@ -128,6 +165,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                       );
                       _timeController.text = pickedTime.format(context);
                     });
+                  }
                 },
               ),
             ],
@@ -149,20 +187,19 @@ class _BookAppointmentState extends State<BookAppointment> {
         );
       },
     );
-    if (picked != null && picked != selectedStartTime)
+    if (picked != null && picked != selectedStartTime) {
       setState(() {
         selectedStartTime = picked;
       });
+    }
   }
 
   String formatTime(TimeOfDay time) {
-    return DateFormat.jm()
-        .format(DateTime(2024, 5, 10, time.hour, time.minute));
+    return DateFormat.jm().format(DateTime(2024, 5, 10, time.hour, time.minute));
   }
 
   String formatDate(DateTime date) {
-    return DateFormat('E, d\'${_getDaySuffix(date.day)}\' MMM yyyy')
-        .format(date);
+    return DateFormat('E, d\'${_getDaySuffix(date.day)}\' MMM yyyy').format(date);
   }
 
   String _getDaySuffix(int day) {
@@ -252,6 +289,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                 },
               ),
               SizedBox(height: 15),
+
               TextFields().generateQuestionWidget(
                 'Select Service',
                 'Medical Services',
@@ -263,6 +301,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   });
                 },
               ),
+
               SizedBox(height: 15),
               Container(
                 height: 40,
@@ -279,7 +318,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                       controller: TextEditingController(
                           text:
                           '${formatDate(selectedDate)} from ${formatTime(selectedStartTime)}'
-                              ),
+                      ),
                       decoration: InputDecoration(
                         hintText: 'Select Date',
                         filled: true,
@@ -334,7 +373,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                   ),
                 ]),
               ),
-
 
               SizedBox(height: 15),
 
