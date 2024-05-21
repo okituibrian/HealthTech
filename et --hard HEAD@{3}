@@ -1,0 +1,54 @@
+[33m70a2ab1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbrian[m[33m, [m[1;31morigin/brian[m[33m)[m HEAD@{0}: checkout: moving from willis to brian
+[33mcc24eeb[m[33m ([m[1;31morigin/willis[m[33m, [m[1;32mwillis[m[33m)[m HEAD@{1}: checkout: moving from brian to willis
+[33m70a2ab1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbrian[m[33m, [m[1;31morigin/brian[m[33m)[m HEAD@{2}: checkout: moving from willis to brian
+[33mcc24eeb[m[33m ([m[1;31morigin/willis[m[33m, [m[1;32mwillis[m[33m)[m HEAD@{3}: checkout: moving from brian to willis
+[33m70a2ab1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbrian[m[33m, [m[1;31morigin/brian[m[33m)[m HEAD@{4}: commit: finished payment on pahrmacy
+[33m637c0d8[m[33m ([m[1;31morigin/ken[m[33m)[m HEAD@{5}: pull origin ken: Fast-forward
+[33md31ed7d[m HEAD@{6}: commit: cart
+[33m339d9ee[m HEAD@{7}: commit: i have changed the cart screen display behaviour and pricelist
+[33mcc24eeb[m[33m ([m[1;31morigin/willis[m[33m, [m[1;32mwillis[m[33m)[m HEAD@{8}: pull origin willis: Fast-forward
+[33m13250d4[m HEAD@{9}: checkout: moving from willis to brian
+[33mcc24eeb[m[33m ([m[1;31morigin/willis[m[33m, [m[1;32mwillis[m[33m)[m HEAD@{10}: checkout: moving from brian to willis
+[33m13250d4[m HEAD@{11}: checkout: moving from willis to brian
+[33mcc24eeb[m[33m ([m[1;31morigin/willis[m[33m, [m[1;32mwillis[m[33m)[m HEAD@{12}: reset: moving to HEAD
+[33mcc24eeb[m[33m ([m[1;31morigin/willis[m[33m, [m[1;32mwillis[m[33m)[m HEAD@{13}: reset: moving to origin/Willis
+[33m81d2483[m HEAD@{14}: checkout: moving from brian to willis
+[33m13250d4[m HEAD@{15}: reset: moving to HEAD
+[33m13250d4[m HEAD@{16}: commit: updates
+[33m07104e5[m HEAD@{17}: commit: delivery form update
+[33m5c885b5[m HEAD@{18}: pull origin brian: Fast-forward
+[33m199f7be[m HEAD@{19}: commit: cart update
+[33m97bf52d[m HEAD@{20}: commit: chp changes
+[33m6e0b15b[m HEAD@{21}: commit: Removed directory tree
+[33m0b0da93[m HEAD@{22}: checkout: moving from brian to brian
+[33m0b0da93[m HEAD@{23}: commit: combined projects
+[33mc053d1d[m HEAD@{24}: commit: updated chp app
+[33m3c9639e[m HEAD@{25}: reset: moving to HEAD
+[33m3c9639e[m HEAD@{26}: commit: Remove Teleafia_partient directory
+[33mf0360e3[m HEAD@{27}: commit: Rename last tree to teleafia_chp_app
+[33m43a81fb[m HEAD@{28}: reset: moving to HEAD~1
+[33ma7799cf[m HEAD@{29}: checkout: moving from brian to brian
+[33ma7799cf[m HEAD@{30}: checkout: moving from brian to brian
+[33ma7799cf[m HEAD@{31}: checkout: moving from brian to brian
+[33ma7799cf[m HEAD@{32}: commit: new changes
+[33m43a81fb[m HEAD@{33}: commit: patient app
+[33m5a80fa9[m HEAD@{34}: commit: shared folder added
+[33m3740ed1[m HEAD@{35}: checkout: moving from brian to brian
+[33m3740ed1[m HEAD@{36}: checkout: moving from willis to brian
+[33m81d2483[m HEAD@{37}: reset: moving to HEAD
+[33m81d2483[m HEAD@{38}: checkout: moving from brian to willis
+[33m3740ed1[m HEAD@{39}: pull origin willis: Merge made by the 'ort' strategy.
+[33m8718641[m HEAD@{40}: checkout: moving from willis to brian
+[33m81d2483[m HEAD@{41}: commit: saving willis work
+[33m853dc43[m HEAD@{42}: reset: moving to willis
+[33m853dc43[m HEAD@{43}: reset: moving to HEAD
+[33m853dc43[m HEAD@{44}: reset: moving to HEAD
+[33m853dc43[m HEAD@{45}: reset: moving to HEAD
+[33m853dc43[m HEAD@{46}: reset: moving to HEAD
+[33m853dc43[m HEAD@{47}: reset: moving to HEAD
+[33m853dc43[m HEAD@{48}: reset: moving to HEAD
+[33m853dc43[m HEAD@{49}: checkout: moving from brian to willis
+[33m8718641[m HEAD@{50}: commit: latest version of chp
+[33ma1868c4[m HEAD@{51}: pull: Fast-forward
+[33mb50e3bc[m HEAD@{52}: checkout: moving from main to brian
+[33m9542cd5[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/Terry[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{53}: clone: from https://github.com/okituibrian/HealthTech
