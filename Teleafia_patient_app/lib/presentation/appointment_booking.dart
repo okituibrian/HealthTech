@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
@@ -40,17 +41,157 @@ class _BookAppointmentState extends State<BookAppointment> {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _idNumberController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+
+  Color dark_maroon = const Color(0xFF850808);
+
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedStartTime = TimeOfDay.now().replacing(minute: 0);
+  TimeOfDay selectedEndTime =
+  TimeOfDay.now().replacing(minute: 0, hour: TimeOfDay.now().hour + 1);
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    _timeController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: selectedStartTime,
+      );
+
+      if (pickedTime != null) {
+        setState(() {
+          selectedDate = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          selectedStartTime = pickedTime;
+
+          selectedEndTime = TimeOfDay(
+            hour: pickedTime.hour < TimeOfDay.hoursPerPeriod - 2
+                ? pickedTime.hour + 2
+                : TimeOfDay.hoursPerPeriod - 2,
+            minute: pickedTime.minute,
+          );
+          _dateController.text = DateFormat('MM/dd/yyyy').format(pickedDate);
+          _timeController.text = pickedTime.format(context);
+        });
+      }
+    }
+  }
+
+  Future<void> _selectStartTime(BuildContext context) async {
+    final TimeOfDay? picked = await showDialog<TimeOfDay>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller:
+                TextEditingController(text: formatTime(selectedStartTime)),
+                readOnly: true,
+                decoration: InputDecoration(
+                  hintText: 'Select Time',
+                  prefixIcon: Icon(Icons.access_time),
+                ),
+                onTap: () async {
+                  final TimeOfDay? pickedTime = await showTimePicker(
+                    context: context,
+                    initialTime: selectedStartTime,
+                  );
+                  if (pickedTime != null && pickedTime != selectedStartTime)
+                    setState(() {
+                      selectedStartTime = pickedTime;
+                      // Adjust the calculation to ensure the end time remains within the valid range
+                      selectedEndTime = TimeOfDay(
+                        hour: pickedTime.hour < TimeOfDay.hoursPerPeriod - 2
+                            ? pickedTime.hour + 2
+                            : TimeOfDay.hoursPerPeriod - 2,
+                        minute: pickedTime.minute,
+                      );
+                      _timeController.text = pickedTime.format(context);
+                    });
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(selectedStartTime);
+              },
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
+    if (picked != null && picked != selectedStartTime)
+      setState(() {
+        selectedStartTime = picked;
+      });
+  }
+
+  String formatTime(TimeOfDay time) {
+    return DateFormat.jm()
+        .format(DateTime(2024, 5, 10, time.hour, time.minute));
+  }
+
+  String formatDate(DateTime date) {
+    return DateFormat('E, d\'${_getDaySuffix(date.day)}\' MMM yyyy')
+        .format(date);
+  }
+
+  String _getDaySuffix(int day) {
+    if (day >= 11 && day <= 13) {
+      return 'th';
+    }
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  }
 
   // Function to send the data to the backend API
   Future<void> bookAppointment() async {
-    final String apiUrl = 'https://54c6-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
+    final String apiUrl = 'https://358a-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
 
     final Map<String, dynamic> appointmentData = {
       'bookFor': _selectedOption1,
       'service': _selectedService,
       'date': _dateController.text,
+      'time': _timeController.text,
       'appointmentType': _selectedMethod,
-      'idNumber': 321456789,
+      'idNumber': _idNumberController.text,
       'fullName': _fullNameController.text,
       'phoneNumber': _phoneNumberController.text,
       'age': 23,
@@ -79,7 +220,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   @override
-  void dispose() {
+  void clear() {
     // Dispose controllers when the widget is removed
     _dateController.dispose();
     _fullNameController.dispose();
@@ -110,6 +251,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   });
                 },
               ),
+              SizedBox(height: 15),
               TextFields().generateQuestionWidget(
                 'Select Service',
                 'Medical Services',
@@ -121,24 +263,81 @@ class _BookAppointmentState extends State<BookAppointment> {
                   });
                 },
               ),
-              SizedBox(height: 10),
-              Row(
-                children: [
+              SizedBox(height: 15),
+              Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  border: Border.all(color: maroon),
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                child: Column(children: [
                   Expanded(
                     child: TextField(
-                      controller: _dateController,
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                      controller: TextEditingController(
+                          text:
+                          '${formatDate(selectedDate)} from ${formatTime(selectedStartTime)}'
+                              ),
                       decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.calendar_today),
-                        hintText: 'Date',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.yellow),
+                        hintText: 'Select Date',
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.calendar_today,
+                            color: maroon,
+                          ),
+                          onPressed: () => _selectDate(
+                              context), // Call your date picker function
                         ),
                       ),
                     ),
                   ),
-                ],
+                ]),
               ),
-              SizedBox(height: 10),
+
+              SizedBox(height: 15),
+              Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  border: Border.all(color: maroon),
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                child: Column(children: [
+                  Expanded(
+                    child: TextField(
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                      controller: TextEditingController(
+                          text:
+                          '${formatTime(selectedStartTime)}'
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Select Time',
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.calendar_today,
+                            color: maroon,
+                          ),
+                          onPressed: () => _selectDate(
+                              context), // Call your date picker function
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+
+
+              SizedBox(height: 15),
+
               TextFields().generateDropdownnWidget(
                 'Physical/ Virtual',
                 _bookingMethod,
@@ -149,7 +348,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   });
                 },
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 15),
               TextFields().generateTextField(
                 'Full Name',
                 _fullNameController,
@@ -157,7 +356,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   _fullNameController.text = value;
                 },
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 15),
               TextFields().generateTextField(
                 'Phone Number',
                 _phoneNumberController,
@@ -165,7 +364,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   _phoneNumberController.text = value;
                 },
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 15),
               TextFields().generateTextField(
                 'ID Number',
                 _idNumberController,
@@ -173,7 +372,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   _idNumberController.text = value;
                 },
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 15),
               TextFields().generateDropdownnWidget(
                 'Gender',
                 _gender1,
@@ -184,7 +383,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   });
                 },
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 15),
               TextFields().generateTextField(
                 'Enter Age',
                 _ageController,
@@ -192,7 +391,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   _ageController.text = value;
                 },
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 15),
               Center(
                 child: ElevatedButton(
                   onPressed: bookAppointment,

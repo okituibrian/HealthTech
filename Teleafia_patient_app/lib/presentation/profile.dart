@@ -57,7 +57,7 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
       return;
     }
 
-    String apiUrl = 'https://2ac3-102-210-244-74.ngrok-free.app/api/patient/uploadProfileImages/321456789';
+    String apiUrl = 'https://8fc0-102-210-244-74.ngrok-free.app/api/patient/uploadProfileImages/321456789';
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
