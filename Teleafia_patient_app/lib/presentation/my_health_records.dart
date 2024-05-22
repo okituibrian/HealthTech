@@ -5,6 +5,7 @@ import 'package:teleafia_patient/shared/health_client_functions.dart';
 
 class MedicalRecord extends StatefulWidget {
   const MedicalRecord({super.key});
+
   @override
   State<MedicalRecord> createState() => _MedicalRecordState();
 }
@@ -19,7 +20,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
     'Dental',
     'Physician',
     'Opthalmology and optics',
-    'physiotherapy',
+    'Physiotherapy',
     'Minor surgery',
     'Urology',
     'ENT',
@@ -27,24 +28,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
     'Pediatrics',
   ];
   String? _selectedservice;
-  List<String> _gender1 = [
-    'Female',
-    'Male',
-  ];
-  List<String> _bookingMethod = [
-    'Physical',
-    'Virtual',
-  ];
+  List<String> _gender1 = ['Female', 'Male'];
+  List<String> _bookingMethod = ['Physical', 'Virtual'];
   String? _selectedMethod;
-
   String? _selectedGender;
-  String? _textField1;
-  String? _textField2;
-  String? _textField3;
-  String? _textField4;
-  String? _textField5;
-  String? _phoneNumber;
-  String? _fullName;
+
+  // TextEditingControllers for the text fields
+  final TextEditingController _textField1Controller = TextEditingController();
+  final TextEditingController _textField2Controller = TextEditingController();
+  final TextEditingController _textField3Controller = TextEditingController();
+  final TextEditingController _textField4Controller = TextEditingController();
+  final TextEditingController _textField5Controller = TextEditingController();
+  final TextEditingController _textField6Controller = TextEditingController();
+  final TextEditingController _textField7Controller = TextEditingController();
+  final TextEditingController _textField8Controller = TextEditingController();
+  final TextEditingController _textField9Controller = TextEditingController();
+  final TextEditingController _textField10Controller = TextEditingController();
+  final TextEditingController _textField11Controller = TextEditingController();
+  final TextEditingController _textField12Controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _textField1Controller.dispose();
+    _textField2Controller.dispose();
+    _textField3Controller.dispose();
+    _textField4Controller.dispose();
+    _textField5Controller.dispose();
+    _textField6Controller.dispose();
+    _textField7Controller.dispose();
+    _textField8Controller.dispose();
+    _textField9Controller.dispose();
+    _textField10Controller.dispose();
+    _textField11Controller.dispose();
+    _textField12Controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +74,11 @@ class _MedicalRecordState extends State<MedicalRecord> {
           child: Column(
             children: [
               HealthClientHeader(heading: 'My Health Records'),
-              
               TextFields().generateDropdownnWidget(
                 'Gender',
                 _gender1,
                 _selectedGender,
-                (newValue) {
+                    (newValue) {
                   setState(() {
                     _selectedGender = newValue;
                   });
@@ -69,81 +86,100 @@ class _MedicalRecordState extends State<MedicalRecord> {
               ),
               TextFields().GenerateTextfield(
                 'Enter Age',
-                _textField1,
+                _textField1Controller,
+                    (value) {
+                  _textField1Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'Enter Full Names',
-                _textField2,
+                _textField2Controller,
+                    (value) {
+                  _textField2Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'Patient Height(cm)',
-                _textField3,
+                _textField3Controller,
+                    (value) {
+                  _textField3Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'Patient Weight (kg)',
-                _textField2,
+                _textField4Controller,
+                    (value) {
+                  _textField4Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'Patient Email Address',
-                _textField2,
+                _textField5Controller,
+                    (value) {
+                  _textField5Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'List any drug related allergies',
-                _textField2,
+                _textField6Controller,
+                    (value) {
+                  _textField6Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'List any medical conditions',
-                _textField2,
+                _textField7Controller,
+                    (value) {
+                  _textField7Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'List any current medications',
-                _textField2,
+                _textField8Controller,
+                    (value) {
+                  _textField8Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'Provide details of any past surgeries',
-                _textField2,
+                _textField9Controller,
+                    (value) {
+                  _textField9Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'Provide details of any past medical history',
-                _textField2,
+                _textField10Controller,
+                    (value) {
+                  _textField10Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               TextFields().GenerateTextfield(
                 'Provide details of any past surgeries',
-                _textField2,
+                _textField11Controller,
+                    (value) {
+                  _textField11Controller.text = value!;
+                },
               ),
-              SizedBox(
-                height: 10,
+              SizedBox(height: 10),
+              TextFields().GenerateTextfield(
+                'Provide details of any past medical history',
+                _textField12Controller,
+                    (value) {
+                  _textField12Controller.text = value!;
+                },
               ),
+              SizedBox(height: 10),
               Row(
                 children: [
                   Container(
@@ -160,9 +196,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 200,
-                  ),
+                  SizedBox(width: 200),
                   Container(
                     margin: EdgeInsets.only(right: 1),
                     child: FloatingActionButton(
@@ -173,8 +207,8 @@ class _MedicalRecordState extends State<MedicalRecord> {
                       child: Icon(
                         Icons.download,
                         color: Colors.white,
-                      ), // You can change the icon
-                      backgroundColor: maroon, // You can change the color
+                      ),
+                      backgroundColor: maroon,
                     ),
                   ),
                 ],

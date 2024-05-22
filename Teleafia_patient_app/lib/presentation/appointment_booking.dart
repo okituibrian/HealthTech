@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:teleafia_patient/presentation/payment.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
@@ -29,28 +30,21 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> fetchMedicalServices() async {
-    const apiUrl = 'https://358a-102-210-244-74.ngrok-free.app/api/getservices'; // Replace with your actual API URL
+    const apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/getservices';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
-        print('Success: ${response.statusCode} => Medical services updated');
         final responseBody = json.decode(response.body);
-        print('Response body: $responseBody');  // Log the entire response body
 
-        // Check the structure of the response
         if (responseBody is List) {
-          // If the responseBody is a List, it means the services are directly in the response
           final List<dynamic> services = responseBody;
-          print('Services data: $services');
           setState(() {
             _serviceMap = {for (var item in services) item['name']: item['serviceId']};
             _medicalServices = _serviceMap.keys.toList();
           });
         } else if (responseBody is Map<String, dynamic> && responseBody.containsKey('services')) {
-          // If the responseBody is a Map and contains a 'services' key, extract the services
           final List<dynamic> services = responseBody['services'];
-          print('Services data: $services');
           setState(() {
             _serviceMap = {for (var item in services) item['name']: item['serviceId']};
             _medicalServices = _serviceMap.keys.toList();
@@ -65,7 +59,6 @@ class _BookAppointmentState extends State<BookAppointment> {
       print('Error fetching medical services: $error');
     }
   }
-
 
   String? _selectedService;
   final List<String> _gender1 = ['female', 'male'];
@@ -85,8 +78,7 @@ class _BookAppointmentState extends State<BookAppointment> {
 
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedStartTime = TimeOfDay.now().replacing(minute: 0);
-  TimeOfDay selectedEndTime =
-  TimeOfDay.now().replacing(minute: 0, hour: TimeOfDay.now().hour + 1);
+  TimeOfDay selectedEndTime = TimeOfDay.now().replacing(minute: 0, hour: TimeOfDay.now().hour + 1);
 
   @override
   void dispose() {
@@ -111,13 +103,7 @@ class _BookAppointmentState extends State<BookAppointment> {
 
       if (pickedTime != null) {
         setState(() {
-          selectedDate = DateTime(
-            pickedDate.year,
-            pickedDate.month,
-            pickedDate.day,
-            pickedTime.hour,
-            pickedTime.minute,
-          );
+          selectedDate = pickedDate;
           selectedStartTime = pickedTime;
 
           selectedEndTime = TimeOfDay(
@@ -126,6 +112,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                 : TimeOfDay.hoursPerPeriod - 2,
             minute: pickedTime.minute,
           );
+
+          // Update the text fields directly
           _dateController.text = DateFormat('MM/dd/yyyy').format(pickedDate);
           _timeController.text = pickedTime.format(context);
         });
@@ -142,7 +130,7 @@ class _BookAppointmentState extends State<BookAppointment> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                controller: TextEditingController(text: formatTime(selectedStartTime)),
+                controller: _timeController,
                 readOnly: true,
                 decoration: InputDecoration(
                   hintText: 'Select Time',
@@ -156,7 +144,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                   if (pickedTime != null && pickedTime != selectedStartTime) {
                     setState(() {
                       selectedStartTime = pickedTime;
-                      // Adjust the calculation to ensure the end time remains within the valid range
                       selectedEndTime = TimeOfDay(
                         hour: pickedTime.hour < TimeOfDay.hoursPerPeriod - 2
                             ? pickedTime.hour + 2
@@ -190,6 +177,7 @@ class _BookAppointmentState extends State<BookAppointment> {
     if (picked != null && picked != selectedStartTime) {
       setState(() {
         selectedStartTime = picked;
+        _timeController.text = formatTime(picked);
       });
     }
   }
@@ -218,9 +206,8 @@ class _BookAppointmentState extends State<BookAppointment> {
     }
   }
 
-  // Function to send the data to the backend API
   Future<void> bookAppointment() async {
-    final String apiUrl = 'https://358a-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
+    final String apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
 
     final Map<String, dynamic> appointmentData = {
       'bookFor': _selectedOption1,
@@ -235,6 +222,7 @@ class _BookAppointmentState extends State<BookAppointment> {
       'gender': _selectedGender,
     };
     print('Posting data: ${json.encode(appointmentData)}');
+
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -243,28 +231,21 @@ class _BookAppointmentState extends State<BookAppointment> {
       );
 
       if (response.statusCode == 201) {
-        print('Success: ${response.statusCode} =>  ${response.body}');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Appointment booked successfully')));
+        var responseData = jsonDecode(response.body);
+        var appointmentId = responseData['newAppointment']['appointmentId'];
+        print('Response Data: $responseData');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Payment(appointmentId: appointmentId, billingId: '',)),
+        );
       } else {
-        print('Failed to post: ${response.statusCode} => ${response.body} ');
+        print('Failed to book: ${response.statusCode} => ${response.body} ');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to book appointment')));
       }
     } catch (error) {
-      print('Error fetching profile image: $error');
-      // Show an error message if there is an exception
+      print('Error booking appointment: $error');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $error')));
     }
-  }
-
-  @override
-  void clear() {
-    // Dispose controllers when the widget is removed
-    _dateController.dispose();
-    _fullNameController.dispose();
-    _phoneNumberController.dispose();
-    _idNumberController.dispose();
-    _ageController.dispose();
-    super.dispose();
   }
 
   @override
@@ -289,7 +270,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                 },
               ),
               SizedBox(height: 15),
-
               TextFields().generateQuestionWidget(
                 'Select Service',
                 'Medical Services',
@@ -301,7 +281,6 @@ class _BookAppointmentState extends State<BookAppointment> {
                   });
                 },
               ),
-
               SizedBox(height: 15),
               Container(
                 height: 40,
@@ -312,13 +291,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                 child: Column(children: [
                   Expanded(
                     child: TextField(
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                      controller: TextEditingController(
-                          text:
-                          '${formatDate(selectedDate)} from ${formatTime(selectedStartTime)}'
-                      ),
+                      style: TextStyle(fontSize: 12),
+                      controller: _dateController,
                       decoration: InputDecoration(
                         hintText: 'Select Date',
                         filled: true,
@@ -329,15 +303,13 @@ class _BookAppointmentState extends State<BookAppointment> {
                             Icons.calendar_today,
                             color: maroon,
                           ),
-                          onPressed: () => _selectDate(
-                              context), // Call your date picker function
+                          onPressed: () => _selectDate(context),
                         ),
                       ),
                     ),
                   ),
                 ]),
               ),
-
               SizedBox(height: 15),
               Container(
                 height: 40,
@@ -348,13 +320,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                 child: Column(children: [
                   Expanded(
                     child: TextField(
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                      controller: TextEditingController(
-                          text:
-                          '${formatTime(selectedStartTime)}'
-                      ),
+                      style: TextStyle(fontSize: 12),
+                      controller: _timeController,
                       decoration: InputDecoration(
                         hintText: 'Select Time',
                         filled: true,
@@ -362,20 +329,17 @@ class _BookAppointmentState extends State<BookAppointment> {
                         border: InputBorder.none,
                         suffixIcon: IconButton(
                           icon: Icon(
-                            Icons.calendar_today,
+                            Icons.access_time,
                             color: maroon,
                           ),
-                          onPressed: () => _selectDate(
-                              context), // Call your date picker function
+                          onPressed: () => _selectStartTime(context),
                         ),
                       ),
                     ),
                   ),
                 ]),
               ),
-
               SizedBox(height: 15),
-
               TextFields().generateDropdownnWidget(
                 'Physical/ Virtual',
                 _bookingMethod,
@@ -387,28 +351,28 @@ class _BookAppointmentState extends State<BookAppointment> {
                 },
               ),
               SizedBox(height: 15),
-              TextFields().generateTextField(
+              TextFields().GenerateTextfield(
                 'Full Name',
                 _fullNameController,
                     (value) {
                   _fullNameController.text = value;
-                },
+                } as Function(String? p1)?,
               ),
               SizedBox(height: 15),
-              TextFields().generateTextField(
+              TextFields().GenerateTextfield(
                 'Phone Number',
                 _phoneNumberController,
                     (value) {
                   _phoneNumberController.text = value;
-                },
+                } as Function(String? p1)?,
               ),
               SizedBox(height: 15),
-              TextFields().generateTextField(
+              TextFields().GenerateTextfield(
                 'ID Number',
                 _idNumberController,
                     (value) {
                   _idNumberController.text = value;
-                },
+                } as Function(String? p1)?,
               ),
               SizedBox(height: 15),
               TextFields().generateDropdownnWidget(
@@ -422,12 +386,12 @@ class _BookAppointmentState extends State<BookAppointment> {
                 },
               ),
               SizedBox(height: 15),
-              TextFields().generateTextField(
+              TextFields().GenerateTextfield(
                 'Enter Age',
                 _ageController,
                     (value) {
                   _ageController.text = value;
-                },
+                } as Function(String? p1)?,
               ),
               SizedBox(height: 15),
               Center(
@@ -448,55 +412,6 @@ class _BookAppointmentState extends State<BookAppointment> {
         ),
       ),
       bottomNavigationBar: HealthClientFooter(),
-    );
-  }
-}
-
-// Assuming you have a TextFields class somewhere that generates the widgets
-class TextFields {
-  Widget generateQuestionWidget(String label, String hintText, List<String> options, String? selectedOption, Function(String?) onChanged) {
-    return DropdownButtonFormField<String>(
-      value: selectedOption,
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hintText,
-        border: OutlineInputBorder(),
-      ),
-      items: options.map((option) {
-        return DropdownMenuItem(
-          value: option,
-          child: Text(option),
-        );
-      }).toList(),
-      onChanged: onChanged,
-    );
-  }
-
-  Widget generateDropdownnWidget(String label, List<String> options, String? selectedOption, Function(String?) onChanged) {
-    return DropdownButtonFormField<String>(
-      value: selectedOption,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(),
-      ),
-      items: options.map((option) {
-        return DropdownMenuItem(
-          value: option,
-          child: Text(option),
-        );
-      }).toList(),
-      onChanged: onChanged,
-    );
-  }
-
-  Widget generateTextField(String label, TextEditingController controller, Function(String) onChanged) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(),
-      ),
-      onChanged: onChanged,
     );
   }
 }

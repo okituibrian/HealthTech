@@ -123,6 +123,7 @@ class TextFields {
   final Color background = Color(0XFFFCF4F4);
   final Color maroon = Color(0XFFC00100);
   Color darkMaron = Color(0XFF850808);
+
   Widget generateDropdownnWidget(String hint, List<String> options,
       String? selectedOption, Function(String?) onChanged) {
     return Column(
@@ -144,7 +145,8 @@ class TextFields {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               value: selectedOption,
-              onChanged: onChanged, // Pass onChanged callback here
+              onChanged: onChanged,
+              // Pass onChanged callback here
               items: options.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -169,8 +171,7 @@ class TextFields {
     );
   }
 
-  Widget generateQuestionWidget(
-      String question,
+  Widget generateQuestionWidget(String question,
       String hint,
       List<String> options,
       String? selectedOption,
@@ -191,7 +192,8 @@ class TextFields {
             child: DropdownButton<String>(
               hint: Text(hint),
               value: selectedOption,
-              onChanged: onChanged, // Pass onChanged callback here
+              onChanged: onChanged,
+              // Pass onChanged callback here
               items: options.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -216,33 +218,22 @@ class TextFields {
     );
   }
 
-  Widget GenerateTextfield(String hintText, String? filledText) {
+  Widget GenerateTextfield(String hintText, TextEditingController controller, Function(String?)? onSaved) {
     return Container(
-      //margin: EdgeInsets.all(5),
       height: 40,
       decoration: BoxDecoration(
-        border: Border.all(color: maroon),
-        borderRadius: BorderRadius.circular(4.0),
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 30.0,
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hintText,
+      border: Border.all(color: Color(0XFFC00100)), // Maroon color
+      borderRadius: BorderRadius.circular(4.0),
+      color: Colors.white,
+        ),
+        child: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(border: InputBorder.none,
+           hintText: hintText,
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
               ),
-              onSaved: (newValue) => filledText = newValue,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  
-}
+              onSaved: onSaved,
+              ),
+           );
+      }
+         }

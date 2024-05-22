@@ -66,9 +66,9 @@ class _DeliveryFormState extends State<DeliveryForm> {
 
                             decoration: InputDecoration(
                               hintText: 'County',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: maroon),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(color: Color(0xFF982B15)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -82,14 +82,15 @@ class _DeliveryFormState extends State<DeliveryForm> {
 
                             decoration: InputDecoration(
                               hintText: 'Sub-County',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: maroon),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(color: Color(0xFF982B15)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                                 borderSide: BorderSide(color: maroon),
                               ),
+
                             ),
                           ),
                           SizedBox(height: 10.0),
@@ -98,9 +99,9 @@ class _DeliveryFormState extends State<DeliveryForm> {
 
                             decoration: InputDecoration(
                               hintText: 'Town',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: maroon),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(color: Color(0xFF982B15)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -113,9 +114,9 @@ class _DeliveryFormState extends State<DeliveryForm> {
                           TextFormField(
                             decoration: InputDecoration(
                               hintText: 'Street name',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: maroon),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(color: Color(0xFF982B15)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -129,9 +130,9 @@ class _DeliveryFormState extends State<DeliveryForm> {
 
                             decoration: InputDecoration(
                               hintText: 'House / Apartment',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: maroon),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(color: Color(0xFF982B15)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -144,9 +145,9 @@ class _DeliveryFormState extends State<DeliveryForm> {
 
                             decoration: InputDecoration(
                               hintText: 'Phone Number',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: maroon),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(color: Color(0xFF982B15)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
