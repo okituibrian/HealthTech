@@ -253,7 +253,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
   String jsonData = jsonEncode(data);
 
   // API endpoint
-  String apiUrl = 'https://6feb-102-210-244-74.ngrok-free.app/api/billings/addbillings';
+  String apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/billings/addbillings';
 
   print('Sending data to Wilson API:');
   print(data);

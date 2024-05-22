@@ -236,13 +236,13 @@ class _PaymentState extends State<Payment> {
     String mobileNumber = mobileNumberController.text;
     print("Mobile Number: $mobileNumber");
     String apiUrl = widget.appointmentId != null
-        ? 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.appointmentId}'
-        : 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
+        ? 'https://993c-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.appointmentId}'
+        : 'https://993c-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
 
     if (widget.appointmentId.isNotEmpty) {
-      apiUrl = 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.appointmentId}';
+      apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.appointmentId}';
     } else {
-      apiUrl = 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
+      apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
     }
     // Data payload
     Map<String, String> data = {

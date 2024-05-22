@@ -30,7 +30,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> fetchMedicalServices() async {
-    const apiUrl = 'https://3850-102-210-244-74.ngrok-free.app/api/getservices';
+    const apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/getservices';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -207,7 +207,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> bookAppointment() async {
-    final String apiUrl = 'https://3850-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
+    final String apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
 
     final Map<String, dynamic> appointmentData = {
       'bookFor': _selectedOption1,
