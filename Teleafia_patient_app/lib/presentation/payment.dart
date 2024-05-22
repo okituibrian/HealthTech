@@ -6,8 +6,9 @@ import 'package:teleafia_patient/shared/header.dart';
 
 class Payment extends StatefulWidget {
   final String billingId;
+  final String appointmentId;
 
-  const Payment({super.key, required this.billingId});
+  const Payment({super.key, required this.billingId, required this.appointmentId});
 
   @override
   State<Payment> createState() => _PaymentState();
@@ -234,21 +235,26 @@ class _PaymentState extends State<Payment> {
     // Backend active API endpoint
     String mobileNumber = mobileNumberController.text;
     print("Mobile Number: $mobileNumber");
-    String apiUrl = 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
+    String apiUrl = widget.appointmentId != null
+        ? 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.appointmentId}'
+        : 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
 
+    if (widget.appointmentId.isNotEmpty) {
+      apiUrl = 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.appointmentId}';
+    } else {
+      apiUrl = 'https://6feb-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
+    }
     // Data payload
     Map<String, String> data = {
       'mobileNumber': mobileNumberController.text,
     };
 
-    // Make a POST request
     try {
       var response = await http.post(
         Uri.parse(apiUrl),
         body: data,
       );
 
-      // Check if request was successful
       if (response.statusCode == 200) {
         Navigator.push(context, MaterialPageRoute(builder: (context) => DeliveryForm()));
 
