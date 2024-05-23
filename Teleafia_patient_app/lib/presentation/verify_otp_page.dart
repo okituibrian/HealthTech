@@ -40,7 +40,6 @@ class _VerifyState extends State<Verify> {
               if (state is VerifyOtpSuccess) {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
               } else if (state is VerifyOtpFailure) {
-                // Handle failure, show error message, etc.
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(state.error),
                 ));

@@ -26,7 +26,9 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
       if (response.statusCode == 200) {
         emit(VerifyOtpSuccess());
       } else {
+        print('${response.statusCode}');
         emit(VerifyOtpFailure(
+          
             error: 'Please enter reset code and try again'));
       }
     } catch (e) {

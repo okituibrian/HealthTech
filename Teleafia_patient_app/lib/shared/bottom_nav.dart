@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:teleafia_patient/presentation/dashboard.dart';
 import 'package:teleafia_patient/presentation/profile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../Bloc/registerbloc/auth_cubit.dart';
+
 class HealthClientFooter extends StatefulWidget {
   final String? avatarSrcImageUrl;
   final VoidCallback? fetchImageCallback;
 
-  const HealthClientFooter({Key? key, this.avatarSrcImageUrl, this.fetchImageCallback}) : super(key: key);
+  const HealthClientFooter({
+    Key? key,
+    this.avatarSrcImageUrl,
+    this.fetchImageCallback,
+  }) : super(key: key);
 
   @override
   State<HealthClientFooter> createState() => _HealthClientFooterState();
@@ -26,10 +33,13 @@ class _HealthClientFooterState extends State<HealthClientFooter> {
 
   Future<void> _loadProfileImage() async {
     try {
-      String imageUrl = await fetchProfileImage();
-      setState(() {
-        avatarSrcImageUrl = imageUrl;
-      });
+      final authState = context.read<AuthCubit>().state;
+      if (authState is AuthAuthenticated) {
+        String imageUrl = await fetchProfileImage(authState.idNumber);
+        setState(() {
+          avatarSrcImageUrl = imageUrl;
+        });
+      }
     } catch (e) {
       // Handle error appropriately
       print('Failed to load profile image: $e');
@@ -99,9 +109,9 @@ class _HealthClientFooterState extends State<HealthClientFooter> {
           bottomNavigatorButtons(
             context,
             45,
-            'Explore',
-            'assets/explore.PNG',
-            ExploreScreen(),
+            'HOME',
+            'assets/home.png',
+            HealthClientDashboard(),
           ),
           bottomNavigatorButtons(
             context,
@@ -165,8 +175,9 @@ class CustomerCareScreen extends StatelessWidget {
   }
 }
 
-Future<String> fetchProfileImage() async {
-  final response = await http.get(Uri.parse('https://353c-102-210-244-74.ngrok-free.app/api/patient/getProfileImage/321456789'));
+Future<String> fetchProfileImage(String idNumber) async {
+  final response = await http.get(Uri.parse(
+      'https://8173-102-210-244-74.ngrok-free.app/api/patient/getProfileImage/$idNumber'));
 
   if (response.statusCode == 200) {
     print('Success: ${response.statusCode} => Image fetched successfully');
