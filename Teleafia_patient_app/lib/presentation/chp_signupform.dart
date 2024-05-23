@@ -55,9 +55,14 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
             Navigator.push(
                context, MaterialPageRoute(builder: (context) => Verify()));
           } else if (state is RegisterFailure) {
-            return Center(
-              child: Text('Registration Failed: ${state.error}'),
-            );
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
+              // This callback will be called after the widget is rendered
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Registration Failed: ${state.error}'),
+                ),
+              );
+            });
           }
           return SafeArea(
             child: Container(

@@ -149,7 +149,7 @@ class MyAppointmentsState extends State<MyAppointments>
           TabBar(
             controller: _tabController,
             tabs: [
-              Tab(child: Text('Upcoming', style: TextStyle(fontSize: 12))),
+              Tab(child: Text('Upcoming', style: TextStyle(fontSize: 12, color: maroon))),
               Tab(child: Text('Pending', style: TextStyle(fontSize: 12))),
               Tab(child: Text('Past', style: TextStyle(fontSize: 12))),
               Tab(child: Text('Cancelled', style: TextStyle(fontSize: 12))),

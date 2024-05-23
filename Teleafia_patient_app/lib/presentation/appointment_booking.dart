@@ -30,7 +30,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> fetchMedicalServices() async {
-    const apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/getservices';
+    const apiUrl = 'https://6203-102-210-244-74.ngrok-free.app/api/getservices';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -207,7 +207,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> bookAppointment() async {
-    final String apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
+    final String apiUrl = 'https://6203-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
 
     final Map<String, dynamic> appointmentData = {
       'bookFor': _selectedOption1,
@@ -236,10 +236,10 @@ class _BookAppointmentState extends State<BookAppointment> {
         print('Response Data: $responseData');
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Payment(appointmentId: appointmentId, billingId: '',)),
+          MaterialPageRoute(builder: (context) => Payment(appointmentId: appointmentId, appointmentData: responseData['newAppointment'], billingId: '',)),
         );
       } else {
-        print('Failed to book: ${response.statusCode} => ${response.body} ');
+        print('Failed to book: ${response.statusCode} => ${response.body}');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to book appointment')));
       }
     } catch (error) {
@@ -247,6 +247,7 @@ class _BookAppointmentState extends State<BookAppointment> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $error')));
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

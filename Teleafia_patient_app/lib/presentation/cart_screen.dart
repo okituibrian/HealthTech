@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:teleafia_patient/presentation/payment.dart';
+import '../Bloc/registerbloc/auth_cubit.dart';
 import '../e-dawa cart/cart_model.dart';
 import '../e-dawa cart/cart_provider.dart';
 import '../shared/bottom_nav.dart';
@@ -12,9 +13,9 @@ import '../shared/bottom_nav.dart';
 class CartScreen extends StatefulWidget {
   final CartProvider cartProvider;
   final List<Cart> cartItems;
-  final String idNumber;
 
-  CartScreen({required this.cartProvider, required this.cartItems, this.idNumber = '321456789'});
+
+  CartScreen({required this.cartProvider, required this.cartItems, required String idNumber,});
 
 
   @override
@@ -27,7 +28,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My E-Dawa Cart', style: TextStyle(color: Colors.white)),
+        title: Text('my e-dawa cart', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF982B15), // Maroon color
         actions: [
@@ -158,7 +159,7 @@ class _CartScreenState extends State<CartScreen> {
                   minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
                 ),
                 onPressed: () {
-                  String idNumber = widget.idNumber;
+                  String idNumber = context.read<AuthCubit>().state as String;
                   List<Map<String, dynamic>> products = widget.cartItems.map((cartItem) {
                     return {
                       'productId': cartItem.productId,
@@ -166,7 +167,7 @@ class _CartScreenState extends State<CartScreen> {
                     };
                   }).toList();
 
-                  checkout(context, widget.idNumber, products);
+                  checkout(context, idNumber, products);
                 },
                 child: Text(
                   'Proceed to Checkout',
@@ -245,7 +246,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
   print('ID Number: $idNumber');
   // Data payload
   Map<String, dynamic> data = {
-    'idNumber': 321456789,
+    'idNumber': 123456789,
     'products': products,
   };
 
@@ -253,7 +254,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
   String jsonData = jsonEncode(data);
 
   // API endpoint
-  String apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/billings/addbillings';
+  String apiUrl = 'https://6203-102-210-244-74.ngrok-free.app/api/billings/addbillings';
 
   print('Sending data to Wilson API:');
   print(data);
@@ -274,7 +275,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
       var billingId = responseData['billingId'];
       if (billingId != null) {
         // Navigate to the next screen (e.g., Login screen)
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId, appointmentId: '',)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId, appointmentId: '', appointmentData: {},)));
 
         // Show a success message
         ScaffoldMessenger.of(context).showSnackBar(
