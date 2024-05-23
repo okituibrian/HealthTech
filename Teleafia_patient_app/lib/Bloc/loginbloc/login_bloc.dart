@@ -13,7 +13,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoading());
       try {
         var response = await http.post(
-          Uri.parse('https://3850-102-210-244-74.ngrok-free.app/api/login'),
+          Uri.parse('https://a574-102-210-244-74.ngrok-free.app/api/login'),
           body: jsonEncode({
             'email': event.email,
             'password': event.password,
@@ -21,13 +21,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           headers: {'Content-Type': 'application/json'},
         );
         if (response.statusCode == 200) {
+          print('Success: ${response.statusCode}');
           emit(LoginSuccess());
         } else if (response.statusCode == 409) {
+          print('Failed: ${response.statusCode} => Account not verified');
           emit(LoginEmailNotVerified(error: 'Account not verified'));
         } else {
+          print('${response.statusCode} => Not Found');
           emit(LoginFailure(error: 'login failed'));
         }
       } catch (e) {
+        print('Error: $e');
         emit(LoginFailure(error: 'Error: $e'));
       }
     });

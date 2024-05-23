@@ -3,18 +3,20 @@ import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path_provider/path_provider.dart'; // Add path_provider
+import 'package:path_provider/path_provider.dart';
 import 'package:teleafia_patient/presentation/medical_history.dart';
 import 'package:teleafia_patient/presentation/my_appointments.dart';
 import 'package:teleafia_patient/presentation/settings.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
+
 class HealthClientProfile extends StatefulWidget {
   final String? avatarSrc;
   final String? avatarSrcImageUrl;
+  final VoidCallback? fetchImageCallback;
 
-  const HealthClientProfile({Key? key, this.avatarSrc, this.avatarSrcImageUrl}) : super(key: key);
+  const HealthClientProfile({Key? key, this.avatarSrc, this.avatarSrcImageUrl, this.fetchImageCallback}) : super(key: key);
 
   @override
   _HealthClientProfileState createState() => _HealthClientProfileState();
@@ -26,14 +28,34 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
   Color darkMaroon = const Color(0xFF850808);
   File? _avatarSrc;
 
-  Future<void> _pickFile() async {
-    if (widget.avatarSrcImageUrl != null) {
-      setState(() {
-        _avatarSrc = File(widget.avatarSrcImageUrl!);
-      });
-      return;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.avatarSrc != null) {
+      _avatarSrc = File(widget.avatarSrc!);
     }
+    if (widget.avatarSrcImageUrl != null) {
+      _loadNetworkImage();
+    }
+  }
 
+  Future<void> _loadNetworkImage() async {
+    final response = await http.get(Uri.parse(widget.avatarSrcImageUrl!));
+    if (response.statusCode == 200) {
+      final bytes = response.bodyBytes;
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/avatar_image.jpg');
+      await file.writeAsBytes(bytes);
+      setState(() {
+        _avatarSrc = file;
+      });
+    } else {
+      // Handle error loading network image
+      print('Failed to load network image. Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<void> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png', 'pdf'],
@@ -48,7 +70,6 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
     }
   }
 
-
   Future<void> _uploadImage(File? selected) async {
     if (selected == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -57,29 +78,28 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
       return;
     }
 
-    String apiUrl = 'https://2ac3-102-210-244-74.ngrok-free.app/api/patient/uploadProfileImages/321456789';
+    String apiUrl = 'https://a574-102-210-244-74.ngrok-free.app/api/patient/uploadProfileImages/321456789';
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
-
-      // Adding the image file to the request
       request.files.add(
         await http.MultipartFile.fromPath(
-          'avatarSrc', // Ensure this matches the backend field name
+          'avatarSrc',
           selected.path,
-          filename: path.basename(selected.path), // Get the basename of the file path
+          filename: path.basename(selected.path),
         ),
       );
 
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        print('Succces: ${response.statusCode} => Image uploaded successfully');
+        print('Success: ${response.statusCode} => Image uploaded successfully');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Image uploaded successfully')),
         );
+        widget.fetchImageCallback?.call();
       } else {
-        print('Error: ${response.statusCode } => ${response.reasonPhrase}');
+        print('Error: ${response.statusCode} => ${response.reasonPhrase}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to upload image: ${response.reasonPhrase}')),
         );
@@ -112,10 +132,6 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
                     : AssetImage('assets/default_profile.PNG') as ImageProvider<Object>,
               ),
             ),
-
-
-
-
             SizedBox(height: 10),
             MedicalServicesFunctions().customListTile(
               text: 'My History',
@@ -191,36 +207,7 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
           ],
         ),
       ),
-      bottomNavigationBar: HealthClientFooter(),
+      bottomNavigationBar: HealthClientFooter(avatarSrcImageUrl: widget.avatarSrcImageUrl),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.avatarSrc != null) {
-      _avatarSrc = File(widget.avatarSrc!);
-    }
-    if (widget.avatarSrcImageUrl != null) {
-      // If avatarSrcImageUrl is not null, convert it to File and assign it to _avatarSrc
-      _loadNetworkImage();
-    }
-  }
-
-  Future<void> _loadNetworkImage() async {
-    final response = await http.get(Uri.parse(widget.avatarSrcImageUrl!));
-    if (response.statusCode == 200) {
-      print('Success: ${response.statusCode}');
-      final bytes = response.bodyBytes;
-      final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/avatar_image.jpg');
-      await file.writeAsBytes(bytes);
-      setState(() {
-        _avatarSrc = file;
-      });
-    } else {
-      // Handle error loading network image
-      print('Failed to load network image. Status code: ${response.statusCode}');
-    }
   }
 }

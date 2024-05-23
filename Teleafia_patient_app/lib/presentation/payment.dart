@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:teleafia_patient/presentation/delivery_form.dart';
+import 'package:teleafia_patient/presentation/my_appointments.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 
 class Payment extends StatefulWidget {
   final String billingId;
   final String appointmentId;
+  final Map<String, dynamic> appointmentData;
 
-  const Payment({super.key, required this.billingId, required this.appointmentId});
+  const Payment({super.key, required this.billingId, required this.appointmentId, required this.appointmentData});
 
   @override
   State<Payment> createState() => _PaymentState();
@@ -83,11 +85,13 @@ class _PaymentState extends State<Payment> {
                                 hintText: 'Enter phone number',
                                 contentPadding: EdgeInsets.all(2.0),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: maroon, width: 0.5),
+                                  borderSide: BorderSide(
+                                      color: maroon, width: 0.5),
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: maroon, width: 0.5),
+                                  borderSide: BorderSide(
+                                      color: maroon, width: 0.5),
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                               ),
@@ -205,7 +209,8 @@ class _PaymentState extends State<Payment> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DeliveryForm()),
+                          MaterialPageRoute(builder: (context) =>
+                              DeliveryForm()),
                         );
                       },
                       style: TextButton.styleFrom(
@@ -235,18 +240,18 @@ class _PaymentState extends State<Payment> {
     // Backend active API endpoint
     String mobileNumber = mobileNumberController.text;
     print("Mobile Number: $mobileNumber");
-    String apiUrl = widget.appointmentId != null
-        ? 'https://993c-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.appointmentId}'
-        : 'https://993c-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
 
-    if (widget.appointmentId.isNotEmpty) {
-      apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.appointmentId}';
-    } else {
-      apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget.billingId}';
-    }
+    // Determine the correct API URL based on whether appointmentId or billingId is provided
+    String apiUrl = widget.appointmentId != null &&
+        widget.appointmentId.isNotEmpty
+        ? 'https://6203-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget
+        .appointmentId}'
+        : 'https://6203-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget
+        .billingId}';
+
     // Data payload
     Map<String, String> data = {
-      'mobileNumber': mobileNumberController.text,
+      'mobileNumber': mobileNumber,
     };
 
     try {
@@ -256,7 +261,17 @@ class _PaymentState extends State<Payment> {
       );
 
       if (response.statusCode == 200) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => DeliveryForm()));
+        if (widget.appointmentId != null && widget.appointmentId.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MyAppointments()),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DeliveryForm()),
+          );
+        }
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

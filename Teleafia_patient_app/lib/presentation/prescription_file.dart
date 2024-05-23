@@ -20,7 +20,7 @@ class _UploadState extends State<Upload> {
 
       var request = http.MultipartRequest('POST',
           Uri.parse(
-              'https://861c-102-210-244-74.ngrok-free.app/api/prescription/uploadprescriptionimage/1234'));
+              'https://a574-102-210-244-74.ngrok-free.app/api/prescription/uploadprescriptionimage/1234'));
       request.files.add(await http.MultipartFile.fromPath(
         'prescription-image',
         widget.imageFile.path,

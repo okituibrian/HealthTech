@@ -27,7 +27,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My E-Dawa Cart', style: TextStyle(color: Colors.white)),
+        title: Text('my e-dawa cart', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF982B15), // Maroon color
         actions: [
@@ -253,7 +253,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
   String jsonData = jsonEncode(data);
 
   // API endpoint
-  String apiUrl = 'https://993c-102-210-244-74.ngrok-free.app/api/billings/addbillings';
+  String apiUrl = 'https://6203-102-210-244-74.ngrok-free.app/api/billings/addbillings';
 
   print('Sending data to Wilson API:');
   print(data);
@@ -274,7 +274,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
       var billingId = responseData['billingId'];
       if (billingId != null) {
         // Navigate to the next screen (e.g., Login screen)
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId, appointmentId: '',)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId, appointmentId: '', appointmentData: {},)));
 
         // Show a success message
         ScaffoldMessenger.of(context).showSnackBar(
