@@ -9,26 +9,25 @@ import '../e-dawa cart/cart_model.dart';
 import '../e-dawa cart/cart_provider.dart';
 import '../shared/bottom_nav.dart';
 
-
 class CartScreen extends StatefulWidget {
   final CartProvider cartProvider;
   final List<Cart> cartItems;
 
-
-  CartScreen({required this.cartProvider, required this.cartItems, required String idNumber,});
-
+  CartScreen({
+    required this.cartProvider,
+    required this.cartItems, required idNumber,
+  });
 
   @override
   _CartScreenState createState() => _CartScreenState();
 }
-
 
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('my e-dawa cart', style: TextStyle(color: Colors.white)),
+        title: Text('My e-dawa Cart', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF982B15), // Maroon color
         actions: [
@@ -93,7 +92,8 @@ class _CartScreenState extends State<CartScreen> {
                                   cartItem.productImages ?? '',
                                   width: 100,
                                   height: 100,
-                                  errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Icon(Icons.error),
                                 ),
                                 SizedBox(width: 10),
                                 Expanded(
@@ -102,17 +102,26 @@ class _CartScreenState extends State<CartScreen> {
                                     children: [
                                       Text(
                                         cartItem.productNames ?? '',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
                                       ),
                                       SizedBox(height: 4),
                                       Text(
                                         cartItem.productDescriptions ?? '',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blue),
                                       ),
                                       SizedBox(height: 4),
                                       Text(
                                         'Price: Ksh. ${cartItem.productPrices ?? '0'}',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red),
                                       ),
                                     ],
                                   ),
@@ -141,7 +150,10 @@ class _CartScreenState extends State<CartScreen> {
                               SizedBox(width: 10), // Add some spacing
                               Text(
                                 'Total: Ksh. ${cartItem.productPrices * cartItem.quantity}',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green),
                               ),
                             ],
                           ),
@@ -159,7 +171,9 @@ class _CartScreenState extends State<CartScreen> {
                   minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
                 ),
                 onPressed: () {
-                  String idNumber = context.read<AuthCubit>().state as String;
+                  // Hardcoded idNumber
+                  String idNumber = '123456';
+
                   List<Map<String, dynamic>> products = widget.cartItems.map((cartItem) {
                     return {
                       'productId': cartItem.productId,
@@ -169,6 +183,27 @@ class _CartScreenState extends State<CartScreen> {
 
                   checkout(context, idNumber, products);
                 },
+                /*onPressed: () {
+                  final authCubit = context.read<AuthCubit>();
+                  final authState = authCubit.state;
+
+                  if (authState is AuthAuthenticated) {
+                    String idNumber = authState.idNumber;
+
+                    List<Map<String, dynamic>> products = widget.cartItems.map((cartItem) {
+                      return {
+                        'productId': cartItem.productId,
+                        'quantity': cartItem.quantity.toString(),
+                      };
+                    }).toList();
+
+                    checkout(context, idNumber, products);
+                  } else {
+                    print("User not authenticated");
+                  }
+                },
+*/
+
                 child: Text(
                   'Proceed to Checkout',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -246,16 +281,13 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
   print('ID Number: $idNumber');
   // Data payload
   Map<String, dynamic> data = {
-    'idNumber': 123456789,
+    'idNumber': idNumber,
     'products': products,
   };
 
-  // Convert data payload to JSON
   String jsonData = jsonEncode(data);
 
-  // API endpoint
-  String apiUrl = 'https://6203-102-210-244-74.ngrok-free.app/api/billings/addbillings';
-
+  String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/billings/addbillings';
   print('Sending data to Wilson API:');
   print(data);
   print(idNumber);
@@ -269,13 +301,12 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
       body: jsonData,
     );
 
-    // Check if request was successful
     if (response.statusCode == 201 && response.body != null) {
       var responseData = jsonDecode(response.body);
       var billingId = responseData['billingId'];
       if (billingId != null) {
         // Navigate to the next screen (e.g., Login screen)
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId, appointmentId: '', appointmentData: {},)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId, appointmentId: '')));
 
         // Show a success message
         ScaffoldMessenger.of(context).showSnackBar(

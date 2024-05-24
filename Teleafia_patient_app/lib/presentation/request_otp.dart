@@ -1,10 +1,7 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
 
-
-
+import 'otp_service.dart';
 
 
 class RequestOtp extends StatefulWidget {
@@ -19,55 +16,8 @@ class _ForgotPasswordState extends State<RequestOtp> {
   Color background = Color(0xFFFCF4F4);
   final TextEditingController emailController = TextEditingController();
 
-  void postToDatabase() async {
-    if (!mounted) return; // Check if the widget is still mounted
-
-    String email = emailController.text;
-    if (email.isNotEmpty) {
-      String apiUrl = 'https://e886-102-210-244-74.ngrok-free.app/api/auth/patient/resendotp';
-      Map<String, String> data = {
-        'email': email,
-      };
-
-      try {
-        var response = await http.post(
-          Uri.parse(apiUrl),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(data),
-        );
-
-        if (response.statusCode == 200) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Verify()));
-        }
-        else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Email not found, please enter the correct email address'),
-            ),
-          );
-        }
-      } catch (e) {
-        if (!mounted) return; // Check again after the asynchronous operation
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-          ),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please enter email'),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: background,
@@ -107,7 +57,7 @@ class _ForgotPasswordState extends State<RequestOtp> {
                   Column(
                     children: [
                       Text(
-                        'Please Enter Your Email AddressTo Receive A Verification Code',
+                        'Please Enter Your Email Address To Receive A Verification Code',
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 12.0,
@@ -118,7 +68,7 @@ class _ForgotPasswordState extends State<RequestOtp> {
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: maroon
+                            color: maroon,
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
@@ -127,32 +77,42 @@ class _ForgotPasswordState extends State<RequestOtp> {
                           textAlignVertical: TextAlignVertical.center,
                           controller: emailController,
                           decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.email_rounded, color: maroon),
-                              hintText: 'Enter Email',
-                              contentPadding: EdgeInsets.all(0.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: maroon, width: 1.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(color: maroon, width: 1.0),
-                              )
+                            prefixIcon: Icon(Icons.email_rounded, color: maroon),
+                            hintText: 'Enter Email',
+                            contentPadding: EdgeInsets.all(0.0),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: maroon, width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: maroon, width: 1.0),
+                            ),
                           ),
                         ),
                       ),
-
                       SizedBox(height: 20.0,),
-
                       ElevatedButton(
-                        onPressed: () {
-                          postToDatabase();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('please check your email for OTP reset code'),
-                              backgroundColor: Color(0xFF982B15), // Maroon background color
-                            ),
-                          );
+                        onPressed: () async {
+                          try {
+                            await OtpService.requestOtp(emailController.text);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Please check your email for OTP reset code'),
+                                backgroundColor: maroon,
+                              ),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Verify()),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error: $e'),
+                              ),
+                            );
+                          }
                         },
                         style: TextButton.styleFrom(backgroundColor: maroon),
                         child: Text(

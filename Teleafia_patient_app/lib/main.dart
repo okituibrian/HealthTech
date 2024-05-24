@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart'; // Import Provider
-import 'package:teleafia_patient/Bloc/cartbloc/cart_bloc.dart'; // Import CartBloc
+import 'package:provider/provider.dart';
+import 'package:teleafia_patient/Bloc/cartbloc/cart_bloc.dart';
 import 'package:teleafia_patient/Bloc/loginbloc/login_bloc.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/auth_cubit.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
 import 'package:teleafia_patient/presentation/landingpage.dart';
-
+import 'Bloc/verify_otp_bloc.dart';
 import 'e-dawa cart/cart_provider.dart';
 
 void main() {
@@ -15,18 +15,22 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(),
+          create: (context) => LoginBloc(authCubit),
         ),
         BlocProvider<RegisterBloc>(
           create: (context) => RegisterBloc(authCubit),
         ),
-        BlocProvider<CartBloc>( // Provide the CartBloc
+        BlocProvider<CartBloc>(
           create: (context) => CartBloc(context),
         ),
+        BlocProvider<AuthCubit>(
+          create: (context) => authCubit,
+        ),
       ],
-      child: ChangeNotifierProvider<CartProvider>( // Instantiate ChangeNotifierProvider correctly
+      child: ChangeNotifierProvider<CartProvider>(
         create: (context) => CartProvider(),
         child: MaterialApp(
+          navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           home: Welcome(),
         ),

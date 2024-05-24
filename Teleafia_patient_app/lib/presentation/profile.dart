@@ -40,20 +40,23 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
   }
 
   Future<void> _loadNetworkImage() async {
-    final response = await http.get(Uri.parse(widget.avatarSrcImageUrl!));
-    if (response.statusCode == 200) {
-      final bytes = response.bodyBytes;
-      final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/avatar_image.jpg');
-      await file.writeAsBytes(bytes);
-      setState(() {
-        _avatarSrc = file;
-      });
-    } else {
-      // Handle error loading network image
-      print('Failed to load network image. Status code: ${response.statusCode}');
+    if (widget.avatarSrcImageUrl != null) {
+      final response = await http.get(Uri.parse(widget.avatarSrcImageUrl!));
+      if (response.statusCode == 200) {
+        final bytes = response.bodyBytes;
+        final tempDir = await getTemporaryDirectory();
+        final file = File('${tempDir.path}/avatar_image.jpg');
+        await file.writeAsBytes(bytes);
+        setState(() {
+          _avatarSrc = file;
+        });
+      } else {
+        // Handle error loading network image
+        print('Failed to load network image. Status code: ${response.statusCode}');
+      }
     }
   }
+
 
   Future<void> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -78,7 +81,7 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
       return;
     }
 
-    String apiUrl = 'https://8173-102-210-244-74.ngrok-free.app/api/patient/uploadProfileImages/321456789';
+    String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/patient/uploadProfileImages/123456';
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));

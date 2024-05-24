@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -17,7 +18,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
     emit(VerifyOtpLoading());
     try {
       var response = await http.post(
-        Uri.parse('https://6203-102-210-244-74.ngrok-free.app/api/auth/patient/verifyotp'),
+        Uri.parse('https://41cf-102-210-244-74.ngrok-free.app/api/auth/patient/verifyotp'),
         body: jsonEncode({
           'enteredOtp': event.enteredOtp,
         }),

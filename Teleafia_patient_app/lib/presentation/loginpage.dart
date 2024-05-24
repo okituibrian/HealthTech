@@ -19,6 +19,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool _isObscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -142,30 +143,42 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(height: 10.0),
-                      Container(
-                        height: 35.0,
-                        child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          controller: passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              color: Color(0xFF982B15),
-                            ),
-                            hintText: 'Password',
-                            contentPadding: EdgeInsets.all(10.0),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(color: Color(0xFF982B15)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(color: Color(0xFF982B15)),
-                            ),
+                  Container(
+                    height: 35.0,
+                    child: TextField(
+                      textAlignVertical: TextAlignVertical.center,
+                      controller: passwordController,
+                      obscureText: _isObscured,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: Color(0xFF982B15),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscured ? Icons.visibility : Icons.visibility_off,
+                            color: Color(0xFF982B15),
                           ),
+                          onPressed: () {
+                            setState(() {
+                              _isObscured = !_isObscured;
+                            });
+                          },
+                        ),
+                        hintText: 'Password',
+                        contentPadding: EdgeInsets.all(10.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: BorderSide(color: Color(0xFF982B15)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: BorderSide(color: Color(0xFF982B15)),
                         ),
                       ),
+                    ),
+                  ),
+
                       SizedBox(height: 10.0),
                       ElevatedButton(
                         onPressed: () {

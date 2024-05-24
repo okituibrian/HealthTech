@@ -30,7 +30,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> fetchMedicalServices() async {
-    const apiUrl = 'https://6203-102-210-244-74.ngrok-free.app/api/getservices';
+    const apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/getservices';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -207,7 +207,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> bookAppointment() async {
-    final String apiUrl = 'https://6203-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
+    final String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
 
     final Map<String, dynamic> appointmentData = {
       'bookFor': _selectedOption1,
@@ -232,11 +232,11 @@ class _BookAppointmentState extends State<BookAppointment> {
 
       if (response.statusCode == 201) {
         var responseData = jsonDecode(response.body);
-        var appointmentId = responseData['newAppointment']['appointmentId'];
+        var appointmentId = responseData['appointmentId'];
         print('Response Data: $responseData');
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Payment(appointmentId: appointmentId, appointmentData: responseData['newAppointment'], billingId: '',)),
+          MaterialPageRoute(builder: (context) => Payment(appointmentId: appointmentId, billingId: '',)),
         );
       } else {
         print('Failed to book: ${response.statusCode} => ${response.body}');
