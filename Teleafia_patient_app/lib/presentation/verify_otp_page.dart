@@ -38,7 +38,7 @@ class _VerifyState extends State<Verify> {
           child: BlocListener<VerifyOtpBloc, VerifyOtpState>(
             listener: (context, state) {
               if (state is VerifyOtpSuccess) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
               } else if (state is VerifyOtpFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(state.error),

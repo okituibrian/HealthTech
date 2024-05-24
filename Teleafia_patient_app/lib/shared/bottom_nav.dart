@@ -177,7 +177,7 @@ class CustomerCareScreen extends StatelessWidget {
 
 Future<String> fetchProfileImage(String idNumber) async {
   final response = await http.get(Uri.parse(
-      'https://8173-102-210-244-74.ngrok-free.app/api/patient/getProfileImage/$idNumber'));
+      'https://41cf-102-210-244-74.ngrok-free.app/api/patient/getProfileImage/$idNumber'));
 
   if (response.statusCode == 200) {
     print('Success: ${response.statusCode} => Image fetched successfully');
