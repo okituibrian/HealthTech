@@ -14,7 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         var error;
         var response = await http.post(
-          Uri.parse('https://3b88-102-210-244-74.ngrok-free.app/api/login'),
+          Uri.parse('https://41cf-102-210-244-74.ngrok-free.app/api/login'),
           body: jsonEncode({
             'email': event.email,
             'password': event.password,

@@ -29,9 +29,42 @@ class _LoginState extends State<Login> {
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginFailure) {
-            setState(() {
-              errorMessage = state.error;
-            });
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: background,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  title: Text(
+                    'Error',
+                    style: TextStyle(
+                      color: maroon,
+                    ),
+                  ),
+                  content: Text(
+                    state.error,
+                    style: TextStyle(
+                      color: maroon,
+                      fontSize: 16.0,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK',style: TextStyle(color: Colors.white,),),
+                      style: TextButton.styleFrom(
+                        backgroundColor: maroon,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
           } else if (state is LoginSuccess) {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               Navigator.pushReplacement(
@@ -171,7 +204,7 @@ class _LoginState extends State<Login> {
                         String email = emailController.text;
                         String password = passwordController.text;
 
-                        if (email.isNotEmpty) {
+                        if (email.isNotEmpty && password.isNotEmpty) {
                           loginBloc.add(LoginButtonWhenPressedWithEmail(
                             email: email,
                             password: password,
@@ -181,7 +214,7 @@ class _LoginState extends State<Login> {
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Please enter email'),
+                              content: Text('Please enter email and password'),
                               duration: Duration(seconds: 3),
                             ),
                           );

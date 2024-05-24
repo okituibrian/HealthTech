@@ -46,7 +46,7 @@ class SocioEconomicFormData {
   }
 }
 
-/*
+
 //model for householdillness
 class HouseholdIllnessFormData {
   String householdMembersWithIllnessSymptoms = '';
@@ -69,10 +69,10 @@ class HouseholdIllnessFormData {
     };
   }
 }
-*/
+
 
 //model for wash
-/*class WashFormData {
+class WashFormData {
   String sourceOfDrinkingWater = '';
   String reliabilityOfWaterSupply = '';
   String treatingConsumptionWater = '';
@@ -96,9 +96,9 @@ class HouseholdIllnessFormData {
       'householdMemberHandWashingFrequency': householdMemberHandWashingFrequency,
     };
   }
-}*/
+}
 
-/*
+
 //model for preventive medicine1
 class PreventiveMedicine1FormData {
   String frequencyOfPreventiveHealthCareActivities = '';
@@ -120,9 +120,8 @@ class PreventiveMedicine1FormData {
   }
 }
 
-*/
+
 //model for preventive medicine2
-/*
 class PreventiveMedicine2FormData {
   String routineImmunizationUpToDate = '';
   String lastMedicalCheckupHistory = '';
@@ -140,7 +139,60 @@ class PreventiveMedicine2FormData {
     };
   }
 }
-*/
+
+
+
+
+//model for household health profile
+class HouseholdHealthProfileFormData {
+  List<String> householdPreventiveMeasures = [];
+  List<String> barriersToAccessingHealthCareServices = [];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'householdPreventiveMeasures': householdPreventiveMeasures,
+      'barriersToAccessingHealthCareServices': barriersToAccessingHealthCareServices,
+    };
+  }
+}
+
+//combined model for all forms
+class CombinedFormData{
+  HouseholdDetailsFormData householdDetailsData = HouseholdDetailsFormData();
+  SocioEconomicFormData socioEconomicData = SocioEconomicFormData();
+  HouseholdIllnessFormData householdIllnessData = HouseholdIllnessFormData();
+  WashFormData washData = WashFormData();
+  PreventiveMedicine1FormData preventiveMedicine1Data = PreventiveMedicine1FormData();
+  PreventiveMedicine2FormData preventiveMedicine2Data = PreventiveMedicine2FormData();
+  //ChildHealthStatusFormData childHealthStatusData = ChildHealthStatusFormData();
+  HouseholdHealthProfileFormData householdHealthProfileData = HouseholdHealthProfileFormData();
+
+  Map<String, dynamic>  toJson() {
+    return {
+      'householdDetailsData': householdDetailsData.toJson(),
+      'socioEconomicData': socioEconomicData.toJson(),
+      'householdIllnessData': householdIllnessData.toJson(),
+      'washData': washData.toJson(),
+      'preventiveMedicine1Data': preventiveMedicine1Data.toJson(),
+      'preventiveMedicine2Data': preventiveMedicine2Data.toJson(),
+      //'childHealthStatusData': childHealthStatusData.toJson(),
+      'householdHealthProfileData': householdHealthProfileData.toJson(),
+    };
+  }
+
+  CombinedFormData({
+    required this.householdDetailsData,
+    required this.socioEconomicData,
+    required this.householdIllnessData,
+   required this.washData,
+    required this.preventiveMedicine1Data,
+    required this.preventiveMedicine2Data,
+   // required this.childHealthStatusData,
+    required this.householdHealthProfileData,
+});
+}
+
+
 
 //model for child health status
 /*
@@ -167,51 +219,7 @@ class ChildHealthStatusFormData {
 }
 */
 
-//model for household health profile
-class HouseholdHealthProfileFormData {
-  List<String> householdPreventiveMeasures = [];
-  List<String> barriersToAccessingHealthCareServices = [];
+//model for medical reporting form
+class MedicalReportingFormData{
 
-  Map<String, dynamic> toJson() {
-    return {
-      'householdPreventiveMeasures': householdPreventiveMeasures,
-      'barriersToAccessingHealthCareServices': barriersToAccessingHealthCareServices,
-    };
-  }
-}
-
-//combined model for all forms
-class CombinedFormData{
-  HouseholdDetailsFormData householdDetailsData = HouseholdDetailsFormData();
-  SocioEconomicFormData socioEconomicData = SocioEconomicFormData();
-  /*HouseholdIllnessFormData householdIllnessData = HouseholdIllnessFormData();
-  WashFormData washData = WashFormData();
-  PreventiveMedicine1FormData preventiveMedicine1Data = PreventiveMedicine1FormData();
-  PreventiveMedicine2FormData preventiveMedicine2Data = PreventiveMedicine2FormData();
-  //ChildHealthStatusFormData childHealthStatusData = ChildHealthStatusFormData();
-  HouseholdHealthProfileFormData householdHealthProfileData = HouseholdHealthProfileFormData();
-*/
-  Map<String, dynamic>  toJson() {
-    return {
-      'householdDetailsData': householdDetailsData.toJson(),
-      'socioEconomicData': socioEconomicData.toJson(),
-      /*'householdIllnessData': householdIllnessData.toJson(),
-      'washData': washData.toJson(),
-      'preventiveMedicine1Data': preventiveMedicine1Data.toJson(),
-      'preventiveMedicine2Data': preventiveMedicine2Data.toJson(),
-      //'childHealthStatusData': childHealthStatusData.toJson(),
-      'householdHealthProfileData': householdHealthProfileData.toJson(),*/
-    };
-  }
-
-  CombinedFormData({
-    required this.householdDetailsData,
-    required this.socioEconomicData,
-    /*required this.householdIllnessData,
-    required this.washData,
-    required this.preventiveMedicine1Data,
-    required this.preventiveMedicine2Data,
-   // required this.childHealthStatusData,
-    required this.householdHealthProfileData,*/
-});
 }

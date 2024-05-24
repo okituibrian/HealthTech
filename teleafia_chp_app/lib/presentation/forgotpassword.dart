@@ -24,7 +24,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     String email = emailController.text;
     if (email.isNotEmpty) {
-      String apiUrl = 'https://a939-102-210-244-74.ngrok-free.app/api/auth/chp/forgotpassword';
+      String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/auth/chp/forgotpassword';
       Map<String, String> data = {
         'email': email,
       };
