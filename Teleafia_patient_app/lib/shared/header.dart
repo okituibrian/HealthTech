@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../presentation/notifications.dart';
 
 class HealthClientHeader extends StatelessWidget {
   final String heading;
@@ -20,28 +21,37 @@ class HealthClientHeader extends StatelessWidget {
         SizedBox(height: 10),
         AppBar(
           backgroundColor: background,
-          leading: SizedBox(
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_ios_sharp, color: dark_maroon),
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new_sharp,
+                color: dark_maroon,
+              ), // Replace icon1 with your desired icon
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-          ),
-          title: Container(
-            margin: const EdgeInsets.only(right: 60),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/logo.PNG',
-                  height: 60,
-                  width: 120,
-                  fit: BoxFit.fill,
-                ),
-              ],
+            Spacer(),
+            Image.asset(
+              'assets/logo.PNG', // Path to your image asset
+              height: 80, // Adjust the height as needed
+              width: 120, // Adjust the width as needed
             ),
-          ),
+            Spacer(),
+            IconButton(
+              icon: Icon(
+                Icons.notifications_active,
+                color: dark_maroon,
+              ), // Replace icon3 with your desired icon
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HealthClientNotifications()));
+              },
+            ),
+          ],
         ),
         SizedBox(height: 10),
         Text(

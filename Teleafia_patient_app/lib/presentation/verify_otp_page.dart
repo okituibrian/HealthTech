@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_patient/presentation/loginpage.dart';
 import '../Bloc/verify_otp_bloc.dart';
-
-
-
+import 'otp_service.dart';
 
 
 class Verify extends StatefulWidget {
@@ -23,6 +20,26 @@ class _VerifyState extends State<Verify> {
   void dispose() {
     _verifyOtpBloc.close();
     super.dispose();
+  }
+
+  void _requestOtp() async {
+    try {
+      // You should replace this with the actual email the user used to sign up
+      String email = "user@example.com";
+      await OtpService.requestOtp(email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('OTP resent successfully. Please check your email.'),
+          backgroundColor: Color(0xFF982B15),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $e'),
+        ),
+      );
+    }
   }
 
   @override
@@ -129,14 +146,11 @@ class _VerifyState extends State<Verify> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 80.0),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 2.0, 200.0, 10.0),
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-                    },
+                    onPressed: _requestOtp,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF982B15),
                     ),

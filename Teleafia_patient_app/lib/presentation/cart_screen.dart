@@ -171,6 +171,19 @@ class _CartScreenState extends State<CartScreen> {
                   minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
                 ),
                 onPressed: () {
+                  // Hardcoded idNumber
+                  String idNumber = '123456';
+
+                  List<Map<String, dynamic>> products = widget.cartItems.map((cartItem) {
+                    return {
+                      'productId': cartItem.productId,
+                      'quantity': cartItem.quantity.toString(),
+                    };
+                  }).toList();
+
+                  checkout(context, idNumber, products);
+                },
+                /*onPressed: () {
                   final authCubit = context.read<AuthCubit>();
                   final authState = authCubit.state;
 
@@ -189,7 +202,7 @@ class _CartScreenState extends State<CartScreen> {
                     print("User not authenticated");
                   }
                 },
-
+*/
 
                 child: Text(
                   'Proceed to Checkout',
@@ -293,7 +306,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
       var billingId = responseData['billingId'];
       if (billingId != null) {
         // Navigate to the next screen (e.g., Login screen)
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId, appointmentId: '', appointmentData: {},)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Payment(billingId: billingId, appointmentId: '')));
 
         // Show a success message
         ScaffoldMessenger.of(context).showSnackBar(

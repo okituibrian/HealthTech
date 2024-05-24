@@ -8,9 +8,9 @@ import 'package:teleafia_patient/shared/header.dart';
 class Payment extends StatefulWidget {
   final String billingId;
   final String appointmentId;
-  final Map<String, dynamic> appointmentData;
 
-  const Payment({super.key, required this.billingId, required this.appointmentId, required this.appointmentData});
+
+  const Payment({super.key, required this.billingId, required this.appointmentId});
 
   @override
   State<Payment> createState() => _PaymentState();
@@ -244,9 +244,9 @@ class _PaymentState extends State<Payment> {
     // Determine the correct API URL based on whether appointmentId or billingId is provided
     String apiUrl = widget.appointmentId != null &&
         widget.appointmentId.isNotEmpty
-        ? 'https://6203-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget
+        ? 'https://41cf-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget
         .appointmentId}'
-        : 'https://6203-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget
+        : 'https://41cf-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget
         .billingId}';
 
     // Data payload

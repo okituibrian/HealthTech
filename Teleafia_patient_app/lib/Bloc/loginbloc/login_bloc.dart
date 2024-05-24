@@ -32,12 +32,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             print('Email: ${authState.email}, ID Number: ${authState.idNumber}');
             emit(LoginSuccess());
           }
-/*
           final emailAuthenticated = true; // Placeholder for authentication check
           if (emailAuthenticated) {
             print("Email authenticated");
             emit(LoginSuccess());
-          }*/
+          }
         }
 
         else if (response.statusCode == 409) {
