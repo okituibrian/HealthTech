@@ -6,6 +6,7 @@ import 'package:teleafia_patient/Bloc/loginbloc/login_bloc.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/auth_cubit.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
 import 'package:teleafia_patient/presentation/landingpage.dart';
+import 'Bloc/verify_otp_bloc.dart';
 import 'e-dawa cart/cart_provider.dart';
 
 void main() {
@@ -29,6 +30,7 @@ void main() {
       child: ChangeNotifierProvider<CartProvider>(
         create: (context) => CartProvider(),
         child: MaterialApp(
+          navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           home: Welcome(),
         ),

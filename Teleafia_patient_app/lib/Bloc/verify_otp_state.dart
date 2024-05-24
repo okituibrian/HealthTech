@@ -3,6 +3,8 @@ part of 'verify_otp_bloc.dart';
 @immutable
 sealed class VerifyOtpState {}
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 final class VerifyOtpInitial extends VerifyOtpState {}
 final class VerifyOtpLoading extends VerifyOtpState {}
 final class VerifyOtpSuccess extends VerifyOtpState {}

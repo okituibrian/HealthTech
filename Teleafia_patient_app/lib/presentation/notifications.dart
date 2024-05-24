@@ -3,17 +3,28 @@ import '../shared/bottom_nav.dart';
 import '../shared/header.dart';
 
 class HealthClientNotifications extends StatelessWidget {
+  final String message;
+
+  HealthClientNotifications({
+    required this.message,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Notifications();
+    return Notifications(message: message,);
   }
 }
 
+
+
 class Notifications extends StatefulWidget {
+  final String message;
+
+  Notifications({required this.message});
+
   @override
   _NotificationsState createState() => _NotificationsState();
 }
-
 class _NotificationsState extends State<Notifications> {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
@@ -49,6 +60,18 @@ class _NotificationsState extends State<Notifications> {
       body: Column(
         children: <Widget>[
           HealthClientHeader(heading: 'Notifications'),
+
+          SizedBox(height: 5),
+          Container(
+            padding: EdgeInsets.all(20.0),
+
+            child: Column(
+              children: [
+                SizedBox(width: 5),
+                Text('${widget.message}', style: TextStyle(fontSize: 16)),
+              ],
+            ),
+          ),
           Flexible(
             child: ListView.builder(
               padding: EdgeInsets.all(8.0),

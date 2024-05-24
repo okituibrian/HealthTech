@@ -20,12 +20,14 @@ class Appointment {
   final String appointmentId;
   final DateTime date;
   final String time;
+  final String status;
 
   Appointment({
     required this.serviceName,
     required this.appointmentId,
     required this.date,
     required this.time,
+    required this.status,
   });
 }
 
@@ -72,12 +74,14 @@ class MyAppointmentsState extends State<MyAppointments>
           final appointmentId = data['appointmentId'];
           final date = DateTime.parse(data['date']);
           final time = data['time'];
+          final status= data['status'];
 
           appointments.add(Appointment(
             serviceName: serviceName,
             appointmentId: appointmentId,
             date: date,
             time: time,
+            status: status,
           ));
         });
 
@@ -95,30 +99,34 @@ class MyAppointmentsState extends State<MyAppointments>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-      body: Column(
-        children: [
-          HealthClientHeader(heading: 'My Bookings'),
-          TabBar(
-            controller: _tabController,
-            tabs: [
-              Tab(child: Text('Upcoming', style: TextStyle(fontSize: 12, color: maroon))),
-              Tab(child: Text('Pending', style: TextStyle(fontSize: 12, color: maroon))),
-              Tab(child: Text('Past', style: TextStyle(fontSize: 12, color: maroon))),
-              Tab(child: Text('Cancelled', style: TextStyle(fontSize: 12, color: maroon))),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
+      body: Container(
+        width: MediaQuery.of(context).size.width * 1,
+        height: MediaQuery.of(context).size.height* 1,
+        child: Column(
+          children: [
+            HealthClientHeader(heading: 'My Bookings'),
+            TabBar(
               controller: _tabController,
-              children: [
-                _buildTabContent('Upcoming'),
-                _buildTabContent('Pending'),
-                _buildTabContent('Past'),
-                _buildTabContent('Cancelled'),
+              tabs: [
+                Tab(child: Text('Upcoming', style: TextStyle(fontSize: 12, color: maroon))),
+                Tab(child: Text('Pending', style: TextStyle(fontSize: 12, color: maroon))),
+                Tab(child: Text('Past', style: TextStyle(fontSize: 12, color: maroon))),
+                Tab(child: Text('Cancelled', style: TextStyle(fontSize: 12, color: maroon))),
               ],
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildTabContent('Upcoming'),
+                  _buildTabContent('Pending'),
+                  _buildTabContent('Past'),
+                  _buildTabContent('Cancelled'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: HealthClientFooter(),
     );
@@ -169,21 +177,26 @@ class MyAppointmentsState extends State<MyAppointments>
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 5),
-              Row(
-                children: [
-                  Icon(Icons.calendar_today, size: 10),
-                  SizedBox(width: 5),
-                  Text('${appointment.serviceName}', style: TextStyle(fontSize: 10)),
-                  SizedBox(width: 5),
-                  Text('${appointment.appointmentId}', style: TextStyle(fontSize: 10)),
-                  SizedBox(width: 5),
-                  Text('${DateFormat('yyyy-MM-dd').format(appointment.date)}', style: TextStyle(fontSize: 10)),
-                  SizedBox(width: 5),
-                  Text('${appointment.time}', style: TextStyle(fontSize: 10)),
-                  SizedBox(width: 20),
-                  Icon(Icons.access_time, size: 10),
-                  SizedBox(width: 3),
-                ],
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.calendar_today, size: 10),
+                    SizedBox(width: 5),
+                    Text('Service: ${appointment.serviceName}', style: TextStyle(fontSize: 10)),
+                    SizedBox(width: 5),
+                    Text(' reference code: ${appointment.appointmentId}', style: TextStyle(fontSize: 10)),
+                    SizedBox(width: 5),
+                    Text('on date: ${DateFormat('yyyy-MM-dd').format(appointment.date)}', style: TextStyle(fontSize: 10)),
+                    SizedBox(width: 5),
+                    Text('from: ${appointment.time}', style: TextStyle(fontSize: 10)),
+                    SizedBox(width: 5),
+                    Text('status: ${appointment.status}', style: TextStyle(fontSize: 10)),
+                    SizedBox(width: 20),
+                    Icon(Icons.access_time, size: 10),
+                    SizedBox(width: 3),
+                  ],
+                ),
               ),
               SizedBox(height: 5),
               Row(

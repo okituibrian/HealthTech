@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class OtpService {
   static Future<void> requestOtp(String email) async {
-    String apiUrl = 'https://e886-102-210-244-74.ngrok-free.app/api/auth/patient/resendotp';
+    String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/auth/patient/resendotp';
     Map<String, String> data = {
       'email': email,
     };

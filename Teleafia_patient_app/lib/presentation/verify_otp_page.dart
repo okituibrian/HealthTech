@@ -24,7 +24,7 @@ class _VerifyState extends State<Verify> {
 
   void _requestOtp() async {
     try {
-      // You should replace this with the actual email the user used to sign up
+
       String email = "user@example.com";
       await OtpService.requestOtp(email);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -55,7 +55,7 @@ class _VerifyState extends State<Verify> {
           child: BlocListener<VerifyOtpBloc, VerifyOtpState>(
             listener: (context, state) {
               if (state is VerifyOtpSuccess) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+                navigatorKey.currentState?.push(MaterialPageRoute(builder: (context) => const Login()));
               } else if (state is VerifyOtpFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(state.error),
