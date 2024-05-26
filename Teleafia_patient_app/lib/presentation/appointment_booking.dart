@@ -5,7 +5,9 @@ import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert'; // For JSON encoding
+import 'dart:convert';
+
+import 'api_call_functions.dart'; // For JSON encoding
 
 class BookAppointment extends StatefulWidget {
   const BookAppointment({super.key});
@@ -207,7 +209,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> bookAppointment() async {
-    final String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
+    final String apiUrl = '${ApiServices.ngrokLink}/api/appointments/bookappointment';
 
     final Map<String, dynamic> appointmentData = {
       'bookFor': _selectedOption1,

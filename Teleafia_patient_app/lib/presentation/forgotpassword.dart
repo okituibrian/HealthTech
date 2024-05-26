@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:teleafia_patient/presentation/resetpassword.dart';
 
+import 'api_call_functions.dart';
+
 
 
 
@@ -24,7 +26,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     String email = emailController.text;
     if (email.isNotEmpty) {
-      String apiUrl = 'https://a8dc-105-161-14-229.ngrok-free.app/api/forgotpassword';
+      String apiUrl = '${ApiServices.ngrokLink}/api/forgotpassword';
       Map<String, String> data = {
         'email': email,
       };

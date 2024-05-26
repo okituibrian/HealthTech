@@ -5,16 +5,21 @@ import 'package:teleafia_patient/Bloc/cartbloc/cart_bloc.dart';
 import 'package:teleafia_patient/Bloc/loginbloc/login_bloc.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/auth_cubit.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
+import 'package:teleafia_patient/presentation/auth_storage_service.dart';
 import 'package:teleafia_patient/presentation/landingpage.dart';
 import 'Bloc/verify_otp_bloc.dart';
 import 'e-dawa cart/cart_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final authCubit = AuthCubit();
+  final authStorageService = AuthStorageService();
+  final authCubit = AuthCubit(authStorageService);
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => AuthCubit(AuthStorageService()),
+        ),
         BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(authCubit),
         ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teleafia_patient/presentation/dashboard.dart';
 import 'package:teleafia_patient/presentation/profile.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:teleafia_patient/presentation/api_call_functions.dart';
 
 class HealthClientFooter extends StatefulWidget {
   final String? avatarSrcImageUrl;
@@ -14,18 +13,20 @@ class HealthClientFooter extends StatefulWidget {
 }
 
 class _HealthClientFooterState extends State<HealthClientFooter> {
-  String? avatarSrcImageUrl;
+  late String? avatarSrcImageUrl;
 
   @override
   void initState() {
     super.initState();
     avatarSrcImageUrl = widget.avatarSrcImageUrl;
-    _loadProfileImage();
+    if (avatarSrcImageUrl == null) {
+      _loadProfileImage();
+    }
   }
 
   Future<void> _loadProfileImage() async {
     try {
-      String imageUrl = await fetchProfileImage();
+      String imageUrl = await ApiServices.fetchProfileImage();
       setState(() {
         avatarSrcImageUrl = imageUrl;
       });
@@ -161,18 +162,5 @@ class CustomerCareScreen extends StatelessWidget {
         child: Text('Customer Care Screen'),
       ),
     );
-  }
-}
-
-Future<String> fetchProfileImage() async {
-  final response = await http.get(Uri.parse('https://41cf-102-210-244-74.ngrok-free.app/api/patient/getProfileImage/123456'));
-
-  if (response.statusCode == 200) {
-    print('Success: ${response.statusCode} => Image fetched successfully');
-    var jsonResponse = json.decode(response.body);
-    return jsonResponse['avatarSrcImageUrl'];
-  } else {
-    print('Error: ${response.statusCode} => ${response.reasonPhrase}');
-    throw Exception('Failed to load profile image');
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 
+import 'api_call_functions.dart';
 import 'loginpage.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -193,7 +194,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   void postDataToServer(String email, String newPassword) async {
     // Backend active API endpoint
-    String apiUrl = 'https://6203-105-161-14-229.ngrok-free.app/api/changepassword';
+    String apiUrl = '${ApiServices.ngrokLink}/api/changepassword';
 
     // Data payload
     Map<String, String> data = {

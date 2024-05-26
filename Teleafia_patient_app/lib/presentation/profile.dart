@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:teleafia_patient/presentation/api_call_functions.dart';
 import 'package:teleafia_patient/presentation/medical_history.dart';
 import 'package:teleafia_patient/presentation/my_appointments.dart';
 import 'package:teleafia_patient/presentation/settings.dart';
@@ -57,7 +57,6 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
     }
   }
 
-
   Future<void> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -69,48 +68,7 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
       setState(() {
         _avatarSrc = selectedFile;
       });
-      await _uploadImage(selectedFile);
-    }
-  }
-
-  Future<void> _uploadImage(File? selected) async {
-    if (selected == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No image selected')),
-      );
-      return;
-    }
-
-    String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/patient/uploadProfileImages/123456';
-
-    try {
-      var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
-      request.files.add(
-        await http.MultipartFile.fromPath(
-          'avatarSrc',
-          selected.path,
-          filename: path.basename(selected.path),
-        ),
-      );
-
-      var response = await request.send();
-
-      if (response.statusCode == 200) {
-        print('Success: ${response.statusCode} => Image uploaded successfully');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image uploaded successfully')),
-        );
-        widget.fetchImageCallback?.call();
-      } else {
-        print('Error: ${response.statusCode} => ${response.reasonPhrase}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to upload image: ${response.reasonPhrase}')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      await ApiServices.uploadImage(selectedFile, context, widget.fetchImageCallback);
     }
   }
 

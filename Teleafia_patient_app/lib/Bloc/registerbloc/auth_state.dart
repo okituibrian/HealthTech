@@ -1,14 +1,15 @@
-/*
-part of 'auth_cubit.dart';
+import 'package:meta/meta.dart';
 
+@immutable
+abstract class AuthState {}
 
-sealed class AuthState {}
+class AuthInitial extends AuthState {}
 
-final class AuthInitial extends AuthState {}
-
-final class AuthAuthenticated extends AuthState {
+class AuthAuthenticated extends AuthState {
+  final String email;
   final String idNumber;
 
-  AuthAuthenticated({required this.idNumber});
+  AuthAuthenticated({required this.email, required this.idNumber});
 }
-*/
+
+class AuthUnauthenticated extends AuthState {}

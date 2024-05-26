@@ -5,6 +5,8 @@ import 'package:teleafia_patient/presentation/my_appointments.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 
+import 'api_call_functions.dart';
+
 class Payment extends StatefulWidget {
   final String billingId;
   final String appointmentId;
@@ -244,9 +246,9 @@ class _PaymentState extends State<Payment> {
     // Determine the correct API URL based on whether appointmentId or billingId is provided
     String apiUrl = widget.appointmentId != null &&
         widget.appointmentId.isNotEmpty
-        ? 'https://ba43-105-161-31-235.ngrok-free.app/api/payments/makestkpayments/${widget
+        ? '${ApiServices.ngrokLink}/api/payments/makestkpayments/${widget
         .appointmentId}'
-        : 'https://ba43-105-161-31-235.ngrok-free.app/api/payments/makestkpayments/${widget
+        : '${ApiServices.ngrokLink}/api/payments/makestkpayments/${widget
         .billingId}';
 
     // Data payload

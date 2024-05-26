@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_patient/Bloc/loginbloc/login_bloc.dart';
 import 'package:teleafia_patient/presentation/changepassword.dart';
-import 'package:teleafia_patient/presentation/chp_signupform.dart';
+import 'package:teleafia_patient/presentation/signup_page.dart';
 import 'package:teleafia_patient/presentation/dashboard.dart';
 import 'package:teleafia_patient/presentation/forgotpassword.dart';
 import 'package:teleafia_patient/presentation/request_otp.dart';

@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 
+import '../../presentation/api_call_functions.dart';
 import 'auth_cubit.dart';
 
 part 'register_event.dart';
@@ -16,7 +17,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       emit(RegisterLoading());
       try {
         var response = await http.post(
-          Uri.parse('https://ba43-105-161-31-235.ngrok-free.app/api/auth/patient/register'),
+          Uri.parse('${ApiServices.ngrokLink}/api/auth/patient/register'),
           body: jsonEncode({
             'name': event.name,
             'email': event.email,
