@@ -25,6 +25,14 @@ class _PaymentState extends State<Payment> {
   Color darkMaron = Color(0XFF850808);
   final TextEditingController mobileNumberController = TextEditingController();
 
+  int _notificationCount = 0; // Define _notificationCount here
+
+  void _updateNotificationCount(int count) {
+    setState(() {
+      _notificationCount = count;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -268,6 +276,8 @@ class _PaymentState extends State<Payment> {
             context,
             MaterialPageRoute(builder: (context) => MyAppointments()),
           );
+          //ApiServices.processPayment(context, _updateNotificationCount);
+
         } else {
           Navigator.push(
             context,
@@ -299,3 +309,4 @@ class _PaymentState extends State<Payment> {
     }
   }
 }
+

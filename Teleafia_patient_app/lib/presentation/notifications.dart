@@ -17,6 +17,7 @@ class HealthClientNotifications extends StatelessWidget {
 
 class Notifications extends StatefulWidget {
   final String message;
+  int _notificationCount = 0;
 
   Notifications({required this.message});
 
