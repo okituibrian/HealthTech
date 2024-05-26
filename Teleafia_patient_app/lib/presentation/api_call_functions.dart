@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'notifications.dart';
 
-class ApiServices{
-  static String ngrokLink = 'https://710a-102-219-210-70.ngrok-free.app';
+
+
+class ApiServices {
+  static String ngrokLink = 'https://5a3c-102-219-210-70.ngrok-free.app';
+  static String idNumber = '123456';
 
 
 
@@ -24,20 +27,21 @@ class ApiServices{
     }
   }
 
-
-
- static Future<void> fetchNotifications(BuildContext context) async {
+  static Future<void> fetchNotifications(BuildContext context, Function(int) updateNotificationCount) async {
     try {
       final response = await http.get(
-          Uri.parse('$ngrokLink/api/notifications/getallnotifications/123456'));
+        Uri.parse('$ngrokLink/api/notifications/getallnotifications/$idNumber'),
+      );
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        if (responseData['notifications'] != null &&
-            responseData['notifications'].isNotEmpty) {
-          // Assuming the message is in the first item of the notifications list
+        if (responseData['notifications'] != null && responseData['notifications'].isNotEmpty) {
           var message = responseData['notifications'][0]['message'];
           print(message);
+
+          // Update the notification count
+          updateNotificationCount(responseData['notifications'].length);
+
           // Pass the notifications data to the destination widget
           Navigator.push(
             context,
@@ -54,7 +58,6 @@ class ApiServices{
     }
   }
 
-
   static Future<void> uploadImage(File? selected, BuildContext context, VoidCallback? fetchImageCallback) async {
     if (selected == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +65,7 @@ class ApiServices{
       );
       return;
     }
-    String apiUrl = '$ngrokLink/api/patient/uploadProfileImages/456123';
+    String apiUrl = '$ngrokLink/api/patient/uploadProfileImages/$idNumber';
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
       request.files.add(
@@ -94,11 +97,15 @@ class ApiServices{
     }
   }
 
+  static Future<void> processPayment(BuildContext context, Function updateNotificationCount) async {
+    // Payment processing logic goes here
 
+    // After successful payment, fetch notifications to update the count
+    await fetchNotifications(context, _updateNotificationCount);
+  }
 
-
-
-
+  static void _updateNotificationCount(int count) {
+  }
 
 }
 

@@ -1,68 +1,95 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:teleafia_patient/presentation/api_call_functions.dart';
-import '../presentation/notifications.dart';
 
-class HealthClientHeader extends StatelessWidget {
+import 'package:flutter/material.dart';
+import '../presentation/api_call_functions.dart';
+import 'package:badges/badges.dart' as custom_badge;
+
+
+
+class HealthClientHeader extends StatefulWidget {
   final String heading;
 
   HealthClientHeader({required this.heading});
 
+  @override
+  _HealthClientHeaderState createState() => _HealthClientHeaderState();
+}
+
+class _HealthClientHeaderState extends State<HealthClientHeader> {
+  int _notificationCount = 0;
+
   final Color background = const Color(0xFFFCF4F4);
-  final Color dark_maroon = const Color(0xFF850808);
+  final Color darkMaroon = const Color(0xFF850808);
+
+  @override
+  void initState() {
+    super.initState();
+   // ApiServices.fetchNotifications(context, _updateNotificationCount);
+  }
+
+  void _updateNotificationCount(int count) {
+    setState(() {
+      _notificationCount = count;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return HealthClientHeaderBar(context);
-  }
-
-  Widget HealthClientHeaderBar(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: 10),
-        AppBar(
-          backgroundColor: background,
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new_sharp,
-                color: dark_maroon,
+        Container(
+          child: AppBar(
+            backgroundColor: background,
+            automaticallyImplyLeading: false,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_new_sharp,
+                  color: darkMaroon,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            Spacer(),
-            Image.asset(
-              'assets/logo.PNG',
-              height: 80,
-              width: 120,
-            ),
-            Spacer(),
-            IconButton(
-              icon: Icon(
-                Icons.notifications_active,
-                color: dark_maroon,
+              Spacer(),
+              Image.asset(
+                'assets/logo.PNG',
+                height: 80,
+                width: 120,
               ),
-              onPressed: () {
-                ApiServices.fetchNotifications(context);
-              },
-            ),
-          ],
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0), // Add padding to the right
+                child: custom_badge.Badge(
+                  badgeContent: Text(
+                    '$_notificationCount',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  showBadge: _notificationCount > 0,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.notifications_active,
+                      color: darkMaroon,
+                    ),
+                    onPressed: () {
+                      ApiServices.fetchNotifications(context, _updateNotificationCount);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         SizedBox(height: 10),
         Text(
-          heading,
+          widget.heading,
           style: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
-            color: dark_maroon,
+            color: darkMaroon,
           ),
         ),
       ],
     );
   }
 }
-
