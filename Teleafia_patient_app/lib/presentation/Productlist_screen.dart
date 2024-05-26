@@ -10,6 +10,7 @@ import '../e-dawa cart/cart_provider.dart';
 import '../e-dawa cart/db_helper.dart';
 import '../e-dawa cart/products.dart';
 import '../shared/bottom_nav.dart';
+import 'api_call_functions.dart';
 import 'cart_screen.dart';
 
 class ProductList extends StatefulWidget {
@@ -49,7 +50,7 @@ class _ProductListState extends State<ProductList> {
   Future<void> fetchProductDataFromBackend() async {
     try {
       final response = await http.get(Uri.parse(
-          'https://710a-102-219-210-70.ngrok-free.app/api/product/viewallproducts'));
+          '${ApiServices.ngrokLink}/api/product/viewallproducts'));
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
 

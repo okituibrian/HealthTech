@@ -1,11 +1,11 @@
-import 'dart:async';
+
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
-
 import '../registerbloc/auth_cubit.dart';
 import '../registerbloc/auth_state.dart';
+import 'package:teleafia_patient/presentation/api_call_functions.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -18,7 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoading());
       try {
         var response = await http.post(
-          Uri.parse('https://710a-102-219-210-70.ngrok-free.app/api/login'),
+          Uri.parse('${ApiServices.ngrokLink}/api/login'),
           body: jsonEncode({
             'email': event.email,
             'password': event.password,
@@ -51,4 +51,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     });
   }
+
+
 }

@@ -1,9 +1,14 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:teleafia_patient/presentation/messages.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
+
+import 'api_call_functions.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -58,7 +63,7 @@ class MyAppointmentsState extends State<MyAppointments>
     // Make a network call to fetch the appointments data
     try {
       final response = await http.get(
-          Uri.parse('https://710a-102-219-210-70.ngrok-free.app/api/appointments/appointment-history/123456'));
+          Uri.parse('${ApiServices.ngrokLink}/api/appointments/appointment-history/123456'));
 
       if (response.statusCode == 200) {
         // Parse the response data
@@ -229,6 +234,23 @@ class MyAppointmentsState extends State<MyAppointments>
                       ),
                     ),
                   ),
+                  SizedBox(width: 250),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color(0xFFc00100),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HealClientMessages()));
+                      },
+                      child: Text(
+                        'Send message',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+
                 ],
               ),
             ],

@@ -9,6 +9,7 @@ import '../Bloc/registerbloc/auth_state.dart';
 import '../e-dawa cart/cart_model.dart';
 import '../e-dawa cart/cart_provider.dart';
 import '../shared/bottom_nav.dart';
+import 'api_call_functions.dart';
 
 class CartScreen extends StatefulWidget {
   final CartProvider cartProvider;
@@ -287,7 +288,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
 
   String jsonData = jsonEncode(data);
 
-  String apiUrl = 'https://710a-102-219-210-70.ngrok-free.app/api/billings/addbillings';
+  String apiUrl = '${ApiServices.ngrokLink}/api/billings/addbillings';
   print('Sending data to Wilson API:');
   print(data);
   print(idNumber);

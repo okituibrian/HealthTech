@@ -1,12 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'notifications.dart';
 
 class ApiServices{
+  static String ngrokLink = 'https://710a-102-219-210-70.ngrok-free.app';
+
+
+
+
   static Future<String> fetchProfileImage() async {
-    final response = await http.get(Uri.parse('https://710a-102-219-210-70.ngrok-free.app/api/patient/getProfileImage/12345'));
+    final response = await http.get(Uri.parse('$ngrokLink/api/patient/getProfileImage/456123'));
 
     if (response.statusCode == 200) {
       print('Success: ${response.statusCode} => Image fetched successfully');
@@ -23,7 +29,7 @@ class ApiServices{
  static Future<void> fetchNotifications(BuildContext context) async {
     try {
       final response = await http.get(
-          Uri.parse('https://710a-102-219-210-70.ngrok-free.app/api/notifications/getallnotifications/123456'));
+          Uri.parse('$ngrokLink/api/notifications/getallnotifications/123456'));
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
@@ -47,6 +53,50 @@ class ApiServices{
       print('Error: $e');
     }
   }
+
+
+  static Future<void> uploadImage(File? selected, BuildContext context, VoidCallback? fetchImageCallback) async {
+    if (selected == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No image selected')),
+      );
+      return;
+    }
+    String apiUrl = '$ngrokLink/api/patient/uploadProfileImages/456123';
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'avatarSrc',
+          selected.path,
+          filename: path.basename(selected.path),
+        ),
+      );
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Success: ${response.statusCode} => Image uploaded successfully');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Image uploaded successfully')),
+        );
+        fetchImageCallback?.call();
+      } else {
+        print('Error: ${response.statusCode} => ${response.reasonPhrase}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to upload image: ${response.reasonPhrase}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
+
+
+
 
 
 

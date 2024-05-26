@@ -52,7 +52,7 @@ class _NotificationsState extends State<Notifications> {
       backgroundColor: background,
       body: Column(
         children: <Widget>[
-          HealthClientHeader(heading: 'Notifications'),
+          HealthClientHeader(heading: 'Chats'),
           const SizedBox(height: 5),
           Flexible(
             child: ListView.builder(

@@ -2,9 +2,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'api_call_functions.dart';
+
 class OtpService {
   static Future<void> requestOtp(String email) async {
-    String apiUrl = 'https://697f-102-220-12-50.ngrok-free.app/api/auth/patient/resendotp';
+    String apiUrl = '${ApiServices.ngrokLink}/api/auth/patient/resendotp';
     Map<String, String> data = {
       'email': email,
     };
