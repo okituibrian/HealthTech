@@ -16,12 +16,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       emit(RegisterLoading());
       try {
         var response = await http.post(
-          Uri.parse('https://41cf-102-210-244-74.ngrok-free.app/api/auth/patient/register'),
+          Uri.parse('https://ba43-105-161-31-235.ngrok-free.app/api/auth/patient/register'),
           body: jsonEncode({
             'name': event.name,
             'email': event.email,
             'phoneNumber': event.phoneNumber,
-            'idNumber': event.idNumber, // Include the idNumber here
+            'idNumber': event.idNumber,
             'location': event.location,
             'password': event.password,
             'confirm_password': event.confirm_password,
@@ -31,8 +31,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         if (response.statusCode == 200) {
           print('Success: ${response.statusCode}');
           // Update AuthCubit's state with the idNumber and email
-          authCubit.updateUserData(event.idNumber, event.email);
-
+          await authCubit.updateUserData(event.idNumber, event.email);
           emit(RegisterSuccess());
         } else {
           print('${response.statusCode} => ${response.reasonPhrase}');

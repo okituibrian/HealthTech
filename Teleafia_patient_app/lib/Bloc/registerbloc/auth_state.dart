@@ -1,3 +1,4 @@
+/*
 part of 'auth_cubit.dart';
 
 
@@ -10,3 +11,4 @@ final class AuthAuthenticated extends AuthState {
 
   AuthAuthenticated({required this.idNumber});
 }
+*/

@@ -18,7 +18,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
     emit(VerifyOtpLoading());
     try {
       var response = await http.post(
-        Uri.parse('https://41cf-102-210-244-74.ngrok-free.app/api/auth/patient/verifyotp'),
+        Uri.parse('https://ba43-105-161-31-235.ngrok-free.app/api/auth/patient/verifyotp'),
         body: jsonEncode({
           'enteredOtp': event.enteredOtp,
         }),
@@ -29,7 +29,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
       } else {
         print('${response.statusCode}');
         emit(VerifyOtpFailure(
-          
+
             error: 'Please enter reset code and try again'));
       }
     } catch (e) {

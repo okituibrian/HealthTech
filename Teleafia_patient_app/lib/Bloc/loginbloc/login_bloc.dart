@@ -17,7 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoading());
       try {
         var response = await http.post(
-          Uri.parse('https://41cf-102-210-244-74.ngrok-free.app/api/login'),
+          Uri.parse('https://ba43-105-161-31-235.ngrok-free.app/api/login'),
           body: jsonEncode({
             'email': event.email,
             'password': event.password,
@@ -31,15 +31,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (authState is AuthAuthenticated) {
             print('Email: ${authState.email}, ID Number: ${authState.idNumber}');
             emit(LoginSuccess());
-          }
-          final emailAuthenticated = true; // Placeholder for authentication check
-          if (emailAuthenticated) {
-            print("Email authenticated");
+          } else {
+            // Update AuthCubit's state with the new login details
+            final data = jsonDecode(response.body);
+            await authCubit.updateUserData(data['idNumber'], event.email);
             emit(LoginSuccess());
           }
-        }
-
-        else if (response.statusCode == 409) {
+        } else if (response.statusCode == 409) {
           print('Failed: ${response.statusCode} => Account not verified');
           emit(LoginEmailNotVerified(error: 'Account not verified'));
         } else {
@@ -53,4 +51,3 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     });
   }
 }
-

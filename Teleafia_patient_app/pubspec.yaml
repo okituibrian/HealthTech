@@ -48,6 +48,7 @@ dependencies:
   file_picker: 8.0.0+1
   omni_datetime_picker: ^1.0.9
   intl: ^0.19.0
+  flutter_secure_storage: ^5.0.2
 
 
 

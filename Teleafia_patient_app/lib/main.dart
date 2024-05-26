@@ -10,6 +10,7 @@ import 'Bloc/verify_otp_bloc.dart';
 import 'e-dawa cart/cart_provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   final authCubit = AuthCubit();
   runApp(
     MultiBlocProvider(
