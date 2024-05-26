@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:teleafia_patient/presentation/feedback_ratings.dart';
 import 'package:teleafia_patient/presentation/messages.dart';
+import 'package:teleafia_patient/presentation/notifications.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 
@@ -227,7 +229,9 @@ class MyAppointmentsState extends State<MyAppointments>
                       color: Color(0xFFc00100),
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RatingStars(onRatingChanged: (int rating) {  },)));
+                      },
                       child: Text(
                         'View Details',
                         style: TextStyle(color: Colors.white),

@@ -13,13 +13,15 @@ class HealthClientFooter extends StatefulWidget {
 }
 
 class _HealthClientFooterState extends State<HealthClientFooter> {
-  String? avatarSrcImageUrl;
+  late String? avatarSrcImageUrl;
 
   @override
   void initState() {
     super.initState();
     avatarSrcImageUrl = widget.avatarSrcImageUrl;
-    _loadProfileImage();
+    if (avatarSrcImageUrl == null) {
+      _loadProfileImage();
+    }
   }
 
   Future<void> _loadProfileImage() async {
@@ -162,5 +164,3 @@ class CustomerCareScreen extends StatelessWidget {
     );
   }
 }
-
-
