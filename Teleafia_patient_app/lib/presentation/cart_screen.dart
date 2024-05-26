@@ -170,7 +170,7 @@ class _CartScreenState extends State<CartScreen> {
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                   minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
                 ),
-                onPressed: () {
+               /* onPressed: () {
                   // Hardcoded idNumber
                   String idNumber = '123456';
 
@@ -182,8 +182,8 @@ class _CartScreenState extends State<CartScreen> {
                   }).toList();
 
                   checkout(context, idNumber, products);
-                },
-                /*onPressed: () {
+                },*/
+                onPressed: () {
                   final authCubit = context.read<AuthCubit>();
                   final authState = authCubit.state;
 
@@ -202,7 +202,6 @@ class _CartScreenState extends State<CartScreen> {
                     print("User not authenticated");
                   }
                 },
-*/
 
                 child: Text(
                   'Proceed to Checkout',
@@ -278,7 +277,7 @@ class _CartScreenState extends State<CartScreen> {
 }
 
 void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> products) async {
-  print('ID Number: $idNumber');
+
   // Data payload
   Map<String, dynamic> data = {
     'idNumber': idNumber,
@@ -287,7 +286,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
 
   String jsonData = jsonEncode(data);
 
-  String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/billings/addbillings';
+  String apiUrl = 'https://ba43-105-161-31-235.ngrok-free.app/api/billings/addbillings';
   print('Sending data to Wilson API:');
   print(data);
   print(idNumber);

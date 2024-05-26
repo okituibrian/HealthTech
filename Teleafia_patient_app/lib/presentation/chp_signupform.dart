@@ -1,22 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:trial_app/login_page.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
-//import 'package:trial_app/login_page.dart';
-
-//void main() {
-// runApp(
-//  MaterialApp(
-// debugShowCheckedModeBanner: false,
-//  home: PatientSignupPage(),
-// ),
-//);
-//}
 
 class PatientSignupPage extends StatefulWidget {
   const PatientSignupPage({super.key});
@@ -52,11 +37,15 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
               ),
             );
           } else if (state is RegisterSuccess) {
-            Navigator.push(
-               context, MaterialPageRoute(builder: (context) => Verify()));
+            // Use addPostFrameCallback to navigate after the current frame
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Verify()),
+              );
+            });
           } else if (state is RegisterFailure) {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
-              // This callback will be called after the widget is rendered
+            WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Registration Failed: ${state.error}'),
@@ -79,15 +68,14 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       child: Text(
                         'Proceed with your',
                         style: TextStyle(
-                            color: maroon,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Lexend-Medium.ttf,'),
+                          color: maroon,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Lexend-Medium.ttf',
+                        ),
                       ),
                     ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
+                    SizedBox(height: 5.0),
                     Expanded(
                       flex: 1,
                       child: Text(
@@ -121,9 +109,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -131,7 +117,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         child: TextField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            hintText: 'email',
+                            hintText: 'Email',
                             prefixIcon: Icon(
                               Icons.email_rounded,
                               color: maroon,
@@ -148,9 +134,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -158,7 +142,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         child: TextField(
                           controller: phoneNumberController,
                           decoration: InputDecoration(
-                            hintText: 'phone',
+                            hintText: 'Phone',
                             prefixIcon: Icon(
                               Icons.phone,
                               color: maroon,
@@ -173,9 +157,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -183,7 +165,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         child: TextField(
                           controller: idNumberController,
                           decoration: InputDecoration(
-                            hintText: 'id',
+                            hintText: 'ID',
                             prefixIcon: Icon(
                               Icons.perm_identity,
                               color: maroon,
@@ -195,9 +177,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -205,7 +185,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         child: TextField(
                           controller: locationController,
                           decoration: InputDecoration(
-                            hintText: 'location',
+                            hintText: 'Location',
                             prefixIcon: Icon(
                               Icons.location_on,
                               color: maroon,
@@ -217,9 +197,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -228,7 +206,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                           controller: passwordController,
                           obscureText: _obsecureText,
                           decoration: InputDecoration(
-                            hintText: 'password',
+                            hintText: 'Password',
                             prefixIcon: Icon(
                               Icons.lock,
                               color: maroon,
@@ -240,9 +218,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -251,7 +227,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                           controller: confirmPasswordController,
                           obscureText: _obsecureText,
                           decoration: InputDecoration(
-                            hintText: 'confirm_password',
+                            hintText: 'Confirm Password',
                             prefixIcon: Icon(
                               Icons.check,
                               color: maroon,
@@ -263,32 +239,28 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
+                    SizedBox(height: 30.0),
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
                         onPressed: () {
-                          final registerBloc =
-                          BlocProvider.of<RegisterBloc>(context);
-                          if(confirmPasswordController.text == passwordController.text){
-                          registerBloc.add(RegisterButtonWhenPressed(
-                            name: nameController.text,
-                            email: emailController.text,
-                            phoneNumber: phoneNumberController.text,
-                            idNumber: idNumberController.text,
-                            location: locationController.text,
-                            password: passwordController.text,
-                            confirm_password: confirmPasswordController.text,
-                          ));}
-                          else {
+                          final registerBloc = BlocProvider.of<RegisterBloc>(context);
+                          if (confirmPasswordController.text == passwordController.text) {
+                            registerBloc.add(RegisterButtonWhenPressed(
+                              name: nameController.text,
+                              email: emailController.text,
+                              phoneNumber: phoneNumberController.text,
+                              idNumber: idNumberController.text,
+                              location: locationController.text,
+                              password: passwordController.text,
+                              confirm_password: confirmPasswordController.text,
+                            ));
+                          } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text('Passwords do not match'),
-                                  duration: Duration(seconds: 2,),
-
-                                ),
+                              SnackBar(
+                                content: Text('Passwords do not match'),
+                                duration: Duration(seconds: 2),
+                              ),
                             );
                           }
                         },

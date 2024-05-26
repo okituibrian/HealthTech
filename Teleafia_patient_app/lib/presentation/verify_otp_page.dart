@@ -55,7 +55,12 @@ class _VerifyState extends State<Verify> {
           child: BlocListener<VerifyOtpBloc, VerifyOtpState>(
             listener: (context, state) {
               if (state is VerifyOtpSuccess) {
-                navigatorKey.currentState?.push(MaterialPageRoute(builder: (context) => const Login()));
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Login()),
+                  );
+                });
               } else if (state is VerifyOtpFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(state.error),

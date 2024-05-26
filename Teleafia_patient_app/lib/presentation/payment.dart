@@ -244,9 +244,9 @@ class _PaymentState extends State<Payment> {
     // Determine the correct API URL based on whether appointmentId or billingId is provided
     String apiUrl = widget.appointmentId != null &&
         widget.appointmentId.isNotEmpty
-        ? 'https://41cf-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget
+        ? 'https://ba43-105-161-31-235.ngrok-free.app/api/payments/makestkpayments/${widget
         .appointmentId}'
-        : 'https://41cf-102-210-244-74.ngrok-free.app/api/payments/makestkpayments/${widget
+        : 'https://ba43-105-161-31-235.ngrok-free.app/api/payments/makestkpayments/${widget
         .billingId}';
 
     // Data payload
