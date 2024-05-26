@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:teleafia_patient/presentation/payment.dart';
 import '../Bloc/registerbloc/auth_cubit.dart';
+import '../Bloc/registerbloc/auth_state.dart';
 import '../e-dawa cart/cart_model.dart';
 import '../e-dawa cart/cart_provider.dart';
 import '../shared/bottom_nav.dart';
@@ -286,7 +287,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
 
   String jsonData = jsonEncode(data);
 
-  String apiUrl = 'https://ba43-105-161-31-235.ngrok-free.app/api/billings/addbillings';
+  String apiUrl = 'https://710a-102-219-210-70.ngrok-free.app/api/billings/addbillings';
   print('Sending data to Wilson API:');
   print(data);
   print(idNumber);

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:teleafia_patient/presentation/api_call_functions.dart';
 import '../presentation/notifications.dart';
 
 class HealthClientHeader extends StatelessWidget {
@@ -46,7 +47,7 @@ class HealthClientHeader extends StatelessWidget {
                 color: dark_maroon,
               ),
               onPressed: () {
-                _fetchNotifications(context); // Pass the context
+                ApiServices.fetchNotifications(context);
               },
             ),
           ],
@@ -62,34 +63,6 @@ class HealthClientHeader extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-Future<void> _fetchNotifications(BuildContext context) async {
-  try {
-    final response = await http.get(
-        Uri.parse('https://41cf-102-210-244-74.ngrok-free.app/api/notifications/getallnotifications/123456'));
-
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      if (responseData['notifications'] != null &&
-          responseData['notifications'].isNotEmpty) {
-        // Assuming the message is in the first item of the notifications list
-        var message = responseData['notifications'][0]['message'];
-        print(message);
-        // Pass the notifications data to the destination widget
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HealthClientNotifications(message: message)),
-        );
-      } else {
-        throw Exception('No notifications found');
-      }
-    } else {
-      throw Exception('Failed to fetch notifications');
-    }
-  } catch (e) {
-    print('Error: $e');
   }
 }
 

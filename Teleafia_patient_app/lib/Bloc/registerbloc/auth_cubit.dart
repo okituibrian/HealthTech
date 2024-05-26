@@ -1,16 +1,19 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:meta/meta.dart';
-
+import '../../presentation/auth_storage_service.dart';
+import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final AuthStorageService _authStorageService;
 
-  AuthCubit() : super(AuthInitial());
+  AuthCubit(this._authStorageService) : super(AuthInitial()) {
+    checkAuthStatus();
+  }
 
   Future<void> checkAuthStatus() async {
-    String? email = await secureStorage.read(key: 'email');
-    String? idNumber = await secureStorage.read(key: 'idNumber');
+    final userData = await _authStorageService.getUserData();
+    String? email = userData['email'];
+    String? idNumber = userData['idNumber'];
+    print('Loaded email: $email, idNumber: $idNumber');
 
     if (email != null && idNumber != null) {
       emit(AuthAuthenticated(email: email, idNumber: idNumber));
@@ -20,29 +23,13 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> updateUserData(String idNumber, String email) async {
-    await secureStorage.write(key: 'idNumber', value: idNumber);
-    await secureStorage.write(key: 'email', value: email);
+    await _authStorageService.saveUserData(idNumber, email);
+    print('Updated email: $email, idNumber: $idNumber');
     emit(AuthAuthenticated(email: email, idNumber: idNumber));
   }
 
   Future<void> logout() async {
-    await secureStorage.deleteAll();
+    await _authStorageService.clearUserData();
     emit(AuthUnauthenticated());
   }
 }
-
-
-
-@immutable
-abstract class AuthState {}
-
-class AuthInitial extends AuthState {}
-
-class AuthAuthenticated extends AuthState {
-  final String email;
-  final String idNumber;
-
-  AuthAuthenticated({required this.email, required this.idNumber});
-}
-
-class AuthUnauthenticated extends AuthState {}

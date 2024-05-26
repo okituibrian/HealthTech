@@ -58,7 +58,7 @@ class MyAppointmentsState extends State<MyAppointments>
     // Make a network call to fetch the appointments data
     try {
       final response = await http.get(
-          Uri.parse('https://41cf-102-210-244-74.ngrok-free.app/api/appointments/appointment-history/123456'));
+          Uri.parse('https://710a-102-219-210-70.ngrok-free.app/api/appointments/appointment-history/123456'));
 
       if (response.statusCode == 200) {
         // Parse the response data

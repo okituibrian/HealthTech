@@ -16,7 +16,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       emit(RegisterLoading());
       try {
         var response = await http.post(
-          Uri.parse('https://ba43-105-161-31-235.ngrok-free.app/api/auth/patient/register'),
+          Uri.parse('https://710a-102-219-210-70.ngrok-free.app/api/auth/patient/register'),
           body: jsonEncode({
             'name': event.name,
             'email': event.email,

@@ -49,7 +49,7 @@ class _ProductListState extends State<ProductList> {
   Future<void> fetchProductDataFromBackend() async {
     try {
       final response = await http.get(Uri.parse(
-          'https://ba43-105-161-31-235.ngrok-free.app/api/product/viewallproducts'));
+          'https://710a-102-219-210-70.ngrok-free.app/api/product/viewallproducts'));
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
 

@@ -207,7 +207,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   Future<void> bookAppointment() async {
-    final String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/appointments/bookappointment';
+    final String apiUrl = 'https://710a-102-219-210-70.ngrok-free.app/api/appointments/bookappointment';
 
     final Map<String, dynamic> appointmentData = {
       'bookFor': _selectedOption1,
