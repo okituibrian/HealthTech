@@ -109,7 +109,7 @@ class _ForgotPasswordState extends State<RequestOtp> {
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Error: $e'),
+                                content: Text('Error: please try again'),
                               ),
                             );
                           }

@@ -36,7 +36,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 if (state is ResetPasswordFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Failed: ${state.error}'),
+                      content: Text('Failed: please try again'),
                       backgroundColor: Color(0xFF982B15),
                       duration: Duration(seconds: 3),
                     ),

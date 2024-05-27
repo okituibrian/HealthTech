@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:teleafia_patient/presentation/Productlist_screen.dart';
 import 'package:teleafia_patient/presentation/prescription.dart';
 
+import '../shared/bottom_nav.dart';
+
 class Pharmacy extends StatefulWidget {
   const Pharmacy({super.key});
 
@@ -100,6 +102,7 @@ class _PharmacyState extends State<Pharmacy> {
           ),
 
         ],),
+      bottomNavigationBar: HealthClientFooter(),
     );
   }
 }

@@ -25,6 +25,8 @@ class _BookAppointmentState extends State<BookAppointment> {
   List<String> _medicalServices = [];
   Map<String, String> _serviceMap = {};
 
+  int _notificationCount = 0; // Add this field
+
   @override
   void initState() {
     super.initState();
@@ -236,17 +238,37 @@ class _BookAppointmentState extends State<BookAppointment> {
         var responseData = jsonDecode(response.body);
         var appointmentId = responseData['appointmentId'];
         print('Response Data: $responseData');
+
+        await ApiServices.fetchNotifications(context, (count) {
+          setState(() {
+            _notificationCount += count; // Ensure _notificationCount is updated
+          });
+        });
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Payment(appointmentId: appointmentId, billingId: '',)),
         );
       } else {
         print('Failed to book: ${response.statusCode} => ${response.body}');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to book appointment')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(child: Text("Failed to book appointment please try again")), // Center the content
+            backgroundColor: maroon, // Set background color
+            behavior: SnackBarBehavior.floating, // Display at the center
+            duration: Duration(seconds: 5),
+          ),
+        );
       }
     } catch (error) {
       print('Error booking appointment: $error');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $error')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Center(child: Text("Failed to book appointment please try again")), // Center the content
+          backgroundColor: maroon, // Set background color
+          behavior: SnackBarBehavior.floating, // Display at the center
+          duration: Duration(seconds: 5),
+        ),
+      );
     }
   }
 

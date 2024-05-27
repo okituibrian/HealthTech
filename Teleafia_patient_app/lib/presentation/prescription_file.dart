@@ -75,7 +75,7 @@ class _UploadState extends State<Upload> {
                 'Please confirm if you have picked the right file'
                     ' that contains your prescription before you upload',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
