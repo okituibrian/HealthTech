@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_patient/presentation/loginpage.dart';
 import '../Bloc/verify_otp_bloc.dart';
+import 'dashboard.dart';
 import 'otp_service.dart';
 
 
@@ -36,7 +37,7 @@ class _VerifyState extends State<Verify> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: $e'),
+          content: Text('Failed please try again'),
         ),
       );
     }
@@ -56,10 +57,29 @@ class _VerifyState extends State<Verify> {
             listener: (context, state) {
               if (state is VerifyOtpSuccess) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Login()),
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Verification Complete',
+                          style: TextStyle(color: maroon),),
+                        content: Text('Proceed to login to your account.',
+                          style: TextStyle(color: Colors.black),),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Login()),
+                              );
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
                   );
+
                 });
               } else if (state is VerifyOtpFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

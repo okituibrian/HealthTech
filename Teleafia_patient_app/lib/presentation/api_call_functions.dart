@@ -5,14 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'notifications.dart';
 
-
-
 class ApiServices {
-  static String ngrokLink = 'https://5a3c-102-219-210-70.ngrok-free.app';
+  static String ngrokLink = 'https://ca9c-102-210-244-74.ngrok-free.app';
   static String idNumber = '123456';
-
-
-
 
   static Future<String> fetchProfileImage() async {
     final response = await http.get(Uri.parse('$ngrokLink/api/patient/getProfileImage/456123'));
@@ -27,7 +22,7 @@ class ApiServices {
     }
   }
 
-  static Future<void> fetchNotifications(BuildContext context, Function(int) updateNotificationCount) async {
+  static Future<void> fetchNotifications(BuildContext context, void Function(int) updateNotificationCount) async {
     try {
       final response = await http.get(
         Uri.parse('$ngrokLink/api/notifications/getallnotifications/$idNumber'),
@@ -97,16 +92,8 @@ class ApiServices {
     }
   }
 
-  static Future<void> processPayment(BuildContext context, Function updateNotificationCount) async {
-    // Payment processing logic goes here
+  static Future<void> processPayment(BuildContext context, void Function(int) updateNotificationCount) async {
 
-    // After successful payment, fetch notifications to update the count
-    await fetchNotifications(context, _updateNotificationCount);
+    await fetchNotifications(context, updateNotificationCount);
   }
-
-  static void _updateNotificationCount(int count) {
-  }
-
 }
-
-

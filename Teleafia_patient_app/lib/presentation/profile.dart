@@ -11,6 +11,8 @@ import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
 
+import 'loginpage.dart';
+
 class HealthClientProfile extends StatefulWidget {
   final String? avatarSrc;
   final String? avatarSrcImageUrl;
@@ -162,7 +164,28 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
               text: 'Logout',
               imagePath: 'assets/logout.PNG',
               onTap: () {
-                // Add your onTap functionality here
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Are you sure you want to logout?',
+                        style: TextStyle(color: maroon),),
+                      content: Text('please confirm by clicking OK',
+                        style: TextStyle(color: Colors.black),),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const Login()),
+                            );
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           ],

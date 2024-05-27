@@ -48,7 +48,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Registration Failed: ${state.error}'),
+                  content: Text('Failed: please try again'),
                 ),
               );
             });

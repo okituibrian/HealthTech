@@ -31,6 +31,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           final authState = authCubit.state;
           if (authState is AuthAuthenticated) {
             print('Email: ${authState.email}, ID Number: ${authState.idNumber}');
+            print('Email is Authenticated');
             emit(LoginSuccess());
           } else {
             // Update AuthCubit's state with the new login details
