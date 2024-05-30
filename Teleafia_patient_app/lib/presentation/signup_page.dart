@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
 
@@ -14,6 +15,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   Color background = Color(0xFFFCF4F4);
   Color maroon = Color(0xFF982B15);
   bool _obsecureText = true;
+  DateTime selectedDate = DateTime.now();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
@@ -21,6 +23,8 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   final TextEditingController locationController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController dateOfBirthController = TextEditingController();
+  bool _isObscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,6 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
               ),
             );
           } else if (state is RegisterSuccess) {
-            // Use addPostFrameCallback to navigate after the current frame
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.push(
                 context,
@@ -56,8 +59,8 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
           return SafeArea(
             child: Container(
               color: background,
-              width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 1,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               child: Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
@@ -178,6 +181,29 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       ),
                     ),
                     SizedBox(height: 20.0),
+                    Container(
+                      height: 40,
+                      child: TextField(
+                        controller: dateOfBirthController,
+                        readOnly: true,
+                        onTap: () => _selectDate(context),
+                        decoration: InputDecoration(
+                          hintText: 'Date Of Birth',
+                          filled: true,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.calendar_today,
+                              color: maroon,
+                            ),
+                            onPressed: () => _selectDate(context),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -204,12 +230,23 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         height: 40.0,
                         child: TextField(
                           controller: passwordController,
-                          obscureText: _obsecureText,
+                          obscureText: _isObscured,
                           decoration: InputDecoration(
                             hintText: 'Password',
                             prefixIcon: Icon(
                               Icons.lock,
                               color: maroon,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isObscured ? Icons.visibility : Icons.visibility_off,
+                                color: maroon,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isObscured = !_isObscured;
+                                });
+                              },
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -225,12 +262,23 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         height: 40.0,
                         child: TextField(
                           controller: confirmPasswordController,
-                          obscureText: _obsecureText,
+                          obscureText: _isObscured,
                           decoration: InputDecoration(
                             hintText: 'Confirm Password',
                             prefixIcon: Icon(
                               Icons.check,
                               color: maroon,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isObscured ? Icons.visibility : Icons.visibility_off,
+                                color: maroon,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isObscured = !_isObscured;
+                                });
+                              },
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -251,6 +299,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                               email: emailController.text,
                               phoneNumber: phoneNumberController.text,
                               idNumber: idNumberController.text,
+                              dateOfBirth: dateOfBirthController.text,
                               location: locationController.text,
                               password: passwordController.text,
                               confirm_password: confirmPasswordController.text,
@@ -286,5 +335,21 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
         },
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1900), // Adjust this to a reasonable minimum date for birth dates
+      lastDate: DateTime.now(), // Prevent selecting future dates for date of birth
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+        dateOfBirthController.text = DateFormat('MM-dd-yyyy').format(pickedDate);
+      });
+    }
   }
 }

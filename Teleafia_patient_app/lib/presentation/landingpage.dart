@@ -52,7 +52,7 @@ class _WelcomeState extends State<Welcome> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text('JOIN THE PLATFORM',
+                    child: Text('Join TeleAfia Platform',
                       style: TextStyle(
                         color: maroonColor,
                         fontFamily: 'Lexend-Medium.ttf',

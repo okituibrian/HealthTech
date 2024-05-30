@@ -1,3 +1,4 @@
+/*
 import 'package:meta/meta.dart';
 
 @immutable
@@ -13,3 +14,4 @@ class AuthAuthenticated extends AuthState {
 }
 
 class AuthUnauthenticated extends AuthState {}
+*/
