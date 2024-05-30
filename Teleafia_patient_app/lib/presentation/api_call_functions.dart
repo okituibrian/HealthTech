@@ -3,20 +3,22 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'notifications.dart';
 
 class ApiServices {
-  static String ngrokLink = 'https://ca9c-102-210-244-74.ngrok-free.app';
-  static String idNumber = '123456';
+  static String ngrokLink = 'https://3579-102-219-210-70.ngrok-free.app';
+  static String idNumber = '321456';
 
   static Future<String> fetchProfileImage() async {
-    final response = await http.get(Uri.parse('$ngrokLink/api/patient/getProfileImage/456123'));
-
+    final response = await http.get(Uri.parse('$ngrokLink/api/patient/getProfileImage/${UserDataManager().idNumber}'));
+    print('id = ${UserDataManager().idNumber}');
     if (response.statusCode == 200) {
       print('Success: ${response.statusCode} => Image fetched successfully');
       var jsonResponse = json.decode(response.body);
       return jsonResponse['avatarSrcImageUrl'];
     } else {
+
       print('Error: ${response.statusCode} => ${response.reasonPhrase}');
       throw Exception('Failed to load profile image');
     }
@@ -60,7 +62,7 @@ class ApiServices {
       );
       return;
     }
-    String apiUrl = '$ngrokLink/api/patient/uploadProfileImages/$idNumber';
+    String apiUrl = '$ngrokLink/api/patient/uploadProfileImages/${UserDataManager().idNumber}';
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
       request.files.add(

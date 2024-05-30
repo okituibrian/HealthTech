@@ -9,6 +9,7 @@ class RegisterButtonWhenPressed extends RegisterEvent {
   final String email;
   final String phoneNumber;
   final String idNumber;
+  final String dateOfBirth;
   final String location;
   final String password;
   final String confirm_password;
@@ -18,6 +19,7 @@ class RegisterButtonWhenPressed extends RegisterEvent {
     required this.email,
     required this.phoneNumber,
     required this.idNumber,
+    required this.dateOfBirth,
     required this.location,
     required this.password,
     required this.confirm_password,

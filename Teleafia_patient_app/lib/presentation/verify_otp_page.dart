@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teleafia_patient/presentation/loginpage.dart';
+import 'package:teleafia_patient/presentation/request_otp.dart';
 import '../Bloc/verify_otp_bloc.dart';
 import 'dashboard.dart';
 import 'otp_service.dart';
@@ -175,7 +176,13 @@ class _VerifyState extends State<Verify> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 2.0, 200.0, 10.0),
                   child: ElevatedButton(
-                    onPressed: _requestOtp,
+                    onPressed:() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RequestOtp()),
+                      );
+
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF982B15),
                     ),

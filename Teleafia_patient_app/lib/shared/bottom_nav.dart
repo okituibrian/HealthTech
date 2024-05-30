@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teleafia_patient/presentation/dashboard.dart';
 import 'package:teleafia_patient/presentation/profile.dart';
 import 'package:teleafia_patient/presentation/api_call_functions.dart';
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 
 class HealthClientFooter extends StatefulWidget {
   final String? avatarSrcImageUrl;
@@ -18,7 +19,7 @@ class _HealthClientFooterState extends State<HealthClientFooter> {
   @override
   void initState() {
     super.initState();
-    avatarSrcImageUrl = widget.avatarSrcImageUrl;
+    avatarSrcImageUrl = UserDataManager().avatarSrc;
     if (avatarSrcImageUrl == null) {
       _loadProfileImage();
     }

@@ -12,26 +12,20 @@ import 'e-dawa cart/cart_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final authStorageService = AuthStorageService();
-  final authCubit = AuthCubit(authStorageService);
+
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => AuthCubit(AuthStorageService()),
-        ),
         BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(authCubit),
+          create: (context) => LoginBloc(),
         ),
         BlocProvider<RegisterBloc>(
-          create: (context) => RegisterBloc(authCubit),
+          create: (context) => RegisterBloc(),
         ),
         BlocProvider<CartBloc>(
           create: (context) => CartBloc(context),
         ),
-        BlocProvider<AuthCubit>(
-          create: (context) => authCubit,
-        ),
+
       ],
       child: ChangeNotifierProvider<CartProvider>(
         create: (context) => CartProvider(),

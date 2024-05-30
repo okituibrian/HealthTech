@@ -10,9 +10,9 @@ part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final AuthCubit authCubit;
 
-  RegisterBloc(this.authCubit) : super(RegisterInitial()) {
+
+  RegisterBloc() : super(RegisterInitial()) {
     on<RegisterButtonWhenPressed>((event, emit) async {
       emit(RegisterLoading());
       try {
@@ -23,6 +23,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             'email': event.email,
             'phoneNumber': event.phoneNumber,
             'idNumber': event.idNumber,
+            'dateOfBirth': event.dateOfBirth,
             'location': event.location,
             'password': event.password,
             'confirm_password': event.confirm_password,
@@ -31,8 +32,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         );
         if (response.statusCode == 200) {
           print('Success: ${response.statusCode}');
-          // Update AuthCubit's state with the idNumber and email
-          await authCubit.updateUserData(event.idNumber, event.email);
+
           emit(RegisterSuccess());
         } else {
           print('${response.statusCode} => ${response.reasonPhrase}');

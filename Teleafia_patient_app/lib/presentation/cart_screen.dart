@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:teleafia_patient/presentation/payment.dart';
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import '../Bloc/registerbloc/auth_cubit.dart';
 import '../Bloc/registerbloc/auth_state.dart';
 import '../e-dawa cart/cart_model.dart';
@@ -172,9 +173,9 @@ class _CartScreenState extends State<CartScreen> {
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                   minimumSize: MaterialStateProperty.all<Size>(Size(80, 50)),
                 ),
-               /* onPressed: () {
+                onPressed: () {
                   // Hardcoded idNumber
-                  String idNumber = '123456';
+                  String idNumber = '${UserDataManager().idNumber}';
 
                   List<Map<String, dynamic>> products = widget.cartItems.map((cartItem) {
                     return {
@@ -184,26 +185,8 @@ class _CartScreenState extends State<CartScreen> {
                   }).toList();
 
                   checkout(context, idNumber, products);
-                },*/
-                onPressed: () {
-                  final authCubit = context.read<AuthCubit>();
-                  final authState = authCubit.state;
-
-                  if (authState is AuthAuthenticated) {
-                    String idNumber = authState.idNumber;
-
-                    List<Map<String, dynamic>> products = widget.cartItems.map((cartItem) {
-                      return {
-                        'productId': cartItem.productId,
-                        'quantity': cartItem.quantity.toString(),
-                      };
-                    }).toList();
-
-                    checkout(context, idNumber, products);
-                  } else {
-                    print("User not authenticated");
-                  }
                 },
+
 
                 child: Text(
                   'Proceed to Checkout',
@@ -282,7 +265,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
 
   // Data payload
   Map<String, dynamic> data = {
-    'idNumber': idNumber,
+    'idNumber': '${UserDataManager().idNumber}',
     'products': products,
   };
 

@@ -1,19 +1,15 @@
-
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
-import '../registerbloc/auth_cubit.dart';
-import '../registerbloc/auth_state.dart';
+import '../../presentation/user_data_manager.dart';
 import 'package:teleafia_patient/presentation/api_call_functions.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthCubit authCubit;
-
-  LoginBloc(this.authCubit) : super(LoginInitial()) {
+  LoginBloc() : super(LoginInitial()) {
     on<LoginButtonWhenPressedWithEmail>((event, emit) async {
       emit(LoginLoading());
       try {
@@ -27,18 +23,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
 
         if (response.statusCode == 200) {
-          print('Success: ${response.statusCode}');
-          final authState = authCubit.state;
-          if (authState is AuthAuthenticated) {
-            print('Email: ${authState.email}, ID Number: ${authState.idNumber}');
-            print('Email is Authenticated');
-            emit(LoginSuccess());
-          } else {
-            // Update AuthCubit's state with the new login details
-            final data = jsonDecode(response.body);
-            await authCubit.updateUserData(data['idNumber'], event.email);
-            emit(LoginSuccess());
-          }
+          print('Success: ${response.statusCode}  : ${response.body}');
+          final responseData= jsonDecode(response.body);
+          final userData = responseData['user'];
+
+          UserDataManager().updateUserData(userData);
+          emit(LoginSuccess());
         } else if (response.statusCode == 409) {
           print('Failed: ${response.statusCode} => Account not verified');
           emit(LoginEmailNotVerified(error: 'Account not verified'));
@@ -52,6 +42,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     });
   }
-
-
 }

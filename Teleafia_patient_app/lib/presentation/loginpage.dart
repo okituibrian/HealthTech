@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
             if (state is LoginEmailNotVerified) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(state.error), // Show the error message from the state
+                  content: Text('Email Not Verified, please request OTP to verify'), // Show the error message from the state
                   duration: Duration(seconds: 3),
                 ),
               );
@@ -191,8 +191,8 @@ class _LoginState extends State<Login> {
                               email: email,
                               password: password,
                             ));
-                            emailController.clear();
-                            passwordController.clear();
+                           // emailController.clear();
+                            //passwordController.clear();
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
