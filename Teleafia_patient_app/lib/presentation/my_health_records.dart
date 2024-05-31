@@ -32,6 +32,12 @@ class _MedicalRecordState extends State<MedicalRecord> {
   List<String> _bookingMethod = ['Physical', 'Virtual'];
   String? _selectedMethod;
   String? _selectedGender;
+  String? _textField1;
+  String? _textField2;
+  String? _textField3;
+  bool _isVisible = true;
+
+  String? filledText;
 
   // TextEditingControllers for the text fields
   final TextEditingController _textField1Controller = TextEditingController();
@@ -68,127 +74,390 @@ class _MedicalRecordState extends State<MedicalRecord> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              HealthClientHeader(heading: 'My Health Records'),
-              TextFields().generateDropdownnWidget(
-                'Gender',
-                _gender1,
-                _selectedGender,
-                    (newValue) {
-                  setState(() {
-                    _selectedGender = newValue;
-                  });
-                },
+      appBar: AppBar(
+        backgroundColor: background,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            HealthClientHeader(heading: 'My Health Records'),
+          ],
+        ),
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            ListView.builder(
+                itemCount: 1,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Divider(
+                          thickness: 1.5,
+                          color: Colors.grey,
+                          height: 10,
+                        ),
+                        Text(
+                          'General Information',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Divider(
+                          thickness: 1.5,
+                          color: Colors.grey,
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'Enter Full Names',
+                          _textField2,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'Enter Your Email Address',
+                          _textField2,
+                        ),
+                        TextFields().generateDropdownnWidget(
+                          'Gender',
+                          _gender1,
+                          _selectedGender,
+                          (newValue) {
+                            setState(() {
+                              _selectedGender = newValue;
+                            });
+                          },
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'Enter Age',
+                          _textField1,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'Enter Your Height(cm)',
+                          _textField3,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'Enter Your Weight (kg)',
+                          _textField2,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  color: Colors.white,
+                                ),
+                                child: TextFormField(
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'BMI results',
+                                  ),
+                                  onSaved: (newValue) => filledText = newValue,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 150),
+                            Container(
+                              width: 80,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: maroon,
+                                  minimumSize: Size(50, 40),
+                                ),
+                                child: Text(
+                                  'BMI',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Divider(
+                          thickness: 1.5,
+                          color: Colors.grey,
+                          height: 10,
+                        ),
+                        Text(
+                          'Medical Related Information',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Divider(
+                          thickness: 1.5,
+                          color: Colors.grey,
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'List any drug related allergies',
+                          _textField2,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'List any medical conditions',
+                          _textField2,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'List any current medications',
+                          _textField2,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'Provide details of any past surgeries',
+                          _textField2,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'Provide details of any past medical history',
+                          _textField2,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFields().GenerateHealthRecordTextfield(
+                          'Provide details of any past surgeries',
+                          _textField2,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Divider(
+                          thickness: 1.5,
+                          color: Colors.grey,
+                          height: 10,
+                        ),
+                        Text(
+                          'Medical Related Documents',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Divider(
+                          thickness: 1.5,
+                          color: Colors.grey,
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  color: Colors.white,
+                                ),
+                                child: TextFormField(
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Upload LabTest results...',
+                                  ),
+                                  onSaved: (newValue) => filledText = newValue,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 50),
+                            Container(
+                              width: 180,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: maroon,
+                                  minimumSize: Size(50, 40),
+                                ),
+                                child: Text(
+                                  'LabTest Results',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  color: Colors.white,
+                                ),
+                                child: TextFormField(
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Upload Imaging results...',
+                                  ),
+                                  onSaved: (newValue) => filledText = newValue,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 50),
+                            Container(
+                              width: 180,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: maroon,
+                                  minimumSize: Size(50, 40),
+                                ),
+                                child: Text(
+                                  'Imaging Results',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  color: Colors.white,
+                                ),
+                                child: TextFormField(
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Upload Diagnostic Test results',
+                                  ),
+                                  onSaved: (newValue) => filledText = newValue,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 50),
+                            Container(
+                              width: 180,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: maroon,
+                                  minimumSize: Size(50, 40),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Diagnostic Test Results',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Divider(
+                          thickness: 1.5,
+                          color: Colors.grey,
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: background,
+                child: Center(
+                  child: Text(
+                    'My Health Records',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: darkMaron,
+                    ),
+                  ),
+                ),
               ),
-              TextFields().GenerateTextfield(
-                'Enter Age',
-                _textField1Controller,
-                    (value) {
-                  _textField1Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Enter Full Names',
-                _textField2Controller,
-                    (value) {
-                  _textField2Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Patient Height(cm)',
-                _textField3Controller,
-                    (value) {
-                  _textField3Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Patient Weight (kg)',
-                _textField4Controller,
-                    (value) {
-                  _textField4Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Patient Email Address',
-                _textField5Controller,
-                    (value) {
-                  _textField5Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'List any drug related allergies',
-                _textField6Controller,
-                    (value) {
-                  _textField6Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'List any medical conditions',
-                _textField7Controller,
-                    (value) {
-                  _textField7Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'List any current medications',
-                _textField8Controller,
-                    (value) {
-                  _textField8Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Provide details of any past surgeries',
-                _textField9Controller,
-                    (value) {
-                  _textField9Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Provide details of any past medical history',
-                _textField10Controller,
-                    (value) {
-                  _textField10Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Provide details of any past surgeries',
-                _textField11Controller,
-                    (value) {
-                  _textField11Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Provide details of any past medical history',
-                _textField12Controller,
-                    (value) {
-                  _textField12Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              Row(
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 10),
+                    width: 80,
+                    height: 40,
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,
-                        minimumSize: Size(80, 40),
+                        minimumSize: Size(50, 40),
                       ),
                       child: Text(
                         'Save',
@@ -196,9 +465,11 @@ class _MedicalRecordState extends State<MedicalRecord> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 200),
+                  Spacer(),
                   Container(
-                    margin: EdgeInsets.only(right: 1),
+                    margin: EdgeInsets.only(right: 10),
+                    width: 40,
+                    height: 40,
                     child: FloatingActionButton(
                       onPressed: () {
                         // Add your action here
@@ -207,14 +478,14 @@ class _MedicalRecordState extends State<MedicalRecord> {
                       child: Icon(
                         Icons.download,
                         color: Colors.white,
-                      ),
-                      backgroundColor: maroon,
+                      ), // You can change the icon
+                      backgroundColor: maroon, // You can change the color
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: HealthClientFooter(),
