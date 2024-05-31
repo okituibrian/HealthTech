@@ -25,12 +25,18 @@ class _BookAppointmentState extends State<BookAppointment> {
   List<String> _medicalServices = [];
   Map<String, String> _serviceMap = {};
 
-  int _notificationCount = 0; // Add this field
+
 
   @override
   void initState() {
     super.initState();
     fetchMedicalServices();
+  }
+
+  void _updateNotificationCount(int count) {
+    setState(() {
+     // ApiServices.fetchNotifications(context, _updateNotificationCount);
+    });
   }
 
   Future<void> fetchMedicalServices() async {
@@ -239,22 +245,21 @@ class _BookAppointmentState extends State<BookAppointment> {
         var appointmentId = responseData['appointmentId'];
         print('Response Data: $responseData');
 
-        await ApiServices.fetchNotifications(context, (count) {
-          setState(() {
-            _notificationCount += count; // Ensure _notificationCount is updated
-          });
-        });
+        ApiServices.fetchNotifications(context, _updateNotificationCount);
+
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Payment(appointmentId: appointmentId, billingId: '',)),
+          MaterialPageRoute(
+            builder: (context) => Payment(appointmentId: appointmentId, billingId: ''),
+          ),
         );
       } else {
         print('Failed to book: ${response.statusCode} => ${response.body}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Center(child: Text("Failed to book appointment please try again")), // Center the content
-            backgroundColor: maroon, // Set background color
-            behavior: SnackBarBehavior.floating, // Display at the center
+            content: Center(child: Text("Failed to book appointment please try again")),
+            backgroundColor: maroon,
+            behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 5),
           ),
         );
@@ -263,14 +268,15 @@ class _BookAppointmentState extends State<BookAppointment> {
       print('Error booking appointment: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Center(child: Text("Failed to book appointment please try again")), // Center the content
-          backgroundColor: maroon, // Set background color
-          behavior: SnackBarBehavior.floating, // Display at the center
+          content: Center(child: Text("Failed to book appointment please try again")),
+          backgroundColor: maroon,
+          behavior: SnackBarBehavior.floating,
           duration: Duration(seconds: 5),
         ),
       );
     }
   }
+
 
 
   @override

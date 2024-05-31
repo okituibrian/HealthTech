@@ -1,9 +1,6 @@
-
 import 'package:flutter/material.dart';
 import '../presentation/api_call_functions.dart';
 import 'package:badges/badges.dart' as custom_badge;
-
-
 
 class HealthClientHeader extends StatefulWidget {
   final String heading;
@@ -30,6 +27,13 @@ class _HealthClientHeaderState extends State<HealthClientHeader> {
     setState(() {
       _notificationCount = count;
     });
+  }
+
+  void _resetNotificationCount() {
+    setState(() {
+      _notificationCount = 0;
+    });
+    ApiServices.fetchNotifications(context, _updateNotificationCount);
   }
 
   @override
@@ -72,7 +76,7 @@ class _HealthClientHeaderState extends State<HealthClientHeader> {
                       color: darkMaroon,
                     ),
                     onPressed: () {
-                      ApiServices.fetchNotifications(context, _updateNotificationCount);
+                      _resetNotificationCount();
                     },
                   ),
                 ),
