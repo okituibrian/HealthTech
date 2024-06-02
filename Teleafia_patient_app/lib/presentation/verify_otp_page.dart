@@ -6,7 +6,6 @@ import '../Bloc/verify_otp_bloc.dart';
 import 'dashboard.dart';
 import 'otp_service.dart';
 
-
 class Verify extends StatefulWidget {
   const Verify({Key? key}) : super(key: key);
 
@@ -26,7 +25,6 @@ class _VerifyState extends State<Verify> {
 
   void _requestOtp() async {
     try {
-
       String email = "user@example.com";
       await OtpService.requestOtp(email);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,14 +60,18 @@ class _VerifyState extends State<Verify> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Verification Complete',
-                          style: TextStyle(color: maroon),),
-                        content: Text('Proceed to login to your account.',
-                          style: TextStyle(color: Colors.black),),
+                        title: Text(
+                          'Verification Complete',
+                          style: TextStyle(color: Color(0xFF982B15)),
+                        ),
+                        content: Text(
+                          'Proceed to login to your account.',
+                          style: TextStyle(color: Colors.black),
+                        ),
                         actions: <Widget>[
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => const Login()),
                               );
@@ -80,7 +82,6 @@ class _VerifyState extends State<Verify> {
                       );
                     },
                   );
-
                 });
               } else if (state is VerifyOtpFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -176,12 +177,11 @@ class _VerifyState extends State<Verify> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 2.0, 200.0, 10.0),
                   child: ElevatedButton(
-                    onPressed:() {
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => RequestOtp()),
                       );
-
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF982B15),

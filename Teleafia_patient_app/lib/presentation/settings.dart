@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_patient/presentation/changepassword.dart';
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import '../shared/bottom_nav.dart';
 import '../shared/header.dart';
 import 'appointment_booking.dart';
@@ -69,7 +71,7 @@ class _MySettingsState extends State<MySettings> {
                                   child: TextFormField(
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'Full Name',
+                                      hintText: '${UserDataManager().name}',
                                     ),
                                     onSaved: (newValue) =>
                                     filledText = newValue,
@@ -97,7 +99,7 @@ class _MySettingsState extends State<MySettings> {
                                   child: TextFormField(
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'Email address',
+                                      hintText: '${UserDataManager().email}',
                                     ),
                                     onSaved: (newValue) =>
                                     filledText = newValue,
@@ -126,7 +128,7 @@ class _MySettingsState extends State<MySettings> {
                                   child: TextFormField(
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'Phone Number',
+                                      hintText: '${UserDataManager().phoneNumber}',
                                     ),
                                     onSaved: (newValue) =>
                                     filledText = newValue,
@@ -174,7 +176,14 @@ class _MySettingsState extends State<MySettings> {
                 Icons.arrow_forward_ios_sharp,
                 color: Colors.grey,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangePassword(),
+                  ),
+                );
+              },
             ),
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 8),

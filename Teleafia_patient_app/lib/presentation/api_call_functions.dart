@@ -7,7 +7,7 @@ import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'notifications.dart';
 
 class ApiServices {
-  static String ngrokLink = 'https://8eda-102-210-244-74.ngrok-free.app';
+  static String ngrokLink = 'https://80d2-102-219-210-70.ngrok-free.app';
   static String idNumber = '321456';
 
   static Future<String> fetchProfileImage() async {
