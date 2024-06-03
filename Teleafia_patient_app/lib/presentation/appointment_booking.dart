@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:teleafia_patient/presentation/payment.dart';
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
@@ -25,8 +26,6 @@ class _BookAppointmentState extends State<BookAppointment> {
   List<String> _medicalServices = [];
   Map<String, String> _serviceMap = {};
 
-
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +34,7 @@ class _BookAppointmentState extends State<BookAppointment> {
 
   void _updateNotificationCount(int count) {
     setState(() {
-     // ApiServices.fetchNotifications(context, _updateNotificationCount);
+      // ApiServices.fetchNotifications(context, _updateNotificationCount);
     });
   }
 
@@ -228,7 +227,7 @@ class _BookAppointmentState extends State<BookAppointment> {
       'idNumber': _idNumberController.text,
       'fullName': _fullNameController.text,
       'phoneNumber': _phoneNumberController.text,
-      'age': 23,
+      'age': _ageController.text,
       'gender': _selectedGender,
     };
     print('Posting data: ${json.encode(appointmentData)}');
@@ -277,6 +276,14 @@ class _BookAppointmentState extends State<BookAppointment> {
     }
   }
 
+  void _fillUserData() {
+
+    final userManager = UserDataManager();
+    _fullNameController.text = userManager.name ?? '';
+    _phoneNumberController.text = userManager.phoneNumber ?? '';
+    _idNumberController.text = userManager.idNumber ?? '';
+    //_ageController.text = userManager.age?.toString() ?? '';
+  }
 
 
   @override
@@ -297,6 +304,14 @@ class _BookAppointmentState extends State<BookAppointment> {
                     (newValue) {
                   setState(() {
                     _selectedOption1 = newValue;
+                    if (newValue == 'myself') {
+                      _fillUserData();
+                    } else {
+                      _fullNameController.clear();
+                      _phoneNumberController.clear();
+                      _idNumberController.clear();
+                      _ageController.clear();
+                    }
                   });
                 },
               ),
@@ -382,48 +397,56 @@ class _BookAppointmentState extends State<BookAppointment> {
                 },
               ),
               SizedBox(height: 15),
-              TextFields().GenerateTextfield(
-                'Full Name',
-                _fullNameController,
-                    (value) {
-                  _fullNameController.text = value;
-                } as Function(String? p1)?,
+              Visibility(
+                visible: _selectedOption1 == 'others',
+                child: Column(
+                  children: [
+                    TextFields().GenerateTextfield(
+                      'Full Name',
+                      _fullNameController,
+                          (value) {
+                        _fullNameController.text = value;
+                      } as Function(String? p1)?,
+                    ),
+                    SizedBox(height: 15),
+                    TextFields().GenerateTextfield(
+                      'Phone Number',
+                      _phoneNumberController,
+                          (value) {
+                        _phoneNumberController.text = value;
+                      } as Function(String? p1)?,
+                    ),
+                    SizedBox(height: 15),
+                    TextFields().GenerateTextfield(
+                      'ID Number',
+                      _idNumberController,
+                          (value) {
+                        _idNumberController.text = value;
+                      } as Function(String? p1)?,
+                    ),
+                    SizedBox(height: 15),
+                    TextFields().GenerateTextfield(
+                      'Enter Age',
+                      _ageController,
+                          (value) {
+                        _ageController.text = value;
+                      } as Function(String? p1)?,
+                    ),
+                    SizedBox(height: 15),
+                    TextFields().generateDropdownnWidget(
+                      'Gender',
+                      _gender1,
+                      _selectedGender,
+                          (newValue) {
+                        setState(() {
+                          _selectedGender = newValue;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: 15),
-              TextFields().GenerateTextfield(
-                'Phone Number',
-                _phoneNumberController,
-                    (value) {
-                  _phoneNumberController.text = value;
-                } as Function(String? p1)?,
-              ),
-              SizedBox(height: 15),
-              TextFields().GenerateTextfield(
-                'ID Number',
-                _idNumberController,
-                    (value) {
-                  _idNumberController.text = value;
-                } as Function(String? p1)?,
-              ),
-              SizedBox(height: 15),
-              TextFields().generateDropdownnWidget(
-                'Gender',
-                _gender1,
-                _selectedGender,
-                    (newValue) {
-                  setState(() {
-                    _selectedGender = newValue;
-                  });
-                },
-              ),
-              SizedBox(height: 15),
-              TextFields().GenerateTextfield(
-                'Enter Age',
-                _ageController,
-                    (value) {
-                  _ageController.text = value;
-                } as Function(String? p1)?,
-              ),
+
               SizedBox(height: 15),
               Center(
                 child: ElevatedButton(

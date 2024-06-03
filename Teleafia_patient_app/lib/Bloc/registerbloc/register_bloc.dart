@@ -25,6 +25,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             'idNumber': event.idNumber,
             'dateOfBirth': event.dateOfBirth,
             'location': event.location,
+            'gender': event.gender,
             'password': event.password,
             'confirm_password': event.confirm_password,
           }),
@@ -45,3 +46,4 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     });
   }
 }
+
