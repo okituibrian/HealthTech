@@ -70,6 +70,7 @@ class _MySettingsState extends State<MySettings> {
                                   height: 30.0,
                                   child: TextFormField(
                                     decoration: InputDecoration(
+                                      enabled: false,
                                       border: InputBorder.none,
                                       hintText: '${UserDataManager().name}',
                                     ),
@@ -98,6 +99,7 @@ class _MySettingsState extends State<MySettings> {
                                   height: 30.0,
                                   child: TextFormField(
                                     decoration: InputDecoration(
+                                      enabled: false,
                                       border: InputBorder.none,
                                       hintText: '${UserDataManager().email}',
                                     ),
@@ -127,6 +129,7 @@ class _MySettingsState extends State<MySettings> {
                                   height: 30.0,
                                   child: TextFormField(
                                     decoration: InputDecoration(
+                                      enabled: false,
                                       border: InputBorder.none,
                                       hintText: '${UserDataManager().phoneNumber}',
                                     ),

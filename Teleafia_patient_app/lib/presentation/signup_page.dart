@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../shared/health_client_functions.dart';
+import 'countrycode.dart';
 
 class PatientSignupPage extends StatefulWidget {
   const PatientSignupPage({super.key});
@@ -13,8 +16,6 @@ class PatientSignupPage extends StatefulWidget {
   @override
   State<PatientSignupPage> createState() => _PatientSignupPageState();
 }
-
-
 
 class _PatientSignupPageState extends State<PatientSignupPage> {
   Color background = Color(0xFFFCF4F4);
@@ -32,9 +33,10 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   bool _isObscured = true;
-  final List<String> countryCodes = ['+1', '+44', '+254', '+91', '+61']; // Add more country codes as needed
-  String selectedCountryCode = '+254'; // Default code
-
+  List<String> countryCodes = CountryCode.countries
+      .map((country) => '${country['code']} ${country['name']}')
+      .toList();
+  String selectedCountryCode = '+254 Kenya';
 
   @override
   void initState() {
@@ -42,19 +44,53 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
     _getLocation();
   }
 
+
   Future<void> _getLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
     try {
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        throw Exception('Location services are disabled.');
+      }
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          throw Exception('Location permissions are denied.');
+        }
+      }
+      if (permission == LocationPermission.deniedForever) {
+        throw Exception('Location permissions are permanently denied.');
+      }
+
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      setState(() {
-        locationController.text =
-        'Lat: ${position.latitude}, Long: ${position.longitude}';
-        print("${position.latitude}, Long: ${position.longitude}");
-      });
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude, position.longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        String locality = place.locality ?? 'Unknown locality';
+        String administrativeArea = place.administrativeArea ?? 'Unknown area';
+        String country = place.country ?? 'Unknown country';
+        setState(() {
+          locationController.text =
+          '$locality, $administrativeArea, $country';
+          print("$locality, $administrativeArea, $country");
+        });
+      } else {
+        throw Exception('No placemarks found.');
+      }
     } catch (e) {
       print('Error getting location: $e');
+      setState(() {
+        locationController.text = 'Error getting location: ${e.toString()}';
+      });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +214,8 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: DropdownButton<String>(
-                              value: selectedCountryCode,
+                              value: selectedCountryCode.isEmpty ? null : selectedCountryCode,
+                              hint: Text('Select Country Code'),
                               icon: Icon(Icons.arrow_drop_down),
                               underline: SizedBox(),
                               onChanged: (String? newValue) {
@@ -198,7 +235,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                           Expanded(
                             child: TextField(
                               controller: phoneNumberController,
-                               keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 hintText: 'Phone Number  eg. 763000000',
                                 prefixIcon: Icon(
@@ -266,7 +303,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                           height: 40.0,
                           child: TextField(
                             controller: locationController,
-                           // readOnly: true,
+                            // readOnly: true,
                             decoration: InputDecoration(
                               hintText: "Location",
                               filled: true,
