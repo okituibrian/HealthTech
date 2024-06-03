@@ -276,6 +276,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
   print(data);
   print(idNumber);
 
+
   try {
     var response = await http.post(
       Uri.parse(apiUrl),

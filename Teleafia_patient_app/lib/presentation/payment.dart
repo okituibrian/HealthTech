@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:teleafia_patient/presentation/delivery_form.dart';
 import 'package:teleafia_patient/presentation/my_appointments.dart';
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 
@@ -32,6 +35,7 @@ class _PaymentState extends State<Payment> {
       _notificationCount = count;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,17 +95,16 @@ class _PaymentState extends State<Payment> {
                             height: 40,
                             child: TextField(
                               controller: mobileNumberController,
+                              enabled: false, // Disable user input
                               decoration: InputDecoration(
-                                hintText: 'Enter phone number',
+                                hintText: UserDataManager().phoneNumber ?? '',
                                 contentPadding: EdgeInsets.all(2.0),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: maroon, width: 0.5),
+                                  borderSide: BorderSide(color: maroon, width: 0.5),
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: maroon, width: 0.5),
+                                  borderSide: BorderSide(color: maroon, width: 0.5),
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                               ),
@@ -247,11 +250,10 @@ class _PaymentState extends State<Payment> {
   }
 
   void postNumberToServer() async {
-    // Backend active API endpoint
-    String mobileNumber = mobileNumberController.text;
+    String mobileNumber = UserDataManager().phoneNumber ??  mobileNumberController.text ;
     print("Mobile Number: $mobileNumber");
 
-    // Determine the correct API URL based on whether appointmentId or billingId is provided
+
     String apiUrl = widget.appointmentId != null &&
         widget.appointmentId.isNotEmpty
         ? '${ApiServices.ngrokLink}/api/payments/makestkpayments/${widget
@@ -259,7 +261,6 @@ class _PaymentState extends State<Payment> {
         : '${ApiServices.ngrokLink}/api/payments/makestkpayments/${widget
         .billingId}';
 
-    // Data payload
     Map<String, String> data = {
       'mobileNumber': mobileNumber,
     };
@@ -271,12 +272,54 @@ class _PaymentState extends State<Payment> {
       );
 
       if (response.statusCode == 200) {
+        final responseData= jsonDecode(response.body);
+        final bookingDetails = responseData['paymentRecord'];
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                'Booking Details',
+                style: TextStyle(color: maroon),
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'View appointment receipt:',
+                    style: TextStyle(color: darkMaron,)
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text('${bookingDetails}',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+
         if (widget.appointmentId != null && widget.appointmentId.isNotEmpty) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MyAppointments()),
           );
-          //ApiServices.processPayment(context, _updateNotificationCount);
 
         } else {
           Navigator.push(
@@ -292,17 +335,19 @@ class _PaymentState extends State<Payment> {
           ),
         );
       } else {
+        print('Error: ${response.statusCode} =>');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${response.reasonPhrase}'),
+            content: Text('Failed please try again'),
             duration: Duration(seconds: 2),
           ),
         );
       }
     } catch (error) {
+      print('$error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: $error'),
+          content: Text('Failed please try again'),
           duration: Duration(seconds: 2),
         ),
       );

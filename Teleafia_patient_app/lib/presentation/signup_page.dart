@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
@@ -10,6 +11,8 @@ class PatientSignupPage extends StatefulWidget {
   @override
   State<PatientSignupPage> createState() => _PatientSignupPageState();
 }
+
+
 
 class _PatientSignupPageState extends State<PatientSignupPage> {
   Color background = Color(0xFFFCF4F4);
@@ -25,6 +28,27 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController dateOfBirthController = TextEditingController();
   bool _isObscured = true;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _getLocation();
+  }
+
+  Future<void> _getLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        locationController.text =
+        'Lat: ${position.latitude}, Long: ${position.longitude}';
+        print("${position.latitude}, Long: ${position.longitude}");
+      });
+    } catch (e) {
+      print('Error getting location: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -206,15 +230,20 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                     SizedBox(height: 20.0),
                     Expanded(
                       flex: 1,
-                      child: Container(
+                      child:  Container(
                         height: 40.0,
                         child: TextField(
                           controller: locationController,
+                          readOnly: true,
                           decoration: InputDecoration(
-                            hintText: 'Location',
-                            prefixIcon: Icon(
-                              Icons.location_on,
-                              color: maroon,
+                            hintText: "Location",
+                            filled: true,
+                            prefixIcon: IconButton(
+                              icon: Icon(
+                                Icons.location_on,
+                                color: maroon,
+                              ),
+                              onPressed: () => _getLocation,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
