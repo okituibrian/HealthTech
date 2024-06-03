@@ -5,10 +5,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../shared/health_client_functions.dart';
 import 'countrycode.dart';
+
 
 class PatientSignupPage extends StatefulWidget {
   const PatientSignupPage({super.key});
@@ -33,19 +32,24 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   bool _isObscured = true;
-  List<String> countryCodes = CountryCode.countries
-      .map((country) => '${country['code']} ${country['name']}')
-      .toList();
-  String selectedCountryCode = '+254 Kenya';
+  late String selectedCountryCode;
+  late List<String> parts;
+  late String selectedCode;
 
   @override
   void initState() {
     super.initState();
+    selectedCountryCode = '+254 Kenya';
+    parts = selectedCountryCode.split(' ');
+    selectedCode = parts[0];
+    print(selectedCode); // Move the print statement here
     _getLocation();
   }
 
 
+
   Future<void> _getLocation() async {
+    if (!mounted) return; // Check if the widget is still mounted
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -70,6 +74,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
       List<Placemark> placemarks = await placemarkFromCoordinates(
           position.latitude, position.longitude);
 
+      if (!mounted) return; // Check if the widget is still mounted before calling setState()
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks[0];
         String locality = place.locality ?? 'Unknown locality';
@@ -85,6 +90,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
       }
     } catch (e) {
       print('Error getting location: $e');
+      if (!mounted) return; // Check if the widget is still mounted before calling setState()
       setState(() {
         locationController.text = 'Error getting location: ${e.toString()}';
       });
@@ -223,13 +229,14 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                                   selectedCountryCode = newValue!;
                                 });
                               },
-                              items: countryCodes.map<DropdownMenuItem<String>>((String value) {
+                              items: CountryCode.countries.map<DropdownMenuItem<String>>((Map<String, String> country) {
                                 return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
+                                  value: country['code']! + ' ' + country['name']!, // Ensure uniqueness by using code + name combination
+                                  child: Text(country['code']! + ' ' + country['name']!),
                                 );
                               }).toList(),
                             ),
+
                           ),
                           SizedBox(width: 10.0),
                           Expanded(
@@ -237,7 +244,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                               controller: phoneNumberController,
                               keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
-                                hintText: 'Phone Number  eg. 763000000',
+                                hintText: 'eg. 763000000',
                                 prefixIcon: Icon(
                                   Icons.phone,
                                   color: maroon,
@@ -408,10 +415,22 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             final registerBloc = BlocProvider.of<RegisterBloc>(context);
+                            String phoneNumber;
                             if (confirmPasswordController.text == passwordController.text) {
+                              // Check if the selected country code is not +254 Kenya
+                              if (selectedCountryCode != '+254 Kenya') {
+                                // Extract the selected code from selectedCountryCode
+                                List<String> parts = selectedCountryCode.split(' ');
+                                String selectedCode = parts[0];
+                                // Append the selected code to the phone number
+                                phoneNumber = selectedCode + phoneNumberController.text;
+                              } else {
+                                // Use the selected country code directly
+                                phoneNumber = selectedCountryCode + phoneNumberController.text;
+                              }
                               print('Name: ${nameController.text}');
                               print('Email: ${emailController.text}');
-                              print('Phone Number: ${ selectedCountryCode + phoneNumberController.text }');
+                              print('Phone Number: $phoneNumber');
                               print('ID Number: ${idNumberController.text}');
                               print('Date of Birth: ${dateOfBirthController.text}');
                               print('Location: ${locationController.text}');
@@ -422,7 +441,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                               registerBloc.add(RegisterButtonWhenPressed(
                                 name: nameController.text,
                                 email: emailController.text,
-                                phoneNumber: selectedCountryCode + phoneNumberController.text,
+                                phoneNumber: phoneNumber,
                                 idNumber: idNumberController.text,
                                 dateOfBirth: dateOfBirthController.text,
                                 location: locationController.text,
@@ -439,6 +458,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                               );
                             }
                           },
+
                           style: ElevatedButton.styleFrom(
                             backgroundColor: maroon,
                           ),
