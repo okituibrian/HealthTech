@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
@@ -35,6 +37,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   late String selectedCountryCode;
   late List<String> parts;
   late String selectedCode;
+  String defaultCode = '+254';
 
   @override
   void initState() {
@@ -42,61 +45,54 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
     selectedCountryCode = '+254 Kenya';
     parts = selectedCountryCode.split(' ');
     selectedCode = parts[0];
-    print(selectedCode); // Move the print statement here
     _getLocation();
   }
 
 
-
   Future<void> _getLocation() async {
-    if (!mounted) return; // Check if the widget is still mounted
     bool serviceEnabled;
     LocationPermission permission;
 
-    try {
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        throw Exception('Location services are disabled.');
-      }
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception('Location permissions are denied.');
-        }
-      }
-      if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permissions are permanently denied.');
-      }
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
 
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          position.latitude, position.longitude);
-
-      if (!mounted) return; // Check if the widget is still mounted before calling setState()
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        String locality = place.locality ?? 'Unknown locality';
-        String administrativeArea = place.administrativeArea ?? 'Unknown area';
-        String country = place.country ?? 'Unknown country';
-        setState(() {
-          locationController.text =
-          '$locality, $administrativeArea, $country';
-          print("$locality, $administrativeArea, $country");
-        });
-      } else {
-        throw Exception('No placemarks found.');
-      }
+      setState(() {
+        locationController.text =
+        'Lat: ${position.latitude}, Long: ${position.longitude}';
+        print("${position.latitude}, Long: ${position.longitude}");
+      });
     } catch (e) {
       print('Error getting location: $e');
-      if (!mounted) return; // Check if the widget is still mounted before calling setState()
-      setState(() {
-        locationController.text = 'Error getting location: ${e.toString()}';
-      });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -307,7 +303,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       Expanded(
                         flex: 1,
                         child:  Container(
-                          height: 40.0,
+                          height: 60.0,
                           child: TextField(
                             controller: locationController,
                             // readOnly: true,
@@ -426,7 +422,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                                 phoneNumber = selectedCode + phoneNumberController.text;
                               } else {
                                 // Use the selected country code directly
-                                phoneNumber = selectedCountryCode + phoneNumberController.text;
+                                phoneNumber = defaultCode + phoneNumberController.text;
                               }
                               print('Name: ${nameController.text}');
                               print('Email: ${emailController.text}');
