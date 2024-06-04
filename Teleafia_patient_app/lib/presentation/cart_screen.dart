@@ -272,8 +272,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
   String jsonData = jsonEncode(data);
 
   String apiUrl = '${ApiServices.ngrokLink}/api/billings/addbillings';
-  print('Sending data to Wilson API:');
-  print(data);
+
   print(idNumber);
 
 

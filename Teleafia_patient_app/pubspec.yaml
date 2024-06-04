@@ -53,6 +53,8 @@ dependencies:
   geocoding: ^2.0.1
   json_annotation: ^4.5.0
   google_maps_flutter: ^2.6.1
+  flutter_file_dialog: ^3.0.2
+
 
 
 
