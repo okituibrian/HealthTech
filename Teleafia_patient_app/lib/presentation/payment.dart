@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter/material.dart';
@@ -269,8 +270,18 @@ class _PaymentState extends State<Payment> {
       );
 
       if (response.statusCode == 200) {
+        print(response.body);
         final responseData = jsonDecode(response.body);
-        final bookingDetails = responseData['paymentRecord']; // Keep it as Map<String, dynamic>
+        final receiptDetails = responseData['paymentRecord'];
+        var date = receiptDetails['updatedAt'];
+        var userId = receiptDetails['customerId'];
+        var status = receiptDetails['paymentStatus'];
+        var amount = receiptDetails['amountPaid'];
+        var transaction = receiptDetails['transactionId'];
+
+        DateTime parsedDate = DateTime.parse(date);
+        String formattedDate = DateFormat('HH:mm:ss dd/MM/yy ').format(parsedDate);
+
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -284,7 +295,7 @@ class _PaymentState extends State<Payment> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Download the receipt bellow',
+                    'Download the receipt below',
                     style: TextStyle(color: darkMaroon),
                   ),
                   SizedBox(height: 10),
@@ -296,24 +307,13 @@ class _PaymentState extends State<Payment> {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: bookingDetails.entries.map<Widget>((entry) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '${entry.key}:',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                '${entry.value}',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                      children: [
+                        Text('Date paid:          $formattedDate', style: TextStyle(color: Colors.black)),
+                        Text('User ID:              $userId', style: TextStyle(color: Colors.black)),
+                        Text('Status:                $status', style: TextStyle(color: Colors.black)),
+                        Text('Amount:              $amount', style: TextStyle(color: Colors.black)),
+                        Text('Transaction ID:     $transaction', style: TextStyle(color: Colors.black)),
+                      ],
                     ),
                   ),
                 ],
@@ -321,7 +321,7 @@ class _PaymentState extends State<Payment> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
-                    await _downloadReceipt(jsonEncode(bookingDetails)); // Convert back to JSON string
+                    await _downloadReceipt(jsonEncode(receiptDetails)); // Convert back to JSON string
                   },
                   child: Text('Download', style: TextStyle(color: maroon)),
                 ),
@@ -344,7 +344,7 @@ class _PaymentState extends State<Payment> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('please wait for Mpesa to reply'),
+            content: Text('Please wait for Mpesa to reply'),
             duration: Duration(seconds: 2),
           ),
         );
@@ -352,7 +352,7 @@ class _PaymentState extends State<Payment> {
         print('Error: ${response.statusCode}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed please try again'),
+            content: Text('Failed, please try again'),
             duration: Duration(seconds: 2),
           ),
         );
@@ -361,12 +361,13 @@ class _PaymentState extends State<Payment> {
       print('$error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed please try again'),
+          content: Text('Failed, please try again'),
           duration: Duration(seconds: 2),
         ),
       );
     }
   }
+
   Future<void> _downloadReceipt(String bookingDetails) async {
     try {
       // Create a temporary directory
