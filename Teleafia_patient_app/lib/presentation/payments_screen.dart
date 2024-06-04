@@ -102,7 +102,7 @@ class MyPaymentsState extends State<MyPayments> with TickerProviderStateMixin {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            HealthClientHeader(heading: 'My Payments'),
+            HealthClientHeader(heading: 'Payments'),
             TabBar(
               controller: _tabController,
               tabs: [
@@ -162,59 +162,93 @@ class MyPaymentsState extends State<MyPayments> with TickerProviderStateMixin {
   }
 
   Widget _buildPaymentWidget(Payments payment) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'My Payments',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: darkMaroon),
-              ),
-              SizedBox(height: 5),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: Row(
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Receipt',
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: darkMaroon),
+          ),
+          SizedBox(height: 5),
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: Wrap(
+              spacing: 10.0, // gap between adjacent chips
+              runSpacing: 5.0, // gap between lines
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.calendar_today, size: 15),
-                    SizedBox(width: 20),
-                    Text('Amount Paid: \$${payment.amountPaid}', style: TextStyle(fontSize: 14)),
-                    SizedBox(width: 20),
-                    Text('Transaction ID: ${payment.transactionId}', style: TextStyle(fontSize: 14)),
-                    SizedBox(width: 20),
-                    Text('Payment Status: ${payment.paymentStatus}', style: TextStyle(fontSize: 14)),
-                    SizedBox(width: 20),
-                    Text('Payment Method: ${payment.paymentMethod}', style: TextStyle(fontSize: 14)),
-                    SizedBox(width: 20),
-                    Text('Date: ${DateFormat('yyyy-MM-dd').format(payment.createdAt)}', style: TextStyle(fontSize: 14)),
-                    SizedBox(width: 20),
-                    Icon(Icons.access_time, size: 14),
-                    SizedBox(width: 3),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text('Amount Paid: \$${payment.amountPaid}', style: TextStyle(fontSize: 14)),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.account_balance_wallet, size: 15),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text('Transaction ID: ${payment.transactionId}', style: TextStyle(fontSize: 14)),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.check_circle, size: 15),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text('Payment Status: ${payment.paymentStatus}', style: TextStyle(fontSize: 14)),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.payment, size: 15),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text('Payment Method: ${payment.paymentMethod}', style: TextStyle(fontSize: 14)),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.date_range, size: 15),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text('Date: ${DateFormat('yyyy-MM-dd').format(payment.createdAt)}', style: TextStyle(fontSize: 14)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () => _selectDate(),
+                child: Row(
+                  children: [
+                    Text('Details ', style: TextStyle(fontSize: 16)),
+                    Icon(Icons.info_outline, size: 13, color: maroon),
                   ],
                 ),
               ),
-              SizedBox(height: 5),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => _selectDate(),
-                    child: Row(
-                      children: [
-                        Text('Details ', style: TextStyle(fontSize: 16)),
-                        Icon(Icons.info_outline, size: 13, color: maroon,),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                ],
-              ),
+              SizedBox(width: 20),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -229,5 +263,4 @@ class MyPaymentsState extends State<MyPayments> with TickerProviderStateMixin {
   }
 }
 
-class _selectDate {
-}
+class _selectDate {}
