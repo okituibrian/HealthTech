@@ -39,16 +39,8 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
   late String selectedCode;
   String defaultCode = '+254';
 
-  @override
-  void initState() {
-    super.initState();
-    selectedCountryCode = '+254 Kenya';
-    parts = selectedCountryCode.split(' ');
-    selectedCode = parts[0];
-    _getLocation();
-  }
-
-
+  Position? _currentLocation;
+  String _currenAddress = "";
   Future<void> _getLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -56,42 +48,74 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      return Future.error('Location services are disabled.');
+      setState(() {
+        locationController.text = 'Location services are disabled.';
+      });
+      return;
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
+        setState(() {
+          locationController.text = 'Location permissions are denied.';
+        });
+        return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      setState(() {
+        locationController.text = 'Location permissions are permanently denied.';
+      });
+      return;
     }
 
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      setState(() {
-        locationController.text =
-        'Lat: ${position.latitude}, Long: ${position.longitude}';
-        print("${position.latitude}, Long: ${position.longitude}");
-      });
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude, position.longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        String? locality = place.locality;
+        String? city = place.administrativeArea;
+        String? country = place.country;
+
+        // Print full Placemark data for debugging
+        print("Placemark data: $place");
+
+        setState(() {
+          locationController.text =
+          'Locality: ${locality ?? 'Unknown locality'}, City: ${city ?? 'Unknown city'}, Country: ${country ?? 'Unknown country'}';
+          print("Locality: ${locality ?? 'Unknown locality'}, City: ${city ?? 'Unknown city'}, Country: ${country ?? 'Unknown country'}");
+        });
+      } else {
+        setState(() {
+          locationController.text = 'No placemarks found';
+          print("No placemarks found");
+        });
+      }
     } catch (e) {
       print('Error getting location: $e');
+      setState(() {
+        locationController.text = 'Error getting location: $e';
+      });
     }
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCountryCode = '+254 Kenya';
+    parts = selectedCountryCode.split(' ');
+    selectedCode = parts[0];
+    _getLocation();
   }
 
   @override

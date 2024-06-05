@@ -10,8 +10,9 @@ import 'package:teleafia_patient/presentation/my_appointments.dart';
 import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
-
 import 'api_call_functions.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
 
 class Payment extends StatefulWidget {
   final String billingId;
@@ -372,11 +373,23 @@ class _PaymentState extends State<Payment> {
     try {
       // Create a temporary directory
       final directory = await getTemporaryDirectory();
-      final filePath = '${directory.path}/receipt.txt';
+      final filePath = '${directory.path}/receipt.pdf';
 
-      // Write the booking details to the file
+      // Create a PDF document
+      final pdf = pw.Document();
+
+      // Add a page with the booking details
+      pdf.addPage(
+        pw.Page(
+          build: (pw.Context context) => pw.Center(
+            child: pw.Text(bookingDetails),
+          ),
+        ),
+      );
+
+      // Save the PDF document to a file
       final file = File(filePath);
-      await file.writeAsString(bookingDetails);
+      await file.writeAsBytes(await pdf.save());
 
       // Use FlutterFileDialog to save the file to the desired location
       final params = SaveFileDialogParams(sourceFilePath: filePath);

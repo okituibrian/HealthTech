@@ -65,7 +65,7 @@ class MyAppointmentsState extends State<MyAppointments>
     // Make a network call to fetch the appointments data
     try {
       final response = await http.get(
-          Uri.parse('${ApiServices.ngrokLink}/api/appointments/appointment-history/${ApiServices.idNumber}'));
+          Uri.parse('${ApiServices.ngrokLink}/api/appointments/single-patient-appointments/${ApiServices.idNumber}'));
 
       if (response.statusCode == 200) {
         // Parse the response data
@@ -188,19 +188,19 @@ class MyAppointmentsState extends State<MyAppointments>
                 padding: EdgeInsets.all(10.0),
                 child: Row(
                   children: [
-                    Icon(Icons.calendar_today, size: 10),
+                    Icon(Icons.calendar_today, size: 12),
                     SizedBox(width: 5),
-                    Text('Service: ${appointment.serviceName}', style: TextStyle(fontSize: 10)),
+                    Text('Service: ${appointment.serviceName}', style: TextStyle(fontSize: 12)),
                     SizedBox(width: 5),
-                    Text(' reference code: ${appointment.appointmentId}', style: TextStyle(fontSize: 10)),
+                    Text(' reference code: ${appointment.appointmentId}', style: TextStyle(fontSize: 12)),
                     SizedBox(width: 5),
-                    Text('on date: ${DateFormat('yyyy-MM-dd').format(appointment.date)}', style: TextStyle(fontSize: 10)),
+                    Text('on date: ${DateFormat('yyyy-MM-dd').format(appointment.date)}', style: TextStyle(fontSize: 12)),
                     SizedBox(width: 5),
-                    Text('from: ${appointment.time}', style: TextStyle(fontSize: 10)),
+                    Text('from: ${appointment.time}', style: TextStyle(fontSize: 12)),
                     SizedBox(width: 5),
-                    Text('status: ${appointment.status}', style: TextStyle(fontSize: 10)),
+                    Text('status: ${appointment.status}', style: TextStyle(fontSize: 12)),
                     SizedBox(width: 20),
-                    Icon(Icons.access_time, size: 10),
+                    Icon(Icons.access_time, size: 12),
                     SizedBox(width: 3),
                   ],
                 ),
