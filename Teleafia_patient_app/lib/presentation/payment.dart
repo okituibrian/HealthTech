@@ -1,5 +1,8 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:teleafia_patient/presentation/delivery_form.dart';
@@ -14,18 +17,16 @@ class Payment extends StatefulWidget {
   final String billingId;
   final String appointmentId;
 
-
   const Payment({super.key, required this.billingId, required this.appointmentId});
 
   @override
   State<Payment> createState() => _PaymentState();
 }
 
-
 class _PaymentState extends State<Payment> {
   Color background = Color(0xFFFCF4F4);
   Color maroon = Color(0xFFc00100);
-  Color darkMaron = Color(0XFF850808);
+  Color darkMaroon = const Color(0xFF850808);
   final TextEditingController mobileNumberController = TextEditingController();
 
   int _notificationCount = 0; // Define _notificationCount here
@@ -35,7 +36,6 @@ class _PaymentState extends State<Payment> {
       _notificationCount = count;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +100,13 @@ class _PaymentState extends State<Payment> {
                                 hintText: UserDataManager().phoneNumber ?? '',
                                 contentPadding: EdgeInsets.all(2.0),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: maroon, width: 0.5),
+                                  borderSide: BorderSide(
+                                      color: maroon, width: 0.5),
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: maroon, width: 0.5),
+                                  borderSide: BorderSide(
+                                      color: maroon, width: 0.5),
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                               ),
@@ -250,16 +252,12 @@ class _PaymentState extends State<Payment> {
   }
 
   void postNumberToServer() async {
-    String mobileNumber = UserDataManager().phoneNumber ??  mobileNumberController.text ;
+    String mobileNumber = UserDataManager().phoneNumber ?? mobileNumberController.text;
     print("Mobile Number: $mobileNumber");
 
-
-    String apiUrl = widget.appointmentId != null &&
-        widget.appointmentId.isNotEmpty
-        ? '${ApiServices.ngrokLink}/api/payments/makestkpayments/${widget
-        .appointmentId}'
-        : '${ApiServices.ngrokLink}/api/payments/makestkpayments/${widget
-        .billingId}';
+    String apiUrl = widget.appointmentId != null && widget.appointmentId.isNotEmpty
+        ? '${ApiServices.ngrokLink}/api/payments/makestkpayments/${widget.appointmentId}'
+        : '${ApiServices.ngrokLink}/api/payments/makestkpayments/${widget.billingId}';
 
     Map<String, String> data = {
       'mobileNumber': mobileNumber,
@@ -272,14 +270,24 @@ class _PaymentState extends State<Payment> {
       );
 
       if (response.statusCode == 200) {
-        final responseData= jsonDecode(response.body);
-        final bookingDetails = responseData['paymentRecord'];
+        print(response.body);
+        final responseData = jsonDecode(response.body);
+        final receiptDetails = responseData['paymentRecord'];
+        var date = receiptDetails['updatedAt'];
+        var userId = receiptDetails['customerId'];
+        var status = receiptDetails['paymentStatus'];
+        var amount = receiptDetails['amountPaid'];
+        var transaction = receiptDetails['transactionId'];
+
+        DateTime parsedDate = DateTime.parse(date);
+        String formattedDate = DateFormat('HH:mm:ss dd/MM/yy ').format(parsedDate);
+
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text(
-                'Booking Details',
+                'Payment completed successfully',
                 style: TextStyle(color: maroon),
               ),
               content: Column(
@@ -287,8 +295,8 @@ class _PaymentState extends State<Payment> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'View appointment receipt:',
-                    style: TextStyle(color: darkMaron,)
+                    'Download the receipt below',
+                    style: TextStyle(color: darkMaroon),
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -297,18 +305,25 @@ class _PaymentState extends State<Payment> {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text('${bookingDetails}',
-                      style: TextStyle(color: Colors.black),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Date paid:          $formattedDate', style: TextStyle(color: Colors.black)),
+                        Text('User ID:              $userId', style: TextStyle(color: Colors.black)),
+                        Text('Status:                $status', style: TextStyle(color: Colors.black)),
+                        Text('Amount:              $amount', style: TextStyle(color: Colors.black)),
+                        Text('Transaction ID:     $transaction', style: TextStyle(color: Colors.black)),
+                      ],
                     ),
                   ),
                 ],
               ),
               actions: <Widget>[
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
+                  onPressed: () async {
+                    await _downloadReceipt(jsonEncode(receiptDetails)); // Convert back to JSON string
                   },
-                  child: Text('OK'),
+                  child: Text('Download', style: TextStyle(color: maroon)),
                 ),
               ],
             );
@@ -320,7 +335,6 @@ class _PaymentState extends State<Payment> {
             context,
             MaterialPageRoute(builder: (context) => MyAppointments()),
           );
-
         } else {
           Navigator.push(
             context,
@@ -330,15 +344,15 @@ class _PaymentState extends State<Payment> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('please wait for Mpesa to reply'),
+            content: Text('Please wait for Mpesa to reply'),
             duration: Duration(seconds: 2),
           ),
         );
       } else {
-        print('Error: ${response.statusCode} =>');
+        print('Error: ${response.statusCode}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed please try again'),
+            content: Text('Failed, please try again'),
             duration: Duration(seconds: 2),
           ),
         );
@@ -347,11 +361,36 @@ class _PaymentState extends State<Payment> {
       print('$error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed please try again'),
+          content: Text('Failed, please try again'),
           duration: Duration(seconds: 2),
         ),
       );
     }
   }
-}
 
+  Future<void> _downloadReceipt(String bookingDetails) async {
+    try {
+      // Create a temporary directory
+      final directory = await getTemporaryDirectory();
+      final filePath = '${directory.path}/receipt.txt';
+
+      // Write the booking details to the file
+      final file = File(filePath);
+      await file.writeAsString(bookingDetails);
+
+      // Use FlutterFileDialog to save the file to the desired location
+      final params = SaveFileDialogParams(sourceFilePath: filePath);
+      final result = await FlutterFileDialog.saveFile(params: params);
+
+      if (result != null) {
+        // Show a message indicating the file was saved successfully
+        print('Receipt saved to $result');
+      } else {
+        // Show a message indicating the user canceled the save operation
+        print('Save operation canceled');
+      }
+    } catch (e) {
+      print('Error saving receipt: $e');
+    }
+  }
+}

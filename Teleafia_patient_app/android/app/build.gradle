@@ -23,13 +23,13 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.teleafia_patient"
-    compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    compileSdkVersion 33
+    defaultConfig {
+        applicationId "com.example.teleafia_patient"
+        minSdkVersion 20
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
     }
 
     kotlinOptions {

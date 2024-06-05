@@ -52,7 +52,7 @@ class _ProductListState extends State<ProductList> {
       final response = await http.get(Uri.parse(
           '${ApiServices.ngrokLink}/api/product/viewallproducts'));
       print('Response status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+     // print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final List<dynamic>? responseData = jsonDecode(response.body);
