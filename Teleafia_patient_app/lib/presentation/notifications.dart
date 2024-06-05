@@ -3,30 +3,27 @@ import '../shared/bottom_nav.dart';
 import '../shared/header.dart';
 
 class HealthClientNotifications extends StatelessWidget {
-  final String message;
+  final List<String> messages; // Change type to List<String>
 
   HealthClientNotifications({
-    required this.message,
+    required this.messages, // Update constructor parameter
   });
 
   @override
   Widget build(BuildContext context) {
-    return Notifications(message: message,);
+    return Notifications(messages: messages);
   }
 }
 
 class Notifications extends StatefulWidget {
-  final String message;
-  int _notificationCount = 0;
+  final List<String> messages; // Change type to List<String>
 
-  Notifications({required this.message});
+  Notifications({required this.messages}); // Update constructor parameter
 
   @override
   _NotificationsState createState() => _NotificationsState();
 }
 class _NotificationsState extends State<Notifications> {
-
-  final TextEditingController _textController = TextEditingController();
   final Color background = Color(0XFFFCF4F4);
   final Color dark_maroon = Color(0XFF850808);
   final Color maroon = Color(0XFFC00100);
@@ -40,14 +37,28 @@ class _NotificationsState extends State<Notifications> {
           HealthClientHeader(heading: 'Notifications'),
 
           SizedBox(height: 5),
-          Container(
-            padding: EdgeInsets.all(20.0),
-
-            child: Column(
-              children: [
-                SizedBox(width: 5),
-                Text('${widget.message}', style: TextStyle(fontSize: 16)),
-              ],
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.messages.length, // Use messages from widget
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: EdgeInsets.all(20.0),
+                  margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 3,
+                        offset: Offset(0, 2), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: Text(widget.messages[index], style: TextStyle(fontSize: 16)), // Use messages from widget
+                );
+              },
             ),
           ),
 
