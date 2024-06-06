@@ -7,8 +7,10 @@ import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'notifications.dart';
 
 class ApiServices {
-  static String ngrokLink = 'https://2835-102-210-244-174.ngrok-free.app';
-  static String idNumber = '321456';
+
+  static String ngrokLink = 'http://192.168.88.178:5500';
+ // static String idNumber = '321456';
+
 
   static Future<String> fetchProfileImage() async {
     final response = await http.get(Uri.parse('$ngrokLink/api/patient/getProfileImage/${UserDataManager().idNumber}'));
@@ -27,7 +29,7 @@ class ApiServices {
   static Future<void> fetchNotifications(BuildContext context, void Function(int) updateNotificationCount) async {
     try {
       final response = await http.get(
-        Uri.parse('$ngrokLink/api/notifications/getallnotifications/$idNumber'),
+        Uri.parse('$ngrokLink/api/notifications/getallnotifications/${UserDataManager().idNumber}'),
       );
 
       if (response.statusCode == 200) {

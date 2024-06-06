@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teleafia_patient/presentation/orders.dart';
 import 'package:teleafia_patient/presentation/pharmacy.dart';
 
 import '../shared/bottom_nav.dart';
@@ -169,8 +170,8 @@ class _DeliveryFormState extends State<DeliveryForm> {
                                     duration: Duration(seconds: 5),
                                   ),
                                 );
-                                Future.delayed(Duration(seconds: 5), () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Pharmacy())); // Pop the current route after 5 seconds
+                                Future.delayed(Duration(seconds: 2), () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyOrders())); // Pop the current route after 5 seconds
                                 });
                               },
                               style: ElevatedButton.styleFrom(

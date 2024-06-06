@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:teleafia_patient/presentation/api_call_functions.dart';
 import 'package:teleafia_patient/presentation/medical_history.dart';
 import 'package:teleafia_patient/presentation/my_appointments.dart';
+import 'package:teleafia_patient/presentation/orders.dart';
 import 'package:teleafia_patient/presentation/payments_screen.dart';
 import 'package:teleafia_patient/presentation/settings.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
@@ -149,14 +150,19 @@ class _HealthClientProfileState extends State<HealthClientProfile> {
               text: 'My Orders',
               imagePath: 'assets/my_orders.PNG',
               onTap: () {
-                // Add your onTap functionality here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyOrders(),
+                  ),
+                );
               },
             ),
             MedicalServicesFunctions().customListTile(
               text: 'My Messages',
               imagePath: 'assets/my_messages.PNG',
               onTap: () {
-                // Add your onTap functionality here
+
               },
             ),
             MedicalServicesFunctions().customListTile(

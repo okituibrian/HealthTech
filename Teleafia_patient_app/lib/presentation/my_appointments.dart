@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:teleafia_patient/presentation/feedback_ratings.dart';
 import 'package:teleafia_patient/presentation/messages.dart';
 import 'package:teleafia_patient/presentation/notifications.dart';
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 
@@ -65,7 +66,9 @@ class MyAppointmentsState extends State<MyAppointments>
     // Make a network call to fetch the appointments data
     try {
       final response = await http.get(
-          Uri.parse('${ApiServices.ngrokLink}/api/appointments/single-patient-appointments/${ApiServices.idNumber}'));
+
+          Uri.parse('${ApiServices.ngrokLink}/api/appointments/single-patient-appointments/${UserDataManager().idNumber}'));
+
 
       if (response.statusCode == 200) {
         // Parse the response data
