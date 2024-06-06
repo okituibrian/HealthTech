@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:teleafia_patient/presentation/feedback_ratings.dart';
 import 'package:teleafia_patient/presentation/messages.dart';
 import 'package:teleafia_patient/presentation/notifications.dart';
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 
@@ -77,7 +78,7 @@ class MyPaymentsState extends State<MyPayments> with TickerProviderStateMixin {
   Future<void> _fetchPayments() async {
     try {
       final response = await http.get(
-          Uri.parse('${ApiServices.ngrokLink}/api/payments/get-one-patient-payments/${ApiServices.idNumber}'));
+          Uri.parse('${ApiServices.ngrokLink}/api/payments/get-one-patient-payments/${UserDataManager().idNumber}'));
 
       if (response.statusCode == 200) {
         final List<dynamic> paymentsData = json.decode(response.body);

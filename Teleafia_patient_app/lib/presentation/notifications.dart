@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../shared/bottom_nav.dart';
 import '../shared/header.dart';
 
@@ -23,6 +25,7 @@ class Notifications extends StatefulWidget {
   @override
   _NotificationsState createState() => _NotificationsState();
 }
+
 class _NotificationsState extends State<Notifications> {
   final Color background = Color(0XFFFCF4F4);
   final Color dark_maroon = Color(0XFF850808);
@@ -35,7 +38,6 @@ class _NotificationsState extends State<Notifications> {
       body: Column(
         children: <Widget>[
           HealthClientHeader(heading: 'Notifications'),
-
           SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
@@ -56,18 +58,65 @@ class _NotificationsState extends State<Notifications> {
                       ),
                     ],
                   ),
-                  child: Text(widget.messages[index], style: TextStyle(fontSize: 16)), // Use messages from widget
+                  child: _buildMessageText(widget.messages[index]), // Use messages from widget
                 );
               },
             ),
           ),
-
-          SizedBox(
-            height: 5,
-          )
+          SizedBox(height: 5),
         ],
       ),
       bottomNavigationBar: HealthClientFooter(),
     );
+  }
+
+  Widget _buildMessageText(String text) {
+    final RegExp urlRegExp = RegExp(
+      r'((https?:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+)|((https?:\/\/)?(www\.)?[a-zA-Z0-9_\-]+\.([a-zA-Z]{2,5})(\/[a-zA-Z0-9_\-]+)*)',
+      caseSensitive: false,
+    );
+
+    final List<TextSpan> spans = [];
+    final List<RegExpMatch> matches = urlRegExp.allMatches(text).toList();
+
+    if (matches.isEmpty) {
+      return Text(text, style: TextStyle(fontSize: 16));
+    }
+
+    int start = 0;
+
+    for (final RegExpMatch match in matches) {
+      if (match.start > start) {
+        spans.add(TextSpan(text: text.substring(start, match.start)));
+      }
+
+      final String url = match.group(0)!;
+
+      spans.add(
+        TextSpan(
+          text: url,
+          style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+          recognizer: TapGestureRecognizer()..onTap = () => _launchURL(url),
+        ),
+      );
+
+      start = match.end;
+    }
+
+    if (start < text.length) {
+      spans.add(TextSpan(text: text.substring(start)));
+    }
+
+    return RichText(
+      text: TextSpan(style: TextStyle(fontSize: 16, color: Colors.black), children: spans),
+    );
+  }
+
+  void _launchURL(String url) async {
+    if (await canLaunchUrl(url as Uri)) {
+      await launchUrl(url as Uri);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
