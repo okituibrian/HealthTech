@@ -66,7 +66,9 @@ class MyAppointmentsState extends State<MyAppointments>
     // Make a network call to fetch the appointments data
     try {
       final response = await http.get(
+
           Uri.parse('${ApiServices.ngrokLink}/api/appointments/single-patient-appointments/${UserDataManager().idNumber}'));
+
 
       if (response.statusCode == 200) {
         // Parse the response data

@@ -58,7 +58,11 @@ class _NotificationsState extends State<Notifications> {
                       ),
                     ],
                   ),
+
                   child: _buildMessageText(widget.messages[index]), // Use messages from widget
+
+                  child: Text(widget.messages[index], style: TextStyle(fontSize: 16)), // Use messages from widget
+
                 );
               },
             ),
@@ -69,6 +73,7 @@ class _NotificationsState extends State<Notifications> {
       bottomNavigationBar: HealthClientFooter(),
     );
   }
+
 
   Widget _buildMessageText(String text) {
     final RegExp urlRegExp = RegExp(
@@ -119,4 +124,5 @@ class _NotificationsState extends State<Notifications> {
       throw 'Could not launch $url';
     }
   }
+
 }
