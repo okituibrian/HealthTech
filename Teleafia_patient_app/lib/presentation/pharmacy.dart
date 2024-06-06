@@ -25,7 +25,7 @@ class _PharmacyState extends State<Pharmacy> {
           style: TextStyle(
             color: Colors.redAccent,
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 20,
           ),
         ),
       ),
@@ -44,7 +44,8 @@ class _PharmacyState extends State<Pharmacy> {
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12.0,
+                        fontSize: 20.0,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
@@ -58,7 +59,8 @@ class _PharmacyState extends State<Pharmacy> {
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12.0,
+                        decoration: TextDecoration.underline,
+                        fontSize: 20.0,
                       ),
                     ),
                   ),
@@ -70,14 +72,14 @@ class _PharmacyState extends State<Pharmacy> {
           ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: Image.asset('assets/pharmacy1.jpg',
-              width: 300,
-              height: 150,
+              width: 500,
+              height: 200,
               fit: BoxFit.cover,
             ),
           ),
           SizedBox(height: 20.0,),
           Container(
-            width: 300,
+            width: 350,
             height: 200,
             decoration: BoxDecoration(
               color: Colors.grey[300],
@@ -93,7 +95,7 @@ class _PharmacyState extends State<Pharmacy> {
                   style: TextStyle(
                     color: Colors.redAccent,
                     fontSize: 12,
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 )

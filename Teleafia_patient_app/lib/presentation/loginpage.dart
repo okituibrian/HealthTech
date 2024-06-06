@@ -6,6 +6,7 @@ import 'package:teleafia_patient/presentation/signup_page.dart';
 import 'package:teleafia_patient/presentation/dashboard.dart';
 import 'package:teleafia_patient/presentation/forgotpassword.dart';
 import 'package:teleafia_patient/presentation/request_otp.dart';
+import 'package:teleafia_patient/presentation/textinputformater.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
 
 
@@ -122,6 +123,7 @@ class _LoginState extends State<Login> {
                       Container(
                         height: 35.0,
                         child: TextField(
+                          inputFormatters: [EmailInputFormatter()],
                           textAlignVertical: TextAlignVertical.center,
                           controller: emailController,
                           decoration: InputDecoration(

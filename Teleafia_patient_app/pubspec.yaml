@@ -54,6 +54,7 @@ dependencies:
   json_annotation: ^4.5.0
   google_maps_flutter: ^2.6.1
   flutter_file_dialog: ^3.0.2
+  pdf: ^3.8.1
   charts_flutter: ^0.12.0
 
 

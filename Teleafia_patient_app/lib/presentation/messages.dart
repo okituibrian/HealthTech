@@ -162,8 +162,8 @@ class ChatMessage extends StatelessWidget {
               isSent ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: <Widget>[
                 isSent
-                    ? Text('Sender', style: Theme.of(context).textTheme.subtitle1)
-                    : Text('Receiver', style: Theme.of(context).textTheme.subtitle1),
+                    ? Text('Sender', style: Theme.of(context).textTheme.titleMedium)
+                    : Text('Receiver', style: Theme.of(context).textTheme.titleMedium),
                 Container(
                   decoration: BoxDecoration(
                     color: isSent ? const Color(0xFFffffff) : Colors.grey[200],

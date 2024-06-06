@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:pdf/widgets.dart' as pw;
 import 'package:teleafia_patient/presentation/delivery_form.dart';
 import 'package:teleafia_patient/presentation/my_appointments.dart';
 import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
-
 import 'api_call_functions.dart';
+import 'package:pdf/pdf.dart';
 
 class Payment extends StatefulWidget {
   final String billingId;
@@ -250,7 +251,6 @@ class _PaymentState extends State<Payment> {
       bottomNavigationBar: HealthClientFooter(),
     );
   }
-
   void postNumberToServer() async {
     String mobileNumber = UserDataManager().phoneNumber ?? mobileNumberController.text;
     print("Mobile Number: $mobileNumber");
@@ -294,101 +294,83 @@ class _PaymentState extends State<Payment> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Download the receipt below',
-                    style: TextStyle(color: darkMaroon),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Date paid:          $formattedDate', style: TextStyle(color: Colors.black)),
-                        Text('User ID:              $userId', style: TextStyle(color: Colors.black)),
-                        Text('Status:                $status', style: TextStyle(color: Colors.black)),
-                        Text('Amount:              $amount', style: TextStyle(color: Colors.black)),
-                        Text('Transaction ID:     $transaction', style: TextStyle(color: Colors.black)),
-                      ],
-                    ),
-                  ),
+                  Text('Amount: Kshs.${amount.toString()}'),
+                  Text('Date: $formattedDate'),
+                  Text('User ID: $userId'),
+                  Text('Status: $status'),
+                  Text('Transaction ID: $transaction'),
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () async {
-                    await _downloadReceipt(jsonEncode(receiptDetails)); // Convert back to JSON string
+                    await _downloadReceipt(
+                        'Amount: Kshs.${amount.toString()}\nDate: $formattedDate\nUser ID: $userId\nStatus: $status\nTransaction ID: $transaction'
+                    );
+                    Navigator.of(context).pop(); // Close the dialog
+
+                    // Navigate to the appropriate screen
+                    if (widget.appointmentId != null && widget.appointmentId.isNotEmpty) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyAppointments()),
+                      );
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => DeliveryForm()),
+                      );
+                    }
                   },
-                  child: Text('Download', style: TextStyle(color: maroon)),
+                  style: TextButton.styleFrom(
+                    backgroundColor: maroon,
+                  ),
+                  child: Text(
+                    'Download',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ],
             );
           },
         );
-
-        if (widget.appointmentId != null && widget.appointmentId.isNotEmpty) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MyAppointments()),
-          );
-        } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DeliveryForm()),
-          );
-        }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Please wait for Mpesa to reply'),
-            duration: Duration(seconds: 2),
-          ),
-        );
       } else {
         print('Error: ${response.statusCode}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed, please try again'),
-            duration: Duration(seconds: 2),
-          ),
-        );
+        print(response.body);
       }
-    } catch (error) {
-      print('$error');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed, please try again'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+    } catch (e) {
+      print('Error: $e');
     }
   }
 
   Future<void> _downloadReceipt(String bookingDetails) async {
     try {
-      // Create a temporary directory
-      final directory = await getTemporaryDirectory();
-      final filePath = '${directory.path}/receipt.txt';
-
-      // Write the booking details to the file
-      final file = File(filePath);
-      await file.writeAsString(bookingDetails);
-
-      // Use FlutterFileDialog to save the file to the desired location
-      final params = SaveFileDialogParams(sourceFilePath: filePath);
-      final result = await FlutterFileDialog.saveFile(params: params);
-
-      if (result != null) {
-        // Show a message indicating the file was saved successfully
-        print('Receipt saved to $result');
-      } else {
-        // Show a message indicating the user canceled the save operation
-        print('Save operation canceled');
+      // Get the Downloads directory
+      final directory = await getDownloadsDirectory();
+      if (directory == null) {
+        throw Exception('Could not access the Downloads directory');
       }
+      final filePath = '${directory.path}/receipt.pdf';
+
+      // Create a PDF document
+      final pdf = pw.Document();
+
+      // Add a page with the booking details
+      pdf.addPage(
+        pw.Page(
+          build: (pw.Context context) => pw.Center(
+            child: pw.Text(bookingDetails),
+          ),
+        ),
+      );
+
+      // Save the PDF document to a file
+      final file = File(filePath);
+      await file.writeAsBytes(await pdf.save());
+
+      print('Receipt saved to $filePath');
     } catch (e) {
       print('Error saving receipt: $e');
     }
