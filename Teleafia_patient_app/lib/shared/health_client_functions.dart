@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_patient/presentation/textinputformater.dart';
 
 class MedicalServicesFunctions {
   ListTile customListTile({
@@ -218,7 +219,7 @@ class TextFields {
     );
   }
 
-  Widget GenerateTextfield(String hintText, TextEditingController controller, Function(String?)? onSaved) {
+  Widget GenerateTextfield(String hintText, TextEditingController controller, Function(String?)? onSaved, ) {
     return Container(
       height: 40,
       decoration: BoxDecoration(

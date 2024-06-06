@@ -274,6 +274,7 @@ void checkout(BuildContext context, String idNumber, List<Map<String, dynamic>> 
   String apiUrl = '${ApiServices.ngrokLink}/api/billings/addbillings';
 
   print(idNumber);
+  print(products);
 
 
   try {

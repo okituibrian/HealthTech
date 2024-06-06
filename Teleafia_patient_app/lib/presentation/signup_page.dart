@@ -6,6 +6,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:teleafia_patient/Bloc/registerbloc/register_bloc.dart';
+import 'package:teleafia_patient/presentation/textinputformater.dart';
 import 'package:teleafia_patient/presentation/verify_otp_page.dart';
 import '../shared/health_client_functions.dart';
 import 'countrycode.dart';
@@ -211,6 +212,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                         child: Container(
                           height: 40.0,
                           child: TextField(
+                            inputFormatters: [EmailInputFormatter()],
                             controller: emailController,
                             decoration: InputDecoration(
                               hintText: 'Email',
@@ -261,6 +263,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                           SizedBox(width: 10.0),
                           Expanded(
                             child: TextField(
+                              inputFormatters: [PhoneNumberInputFormatter()],
                               controller: phoneNumberController,
                               keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
@@ -284,8 +287,9 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          height: 40.0,
+                          height: 40,
                           child: TextField(
+                            inputFormatters: [PhoneNumberInputFormatter()],
                             controller: idNumberController,
                             decoration: InputDecoration(
                               hintText: 'ID',
