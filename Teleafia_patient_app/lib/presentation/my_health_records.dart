@@ -1,12 +1,17 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:teleafia_patient/presentation/dashboard.dart';
 import 'package:teleafia_patient/presentation/healthmonitoring.dart';
 import 'package:teleafia_patient/presentation/my_appointments.dart';
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
+
+import 'api_call_functions.dart';
 
 class MedicalRecord extends StatefulWidget {
   const MedicalRecord({super.key});
@@ -37,9 +42,9 @@ class _MedicalRecordState extends State<MedicalRecord> {
   String? filledText;
 
   // TextEditingControllers for the text fields
-  final TextEditingController _textField1Controller = TextEditingController();
-  final TextEditingController _textField2Controller = TextEditingController();
-  final TextEditingController _textField3Controller = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _systolicController = TextEditingController();
+  final TextEditingController _diastolicController = TextEditingController();
   final TextEditingController _textField4Controller = TextEditingController();
   final TextEditingController _textField5Controller = TextEditingController();
   final TextEditingController _textField6Controller = TextEditingController();
@@ -52,9 +57,9 @@ class _MedicalRecordState extends State<MedicalRecord> {
 
   @override
   void dispose() {
-    _textField1Controller.dispose();
-    _textField2Controller.dispose();
-    _textField3Controller.dispose();
+    _dateController.dispose();
+    _systolicController.dispose();
+    _diastolicController.dispose();
     _textField4Controller.dispose();
     _textField5Controller.dispose();
     _textField6Controller.dispose();
@@ -104,7 +109,8 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
                                 child: Container(
                                   width:
-                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  120,
+                                  // Adjusted width to fit 3 rectangles in a row
                                   height: 90,
                                   decoration: BoxDecoration(
                                     color: Color(0XFF850509),
@@ -160,7 +166,8 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
                                 child: Container(
                                   width:
-                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  120,
+                                  // Adjusted width to fit 3 rectangles in a row
                                   height: 90,
                                   decoration: BoxDecoration(
                                     color: Color(0XFF850509),
@@ -216,7 +223,8 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
                                 child: Container(
                                   width:
-                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  120,
+                                  // Adjusted width to fit 3 rectangles in a row
                                   height: 90,
                                   decoration: BoxDecoration(
                                     color: Color(0XFF850509),
@@ -279,7 +287,8 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
                                 child: Container(
                                   width:
-                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  120,
+                                  // Adjusted width to fit 3 rectangles in a row
                                   height: 90,
                                   decoration: BoxDecoration(
                                     color: Color(0XFF850509),
@@ -324,46 +333,47 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                   title: Text('Blood Pressure'),
                                                   content: Column(
                                                     mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    MainAxisSize.min,
                                                     children: <Widget>[
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color:
-                                                                  Colors.red),
+                                                              Colors.red),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Select Date',
+                                                                  'Select Date',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -375,40 +385,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  true,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Systolic',
+                                                                  'Systolic',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -420,40 +431,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  true,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Diastolic',
+                                                                  'Diastolic',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -464,20 +476,21 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                   actions: <Widget>[
                                                     TextButton(
                                                       onPressed: () {
+                                                        sendBP();
                                                         // Save the entered details and close the popup overlay
-                                                        String enteredBpText =
+                                                        /*String enteredBpText =
                                                             _textEditingController
-                                                                .text;
-                                                        // Save to the database
+                                                                .text;*/
+
                                                         print(
-                                                            'Entered text: $enteredBpText');
+                                                            'Entered text:');
 
                                                         Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
                                                                 builder:
                                                                     (context) =>
-                                                                        MedicalRecord()));
+                                                                    MedicalRecord()));
                                                       },
                                                       child: Text(
                                                         'Save',
@@ -509,7 +522,8 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
                                 child: Container(
                                   width:
-                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  120,
+                                  // Adjusted width to fit 3 rectangles in a row
                                   height: 90,
                                   decoration: BoxDecoration(
                                     color: Color(0XFF850509),
@@ -554,46 +568,47 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                   title: Text('BMI Details'),
                                                   content: Column(
                                                     mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    MainAxisSize.min,
                                                     children: <Widget>[
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color:
-                                                                  Colors.red),
+                                                              Colors.red),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Select Date',
+                                                                  'Select Date',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -605,40 +620,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Weight',
+                                                                  'Weight',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -650,40 +666,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Height',
+                                                                  'Height',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -695,40 +712,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Your BMI is',
+                                                                  'Your BMI is',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -752,7 +770,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                             MaterialPageRoute(
                                                                 builder:
                                                                     (context) =>
-                                                                        MedicalRecord()));
+                                                                    MedicalRecord()));
                                                       },
                                                       child: Text(
                                                         'Save',
@@ -784,7 +802,8 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
                                 child: Container(
                                   width:
-                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  120,
+                                  // Adjusted width to fit 3 rectangles in a row
                                   height: 90,
                                   decoration: BoxDecoration(
                                     color: Color(0XFF850509),
@@ -830,46 +849,47 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       'General Information'),
                                                   content: Column(
                                                     mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    MainAxisSize.min,
                                                     children: <Widget>[
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color:
-                                                                  Colors.red),
+                                                              Colors.red),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Enter Full Names',
+                                                                  'Enter Full Names',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -881,40 +901,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Enter Your Email Address',
+                                                                  'Enter Your Email Address',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -926,40 +947,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Gender',
+                                                                  'Gender',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -972,41 +994,42 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                         //margin: EdgeInsets.all(5),
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color:
-                                                                  Colors.red),
+                                                              Colors.red),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'Enter Age',
+                                                                  'Enter Age',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -1018,40 +1041,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'List any drug related allergies',
+                                                                  'List any drug related allergies',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -1063,40 +1087,41 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                       Container(
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
+                                                        BoxDecoration(
                                                           border: Border.all(
                                                               color: maroon),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
                                                           color: Colors.white,
                                                         ),
                                                         child: Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             SizedBox(
                                                               height: 30.0,
                                                               child:
-                                                                  TextFormField(
+                                                              TextFormField(
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                InputDecoration(
                                                                   enabled:
-                                                                      false,
+                                                                  false,
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   hintText:
-                                                                      'List any current medications',
+                                                                  'List any current medications',
                                                                 ),
-                                                                onSaved: (newValue) =>
-                                                                    filledText =
-                                                                        newValue,
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                filledText =
+                                                                    newValue,
                                                               ),
                                                             ),
                                                           ],
@@ -1220,7 +1245,67 @@ class _MedicalRecordState extends State<MedicalRecord> {
       bottomNavigationBar: HealthClientFooter(),
     );
   }
+
+
+  void sendBP() async {
+
+    Map<String, dynamic> data = {
+     'Date': _dateController.text,
+     ' Systolic': _systolicController.text,
+      'Diastolic': _diastolicController.text,
+    };
+
+    String jsonData = jsonEncode(data);
+
+    String apiUrl = '${ApiServices.ngrokLink}/api/createrecord';
+
+    print(_dateController.text);
+    print(_systolicController.text);
+    print(_diastolicController.text);
+
+
+    try {
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonData,
+      );
+
+      if (response.statusCode == 200 ) {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('saved succesfully'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+
+      } else {
+        // Show an error message if the request was not successful
+        print('Error: ${response.statusCode}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${response.reasonPhrase}'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (error) {
+      // Show an error message if an exception occurred
+      print('Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $error'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 }
+
+
 
 class MedicalDetailsDialog extends StatefulWidget {
   @override
