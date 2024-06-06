@@ -1,4 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:teleafia_patient/presentation/dashboard.dart';
+import 'package:teleafia_patient/presentation/healthmonitoring.dart';
+import 'package:teleafia_patient/presentation/my_appointments.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
@@ -27,11 +32,9 @@ class _MedicalRecordState extends State<MedicalRecord> {
     'Orthopedics',
     'Pediatrics',
   ];
-  String? _selectedservice;
-  List<String> _gender1 = ['Female', 'Male'];
-  List<String> _bookingMethod = ['Physical', 'Virtual'];
-  String? _selectedMethod;
-  String? _selectedGender;
+
+  TextEditingController _textEditingController = TextEditingController();
+  String? filledText;
 
   // TextEditingControllers for the text fields
   final TextEditingController _textField1Controller = TextEditingController();
@@ -68,137 +71,1134 @@ class _MedicalRecordState extends State<MedicalRecord> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              HealthClientHeader(heading: 'My Health Records'),
-              TextFields().generateDropdownnWidget(
-                'Gender',
-                _gender1,
-                _selectedGender,
-                    (newValue) {
-                  setState(() {
-                    _selectedGender = newValue;
-                  });
-                },
+      appBar: AppBar(
+        backgroundColor: background,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            HealthClientHeader(heading: 'My Health Records'),
+          ],
+        ),
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            ListView.builder(
+                itemCount: 1,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        DashboardScreen(),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                child: Container(
+                                  width:
+                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                    color: Color(0XFF850509),
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // Border radius applied here
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => destination),
+                                          // );
+                                        },
+                                        child: Image.asset(
+                                          'assets/imaging.PNG',
+                                          height: 25,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'Imaging Results',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 7,
+                                        ),
+                                      ),
+                                      Divider(),
+                                      Container(
+                                        width: 80,
+                                        height: 20,
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: maroon,
+                                          ),
+                                          child: Text(
+                                            'View',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                child: Container(
+                                  width:
+                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                    color: Color(0XFF850509),
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // Border radius applied here
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => destination),
+                                          // );
+                                        },
+                                        child: Image.asset(
+                                          'assets/diagnostic_test.PNG',
+                                          height: 25,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'Diagnostic Test Results',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 7,
+                                        ),
+                                      ),
+                                      Divider(),
+                                      Container(
+                                        width: 80,
+                                        height: 20,
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: maroon,
+                                          ),
+                                          child: Text(
+                                            'View',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                child: Container(
+                                  width:
+                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                    color: Color(0XFF850509),
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // Border radius applied here
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => destination),
+                                          // );
+                                        },
+                                        child: Image.asset(
+                                          'assets/labresults.PNG',
+                                          height: 25,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'Lab Results',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 7,
+                                        ),
+                                      ),
+                                      Divider(),
+                                      Container(
+                                        width: 80,
+                                        height: 20,
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: maroon,
+                                          ),
+                                          child: Text(
+                                            'View',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                child: Container(
+                                  width:
+                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                    color: Color(0XFF850509),
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // Border radius applied here
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => destination),
+                                          // );
+                                        },
+                                        child: Image.asset(
+                                          'assets/bloodpressure.PNG',
+                                          height: 25,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'Blood Pressure',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 7,
+                                        ),
+                                      ),
+                                      Divider(),
+                                      Container(
+                                        width: 80,
+                                        height: 20,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  backgroundColor: background,
+                                                  title: Text('Blood Pressure'),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.red),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Select Date',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Systolic',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Diastolic',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        // Save the entered details and close the popup overlay
+                                                        String enteredBpText =
+                                                            _textEditingController
+                                                                .text;
+                                                        // Save to the database
+                                                        print(
+                                                            'Entered text: $enteredBpText');
+
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        MedicalRecord()));
+                                                      },
+                                                      child: Text(
+                                                        'Save',
+                                                        style: TextStyle(
+                                                            color: maroon),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: maroon,
+                                          ),
+                                          child: Text(
+                                            'Record',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                child: Container(
+                                  width:
+                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                    color: Color(0XFF850509),
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // Border radius applied here
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => destination),
+                                          // );
+                                        },
+                                        child: Image.asset(
+                                          'assets/bmi.PNG',
+                                          height: 25,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'BMI',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 7,
+                                        ),
+                                      ),
+                                      Divider(),
+                                      Container(
+                                        width: 80,
+                                        height: 20,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  backgroundColor: background,
+                                                  title: Text('BMI Details'),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.red),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Select Date',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Weight',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Height',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Your BMI is',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        // Save the entered details and close the popup overlay
+                                                        String enteredBmiText =
+                                                            _textEditingController
+                                                                .text;
+                                                        // Save to the database
+                                                        print(
+                                                            'Entered text: $enteredBmiText');
+
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        MedicalRecord()));
+                                                      },
+                                                      child: Text(
+                                                        'Save',
+                                                        style: TextStyle(
+                                                            color: maroon),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: maroon,
+                                          ),
+                                          child: Text(
+                                            'Record',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                child: Container(
+                                  width:
+                                      120, // Adjusted width to fit 3 rectangles in a row
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                    color: Color(0XFF850509),
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // Border radius applied here
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => destination),
+                                          // );
+                                        },
+                                        child: Image.asset(
+                                          'assets/medical_document.PNG',
+                                          height: 25,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'Other Related Information',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 7,
+                                        ),
+                                      ),
+                                      Divider(),
+                                      Container(
+                                        width: 80,
+                                        height: 20,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  backgroundColor: background,
+                                                  title: Text(
+                                                      'General Information'),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.red),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Enter Full Names',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Enter Your Email Address',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Gender',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        //margin: EdgeInsets.all(5),
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.red),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Enter Age',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'List any drug related allergies',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  enabled:
+                                                                      false,
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'List any current medications',
+                                                                ),
+                                                                onSaved: (newValue) =>
+                                                                    filledText =
+                                                                        newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        // Save the entered details and close the popup overlay
+                                                        String enteredText =
+                                                            _textEditingController
+                                                                .text;
+                                                        // Save to the database
+                                                        print(
+                                                            'Entered text: $enteredText');
+                                                        MedicalDetailsDialog
+                                                            .show(context);
+                                                      },
+                                                      child: Text(
+                                                        'Edit',
+                                                        style: TextStyle(
+                                                            color: maroon),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: maroon,
+                                          ),
+                                          child: Text(
+                                            'Record',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: background,
+                child: Center(
+                  child: Text(
+                    'My Health Records',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: darkMaron,
+                    ),
+                  ),
+                ),
               ),
-              TextFields().GenerateTextfield(
-                'Enter Age',
-                _textField1Controller,
-                    (value) {
-                  _textField1Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Enter Full Names',
-                _textField2Controller,
-                    (value) {
-                  _textField2Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Patient Height(cm)',
-                _textField3Controller,
-                    (value) {
-                  _textField3Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Patient Weight (kg)',
-                _textField4Controller,
-                    (value) {
-                  _textField4Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Patient Email Address',
-                _textField5Controller,
-                    (value) {
-                  _textField5Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'List any drug related allergies',
-                _textField6Controller,
-                    (value) {
-                  _textField6Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'List any medical conditions',
-                _textField7Controller,
-                    (value) {
-                  _textField7Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'List any current medications',
-                _textField8Controller,
-                    (value) {
-                  _textField8Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Provide details of any past surgeries',
-                _textField9Controller,
-                    (value) {
-                  _textField9Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Provide details of any past medical history',
-                _textField10Controller,
-                    (value) {
-                  _textField10Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Provide details of any past surgeries',
-                _textField11Controller,
-                    (value) {
-                  _textField11Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFields().GenerateTextfield(
-                'Provide details of any past medical history',
-                _textField12Controller,
-                    (value) {
-                  _textField12Controller.text = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              Row(
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 10),
+                    width: 80,
+                    height: 40,
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: maroon,
-                        minimumSize: Size(80, 40),
+                        minimumSize: Size(50, 40),
                       ),
                       child: Text(
-                        'Save',
+                        'View',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
-                  SizedBox(width: 200),
+                  Spacer(),
                   Container(
-                    margin: EdgeInsets.only(right: 1),
+                    margin: EdgeInsets.only(right: 10),
+                    width: 40,
+                    height: 40,
                     child: FloatingActionButton(
                       onPressed: () {
                         // Add your action here
@@ -207,17 +1207,112 @@ class _MedicalRecordState extends State<MedicalRecord> {
                       child: Icon(
                         Icons.download,
                         color: Colors.white,
-                      ),
-                      backgroundColor: maroon,
+                      ), // You can change the icon
+                      backgroundColor: maroon, // You can change the color
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: HealthClientFooter(),
+    );
+  }
+}
+
+class MedicalDetailsDialog extends StatefulWidget {
+  @override
+  _MedicalDetailsDialogState createState() => _MedicalDetailsDialogState();
+
+  static void show(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MedicalDetailsDialog();
+      },
+    );
+  }
+}
+
+class _MedicalDetailsDialogState extends State<MedicalDetailsDialog> {
+  String filledText = ''; // This is where you can store the entered text
+  TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor:
+          Colors.white, // Change this to your desired background color
+      title: Text('Medical Related Details'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          // Full Name Input
+          buildInputField('Full Name'),
+          SizedBox(height: 10),
+          // Email Address Input
+          buildInputField('Email address'),
+          SizedBox(height: 10),
+          // Phone Number Input
+          buildInputField('Phone Number'),
+          SizedBox(height: 10),
+          buildInputField('Gender'),
+          SizedBox(height: 10),
+          buildInputField('Age'),
+          SizedBox(height: 10),
+          buildInputField('Drug allergies'),
+          SizedBox(height: 10),
+          buildInputField('Current Medications'),
+          SizedBox(height: 10),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            // Save the entered details and close the popup overlay
+            String enteredText = _textEditingController.text;
+            // Save to the database
+            print('Entered text: $enteredText');
+
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MedicalRecord()));
+          },
+          child: Text(
+            'Save',
+            style: TextStyle(color: maroon),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildInputField(String hintText) {
+    return Container(
+      height: 40,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.red),
+        borderRadius: BorderRadius.circular(4.0),
+        color: Colors.white,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 30.0,
+            child: TextFormField(
+              controller: TextEditingController(text: filledText),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: hintText,
+              ),
+              onChanged: (newValue) => filledText = newValue,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -12,7 +12,6 @@ import 'e-dawa cart/cart_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(
     MultiBlocProvider(
       providers: [
