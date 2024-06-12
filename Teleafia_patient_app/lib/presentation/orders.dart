@@ -191,7 +191,7 @@ class MyOrdersState extends State<MyOrders> with TickerProviderStateMixin {
     print('Filtered Orders for $status: ${filteredOrders.length}'); // Debugging log
 
     if (filteredOrders.isEmpty) {
-      return Center(child: Text('No tracking orders yet'));
+      return Center(child: Text('Refreshing....'));
     }
 
     return ListView.builder(

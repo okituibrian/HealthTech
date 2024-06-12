@@ -151,7 +151,7 @@ class MyPaymentsState extends State<MyPayments> with TickerProviderStateMixin {
     }
 
     if (filteredPayments.isEmpty) {
-      return Center(child: Text('No expenditure yet'));
+      return Center(child: Text('Refreshing'));
     }
 
     return ListView.builder(

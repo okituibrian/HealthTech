@@ -152,7 +152,7 @@ class MyAppointmentsState extends State<MyAppointments>
         filteredAppointments = appointments; // Filter as needed
         break;
       case 'Past':
-        filteredAppointments = appointments; // Filter as needed
+        filteredAppointments = appointments.where((order) => order.appointmentId == 'Delivered').toList();; // Filter as needed
         break;
       case 'Cancelled':
         filteredAppointments = appointments; // Filter as needed
@@ -162,7 +162,7 @@ class MyAppointmentsState extends State<MyAppointments>
     }
 
     if (filteredAppointments.isEmpty) {
-      return Center(child: Text('No appointments'));
+      return Center(child: Text('Refreshing...'));
     }
 
     return ListView.builder(
