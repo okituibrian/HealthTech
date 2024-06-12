@@ -9,6 +9,7 @@ class EmailInputFormatter extends TextInputFormatter {
     }
 
     // Check if the new value starts or ends with '@' or '.'
+
     if (newValue.text.startsWith('@') || newValue.text.startsWith('.') /*||
         newValue.text.endsWith('@') || newValue.text.endsWith('.')*/) {
       return oldValue;
