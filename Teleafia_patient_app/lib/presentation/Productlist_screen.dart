@@ -232,9 +232,9 @@ class _ProductListState extends State<ProductList> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Verification completed',
+            title: Text('Already in your cart',
               style: TextStyle(color: maroon),),
-            content: Text('please proceed to login.',
+            content: Text('check on the cart ',
             style: TextStyle(color: Colors.black),),
             actions: <Widget>[
               TextButton(

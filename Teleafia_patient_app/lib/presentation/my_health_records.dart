@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:teleafia_patient/presentation/dashboard.dart';
 import 'package:teleafia_patient/presentation/healthmonitoring.dart';
+import 'package:teleafia_patient/presentation/imageview_results.dart';
 import 'package:teleafia_patient/presentation/my_appointments.dart';
 import 'package:teleafia_patient/presentation/user_data_manager.dart';
 import 'package:teleafia_patient/shared/bottom_nav.dart';
 import 'package:teleafia_patient/shared/header.dart';
 import 'package:teleafia_patient/shared/health_client_functions.dart';
-
 import 'api_call_functions.dart';
 
 class MedicalRecord extends StatefulWidget {
@@ -24,6 +25,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
   final Color background = Color(0XFFFCF4F4);
   final Color maroon = Color(0XFFC00100);
   Color darkMaron = Color(0XFF850808);
+  DateTime selectedDate = DateTime.now();
   List<String> _options1 = ['Myself', 'Others'];
   String? _selectedOption1;
   List<String> _medicalServices = [
@@ -37,6 +39,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
     'Orthopedics',
     'Pediatrics',
   ];
+  String? images = UserDataManager().avatarSrc;
 
   TextEditingController _textEditingController = TextEditingController();
   String? filledText;
@@ -45,8 +48,8 @@ class _MedicalRecordState extends State<MedicalRecord> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _systolicController = TextEditingController();
   final TextEditingController _diastolicController = TextEditingController();
-  final TextEditingController _textField4Controller = TextEditingController();
-  final TextEditingController _textField5Controller = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
   final TextEditingController _textField6Controller = TextEditingController();
   final TextEditingController _textField7Controller = TextEditingController();
   final TextEditingController _textField8Controller = TextEditingController();
@@ -55,13 +58,14 @@ class _MedicalRecordState extends State<MedicalRecord> {
   final TextEditingController _textField11Controller = TextEditingController();
   final TextEditingController _textField12Controller = TextEditingController();
 
+
   @override
   void dispose() {
     _dateController.dispose();
     _systolicController.dispose();
     _diastolicController.dispose();
-    _textField4Controller.dispose();
-    _textField5Controller.dispose();
+    _weightController.dispose();
+    _heightController.dispose();
     _textField6Controller.dispose();
     _textField7Controller.dispose();
     _textField8Controller.dispose();
@@ -106,7 +110,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                padding: const EdgeInsets.fromLTRB(80, 5, 5, 0),
                                 child: Container(
                                   width:
                                   120,
@@ -146,7 +150,9 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                         width: 80,
                                         height: 20,
                                         child: ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>HealthClientImageviewResults(images: [],)));
+                                          },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: maroon,
                                           ),
@@ -163,7 +169,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                padding: const EdgeInsets.fromLTRB(10, 5, 5, 0),
                                 child: Container(
                                   width:
                                   120,
@@ -220,7 +226,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                padding: const EdgeInsets.fromLTRB(10, 5, 5, 0),
                                 child: Container(
                                   width:
                                   120,
@@ -284,7 +290,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                padding: const EdgeInsets.fromLTRB(80, 5, 5, 0),
                                 child: Container(
                                   width:
                                   120,
@@ -357,23 +363,35 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                               .center,
                                                           children: [
                                                             SizedBox(
-                                                              height: 30.0,
+                                                              height: 40.0,
                                                               child:
-                                                              TextFormField(
-                                                                decoration:
-                                                                InputDecoration(
-                                                                  enabled:
-                                                                  false,
-                                                                  border:
-                                                                  InputBorder
-                                                                      .none,
-                                                                  hintText:
-                                                                  'Select Date',
+                                                              Container(
+                                                                height: 40.0,
+                                                                decoration: BoxDecoration(
+                                                                  border: Border.all(color: maroon),
+                                                                  borderRadius: BorderRadius.circular(4.0),
                                                                 ),
-                                                                onSaved: (
-                                                                    newValue) =>
-                                                                filledText =
-                                                                    newValue,
+                                                                child:
+                                                                  Expanded(
+                                                                    child: TextField(
+                                                                      style: TextStyle(fontSize: 12),
+                                                                      controller: _dateController,
+                                                                      decoration: InputDecoration(
+                                                                        hintText: DateFormat('MM-dd-yyyy').format(DateTime.now()),
+                                                                        filled: true,
+                                                                        enabled: false,
+                                                                        fillColor: Colors.white,
+                                                                        border: InputBorder.none,
+                                                                        suffixIcon: IconButton(
+                                                                          icon: Icon(
+                                                                            Icons.calendar_today,
+                                                                            color: maroon,
+                                                                          ),
+                                                                          onPressed: () => _selectDate(context),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
                                                               ),
                                                             ),
                                                           ],
@@ -406,52 +424,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                               height: 30.0,
                                                               child:
                                                               TextFormField(
-                                                                decoration:
-                                                                InputDecoration(
-                                                                  enabled:
-                                                                  true,
-                                                                  border:
-                                                                  InputBorder
-                                                                      .none,
-                                                                  hintText:
-                                                                  'Systolic',
-                                                                ),
-                                                                onSaved: (
-                                                                    newValue) =>
-                                                                filledText =
-                                                                    newValue,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Container(
-                                                        height: 40,
-                                                        decoration:
-                                                        BoxDecoration(
-                                                          border: Border.all(
-                                                              color: maroon),
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              4.0),
-                                                          color: Colors.white,
-                                                        ),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                          crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            SizedBox(
-                                                              height: 30.0,
-                                                              child:
-                                                              TextFormField(
+                                                                controller: _diastolicController,
                                                                 decoration:
                                                                 InputDecoration(
                                                                   enabled:
@@ -464,7 +437,54 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                                 ),
                                                                 onSaved: (
                                                                     newValue) =>
-                                                                filledText =
+                                                                //filledText =
+                                                                newValue,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        height: 40,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          border: Border.all(
+                                                              color: maroon),
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              4.0),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 30.0,
+                                                              child:
+                                                              TextFormField(
+                                                                controller: _systolicController,
+                                                                decoration:
+                                                                InputDecoration(
+                                                                  enabled:
+                                                                  true,
+                                                                  border:
+                                                                  InputBorder
+                                                                      .none,
+                                                                  hintText:
+                                                                  'Systolic',
+                                                                ),
+                                                                onSaved: (
+                                                                    newValue) =>
+                                                                //filledText =
                                                                     newValue,
                                                               ),
                                                             ),
@@ -477,20 +497,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                     TextButton(
                                                       onPressed: () {
                                                         sendBP();
-                                                        // Save the entered details and close the popup overlay
-                                                        /*String enteredBpText =
-                                                            _textEditingController
-                                                                .text;*/
 
-                                                        print(
-                                                            'Entered text:');
-
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                    MedicalRecord()));
                                                       },
                                                       child: Text(
                                                         'Save',
@@ -519,7 +526,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                padding: const EdgeInsets.fromLTRB(10, 5, 5, 0),
                                 child: Container(
                                   width:
                                   120,
@@ -641,10 +648,11 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                               height: 30.0,
                                                               child:
                                                               TextFormField(
+                                                                controller: _weightController,
                                                                 decoration:
                                                                 InputDecoration(
                                                                   enabled:
-                                                                  false,
+                                                                  true,
                                                                   border:
                                                                   InputBorder
                                                                       .none,
@@ -653,7 +661,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                                 ),
                                                                 onSaved: (
                                                                     newValue) =>
-                                                                filledText =
+                                                                //filledText =
                                                                     newValue,
                                                               ),
                                                             ),
@@ -687,10 +695,11 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                               height: 30.0,
                                                               child:
                                                               TextFormField(
+                                                                controller: _heightController,
                                                                 decoration:
                                                                 InputDecoration(
                                                                   enabled:
-                                                                  false,
+                                                                 true,
                                                                   border:
                                                                   InputBorder
                                                                       .none,
@@ -757,20 +766,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                                   actions: <Widget>[
                                                     TextButton(
                                                       onPressed: () {
-                                                        // Save the entered details and close the popup overlay
-                                                        String enteredBmiText =
-                                                            _textEditingController
-                                                                .text;
-                                                        // Save to the database
-                                                        print(
-                                                            'Entered text: $enteredBmiText');
-
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                    MedicalRecord()));
+                                                      sendBP();
                                                       },
                                                       child: Text(
                                                         'Save',
@@ -799,7 +795,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                                padding: const EdgeInsets.fromLTRB(10, 5, 5, 0),
                                 child: Container(
                                   width:
                                   120,
@@ -1250,19 +1246,19 @@ class _MedicalRecordState extends State<MedicalRecord> {
   void sendBP() async {
 
     Map<String, dynamic> data = {
-     'Date': _dateController.text,
-     ' Systolic': _systolicController.text,
+
+      'Date': _dateController.text,
       'Diastolic': _diastolicController.text,
+      'Systolic': _systolicController.text,
+      'Weight': _weightController.text,
+      'Height': _heightController.text,
     };
 
     String jsonData = jsonEncode(data);
 
-    String apiUrl = '${ApiServices.ngrokLink}/api/createrecord';
+    String apiUrl = 'http://192.168.88.198:5500/api/createrecord';
 
-    print(_dateController.text);
-    print(_systolicController.text);
-    print(_diastolicController.text);
-
+    print(data);
 
     try {
       var response = await http.post(
@@ -1274,6 +1270,7 @@ class _MedicalRecordState extends State<MedicalRecord> {
       );
 
       if (response.statusCode == 200 ) {
+        print(response.statusCode);
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -1301,6 +1298,27 @@ class _MedicalRecordState extends State<MedicalRecord> {
           duration: Duration(seconds: 2),
         ),
       );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _dateController.text = DateFormat('MM-dd-yyyy').format(DateTime.now());
+  }
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+        _dateController.text = DateFormat('MM-dd-yyyy').format(pickedDate);
+      });
     }
   }
 }
@@ -1401,3 +1419,4 @@ class _MedicalDetailsDialogState extends State<MedicalDetailsDialog> {
     );
   }
 }
+

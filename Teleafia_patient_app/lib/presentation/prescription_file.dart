@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:teleafia_patient/presentation/submit_presc.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:teleafia_patient/presentation/user_data_manager.dart';
 
 import 'api_call_functions.dart';
 
@@ -24,7 +25,7 @@ class _UploadState extends State<Upload> {
       var request = http.MultipartRequest(
         'POST',
         Uri.parse(
-          '${ApiServices.ngrokLink}/prescription/uploadprescriptionimage/123456',
+          '${ApiServices.ngrokLink}/api/prescription/uploadprescriptionimage/${UserDataManager().idNumber}',
         ),
       );
       request.files.add(await http.MultipartFile.fromPath(
