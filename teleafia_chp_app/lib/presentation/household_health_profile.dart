@@ -1,8 +1,11 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 //import 'package:teleafia_mobile_app/presentation/child_health_status.dart';
-import 'package:teleafia_mobile_app/models.dart'; // Import CombinedFormData
-import 'package:teleafia_mobile_app/presentation/preventive_medicine1.dart';
-import 'package:teleafia_mobile_app/presentation/wash.dart';
+import 'package:teleafia_chp_app/models.dart'; // Import CombinedFormData
+import 'package:teleafia_chp_app/presentation/preventive_medicine1.dart';
+import 'package:teleafia_chp_app/presentation/wash.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 
 class HouseholdIllness extends StatefulWidget {
   final CombinedFormData formData; // Add CombinedFormData here
@@ -21,11 +24,67 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
   bool? checkBox3 = false;
   List <String> householdPreventiveMeasures = [];
   List <String> barriersToAccessingHealthCareServices = [];
+  bool _isSubmitting = false;
+
+
+  Future<void> _submitForm() async {
+    // Validate form data
+    if (_isFormDataValid(widget.formData)) {
+      // Convert form data to JSON string
+      String jsonData = jsonEncode(widget.formData.toJson());
+      setState(() {
+        _isSubmitting = true; // Set submitting state to true
+      });
+
+      // Post data to backend
+      var url = Uri.parse(
+          'https://05a0-102-210-244-74.ngrok-free.app/api/create/household');
+      var response = await http.post(
+        url,
+        body: jsonData,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      setState(() {
+        _isSubmitting = false; // Reset submitting state
+      });
+
+      // Check response status
+      if (response.statusCode == 201) {
+        // Data submitted successfully
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Form data submitted successfully')),
+        );
+        // Optionally, you can navigate to another screen or show a success message here
+      } else {
+        // Error submitting data
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(
+              'Error submitting form data: ${response.statusCode}')),
+        );
+      }
+    } else {
+      // Show error message if form data is incomplete
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all required fields.')),
+      );
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Center(
+        child: Image.asset(
+          'assets/logo.png',
+          fit: BoxFit.cover,
+        ),
+      ),
         backgroundColor: background,
       ),
       body: Padding(
@@ -33,12 +92,7 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Image.asset(
-                'assets/logo.png',
-                fit: BoxFit.cover,
-              ),
-            ),
+
             SizedBox(height: 10.0),
             Container(
               child: Center(
@@ -53,68 +107,46 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
               ),
             ),
             SizedBox(height: 10.0),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: maroon,
-                ),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: LinearProgressIndicator(
-                  value: 0.5,
-                  valueColor: AlwaysStoppedAnimation<Color>(maroon),
-                  minHeight: 10.0,
-                ),
+            Text(
+              'Prevention and Health Practices',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+                color: darkmaroon,
               ),
             ),
             SizedBox(height: 10.0),
-            Container(
-              child: Text(
-                'Prevention and Health Practices',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
-                  color: darkmaroon,
-                ),
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Container(
-              height: 40,
-              width: 900,
-              child: Text(
-                'What preventive measures does your household take to prevent'
-                    ' the risk of illnesses?',
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 10.0,
-                  color: Colors.black,
-                ),
+            Text(
+              'What preventive measures does your household take to prevent'
+                  ' the risk of illnesses?',
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 10.0,
+                color: Colors.black,
               ),
             ),
             SizedBox(height: 10.0),
             Row(
               children: [
                 Expanded(
-                  child: CheckboxListTile(
-                    title: Text('Handwashing with soap and water'),
-                    value: householdPreventiveMeasures.contains('Handwashing with soap and water'),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value == true) {
-                          householdPreventiveMeasures.add('Handwashing with soap and water');
-                        } else {
-                          householdPreventiveMeasures.remove('Handwashing with soap and water');
-                        }
-                      });
-                    },
-                    activeColor: maroon,
-                  ),
+                  child:CheckboxListTile(
+                          title: Text('Hand washing with soap and water'),
+                      value: householdPreventiveMeasures.contains('Hand washing with soap and water)'),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == true) {
+                            householdPreventiveMeasures.add('Hand washing with soap and water');
+                          } else {
+                            householdPreventiveMeasures.remove('Hand washing with soap and water');
+                          }
+                          widget.formData.householdHealthProfileData.householdPreventiveMeasures = householdPreventiveMeasures;
+                        });
+        },
+        activeColor: maroon,
+      ),
                 ),
                 Expanded(
-                  child: CheckboxListTile(
+                  child:CheckboxListTile(
                     title: Text('Regular disinfection of surfaces'),
                     value: householdPreventiveMeasures.contains('Regular disinfection of surfaces'),
                     onChanged: (value) {
@@ -124,13 +156,14 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
                         } else {
                           householdPreventiveMeasures.remove('Regular disinfection of surfaces');
                         }
+                        widget.formData.householdHealthProfileData.householdPreventiveMeasures = householdPreventiveMeasures;
                       });
                     },
                     activeColor: maroon,
                   ),
                 ),
                 Expanded(
-                  child: CheckboxListTile(
+                  child:CheckboxListTile(
                     title: Text('Vaccination'),
                     value: householdPreventiveMeasures.contains('Vaccination'),
                     onChanged: (value) {
@@ -140,13 +173,14 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
                         } else {
                           householdPreventiveMeasures.remove('Vaccination');
                         }
+                        widget.formData.householdHealthProfileData.householdPreventiveMeasures = householdPreventiveMeasures;
                       });
                     },
                     activeColor: maroon,
                   ),
                 ),
                 Expanded(
-                  child: CheckboxListTile(
+                  child:CheckboxListTile(
                     title: Text('Safe food handling practises'),
                     value: householdPreventiveMeasures.contains('Safe food handling practises'),
                     onChanged: (value) {
@@ -156,29 +190,31 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
                         } else {
                           householdPreventiveMeasures.remove('Safe food handling practises');
                         }
+                        widget.formData.householdHealthProfileData.householdPreventiveMeasures = householdPreventiveMeasures;
                       });
                     },
                     activeColor: maroon,
                   ),
                 ),
                 Expanded(
-                  child: CheckboxListTile(
-                    title: Text('Adequate ventilation in living spaces'),
-                    value: householdPreventiveMeasures.contains('Adequate ventilation in living spaces'),
+                  child:CheckboxListTile(
+                    title: Text('Adequate vwntilation in living spaces'),
+                    value: householdPreventiveMeasures.contains('Adequate vwntilation in living spaces'),
                     onChanged: (value) {
                       setState(() {
                         if (value == true) {
-                          householdPreventiveMeasures.add('Adequate ventilation in living spaces');
+                          householdPreventiveMeasures.add('Adequate vwntilation in living spaces');
                         } else {
-                          householdPreventiveMeasures.remove('Adequate ventilation in living spaces');
+                          householdPreventiveMeasures.remove('Adequate vwntilation in living spaces');
                         }
+                        widget.formData.householdHealthProfileData.householdPreventiveMeasures = householdPreventiveMeasures;
                       });
                     },
                     activeColor: maroon,
                   ),
                 ),
                 Expanded(
-                  child: CheckboxListTile(
+                  child:CheckboxListTile(
                     title: Text('Others'),
                     value: householdPreventiveMeasures.contains('Others'),
                     onChanged: (value) {
@@ -188,6 +224,7 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
                         } else {
                           householdPreventiveMeasures.remove('Others');
                         }
+                        widget.formData.householdHealthProfileData.householdPreventiveMeasures = householdPreventiveMeasures;
                       });
                     },
                     activeColor: maroon,
@@ -214,9 +251,9 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
             Row(
               children: [
                 Expanded(
-                  child: CheckboxListTile(
+                  child:CheckboxListTile(
                     title: Text('Financial'),
-                    value: barriersToAccessingHealthCareServices.contains('Financial'),
+                    value: householdPreventiveMeasures.contains('Financial'),
                     onChanged: (value) {
                       setState(() {
                         if (value == true) {
@@ -224,15 +261,16 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
                         } else {
                           barriersToAccessingHealthCareServices.remove('Financial');
                         }
+                        widget.formData.householdHealthProfileData.barriersToAccessingHealthCareServices = barriersToAccessingHealthCareServices;
                       });
                     },
                     activeColor: maroon,
                   ),
                 ),
                 Expanded(
-                  child: CheckboxListTile(
+                  child:CheckboxListTile(
                     title: Text('Geographical'),
-                    value: barriersToAccessingHealthCareServices.contains('Geographical'),
+                    value: householdPreventiveMeasures.contains('Geographical'),
                     onChanged: (value) {
                       setState(() {
                         if (value == true) {
@@ -240,15 +278,16 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
                         } else {
                           barriersToAccessingHealthCareServices.remove('Geographical');
                         }
+                        widget.formData.householdHealthProfileData.barriersToAccessingHealthCareServices = barriersToAccessingHealthCareServices;
                       });
                     },
                     activeColor: maroon,
                   ),
                 ),
                 Expanded(
-                  child: CheckboxListTile(
+                  child:CheckboxListTile(
                     title: Text('Cultural'),
-                    value: barriersToAccessingHealthCareServices.contains('Cultural'),
+                    value: householdPreventiveMeasures.contains('Cultural'),
                     onChanged: (value) {
                       setState(() {
                         if (value == true) {
@@ -256,6 +295,7 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
                         } else {
                           barriersToAccessingHealthCareServices.remove('Cultural');
                         }
+                        widget.formData.householdHealthProfileData.barriersToAccessingHealthCareServices = barriersToAccessingHealthCareServices;
                       });
                     },
                     activeColor: maroon,
@@ -280,20 +320,21 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
             SizedBox(height: 100.0),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Wash(formData: widget.formData)),
-                  );
-                },
+                onPressed: _isSubmitting ? null : _submitForm,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: maroon,
+                  minimumSize: Size(200, 50),
                 ),
-                child: Text(
-                  'NEXT',
+                child: _isSubmitting
+                    ? CircularProgressIndicator(
+                  color: Colors
+                      .white, // Change the color to match your design
+                )
+                    : Text(
+                  'Submit',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 10.0,
+                    fontSize: 24.0,
                   ),
                 ),
               ),
@@ -303,4 +344,71 @@ class _HouseholdIllnessState extends State<HouseholdIllness> {
       ),
     );
   }
-}*/
+}
+bool _isFormDataValid(CombinedFormData formData) {
+  // Check if all required fields are filled for household details
+  bool isHouseholdDetailsValid =
+      formData.householdDetailsData.householdNumber?.isNotEmpty == true &&
+          formData.householdDetailsData.nationality?.isNotEmpty == true &&
+          formData.householdDetailsData.county?.isNotEmpty == true &&
+          formData.householdDetailsData.subCounty?.isNotEmpty == true &&
+          formData.householdDetailsData.constituency?.isNotEmpty == true &&
+          formData.householdDetailsData.ward?.isNotEmpty == true &&
+          formData.householdDetailsData.communityUnit?.isNotEmpty == true &&
+          formData.householdDetailsData.householdSize?.isNotEmpty == true &&
+          formData.householdDetailsData.numberOfUnderFive?.isNotEmpty == true;
+
+  // Check if all required fields are filled for socio-economic data
+  bool isSocioEconomicValid =
+      formData.socioEconomicData.householdIncomeLevel?.isNotEmpty == true &&
+          formData.socioEconomicData.householdAnnualIncome?.isNotEmpty ==
+              true &&
+          formData.socioEconomicData.householdPrimarySourceOfIncome
+              ?.isNotEmpty ==
+              true &&
+          formData.socioEconomicData.typeOfResidence?.isNotEmpty == true &&
+          formData.socioEconomicData.typeOfResidenceOwnership?.isNotEmpty ==
+              true &&
+          formData.socioEconomicData.householdAmmenities.isNotEmpty;
+
+  // Check if household illness data is valid
+  bool isHouseholdIllnessValid =
+      formData.householdIllnessData.householdMembersWithIllnessSymptoms
+          ?.isNotEmpty ==
+          true &&
+          formData.householdIllnessData.illnessTypesOfHouseholdMembers
+              .isNotEmpty &&
+          formData.householdIllnessData
+              .householdMembersTreatmentRequirement !=
+              null &&
+          formData.householdIllnessData
+              .memberMedicalFacilityReferralConsent !=
+              null &&
+          formData.householdIllnessData.householdMemberCurrentlySick !=
+              null &&
+          formData.householdIllnessData.soughtMedicalAttention != null &&
+          formData.householdIllnessData.typeOfTreatmentSought.isNotEmpty;
+
+  // Check if wash data is valid
+   /*bool isWashDataValid =
+        formData.washData.sourceOfDrinkingWater?.isNotEmpty == true &&
+            formData.washData.reliabilityOfWaterSupply?.isNotEmpty == true &&
+            formData.washData.treatingConsumptionWater?.isNotEmpty == true &&
+            formData.washData.waterTreatmentMethods?.isNotEmpty == true &&
+            formData.washData.typeOfSanitationFacility?.isNotEmpty == true &&
+            formData.washData.shareOfSanitationFacility?.isNotEmpty == true &&
+            formData.washData.cleaningFrequencyOfSanitationFacility
+                ?.isNotEmpty ==
+                true &&
+            formData.washData.accessibilityOfHandWashingFacility?.isNotEmpty ==
+                true &&
+            formData.washData.householdMemberHandWashingFrequency?.isNotEmpty ==
+                true;*/
+
+  return isHouseholdDetailsValid &&
+      isSocioEconomicValid &&
+      isHouseholdIllnessValid;// &&
+  //isWashDataValid;
+}
+
+

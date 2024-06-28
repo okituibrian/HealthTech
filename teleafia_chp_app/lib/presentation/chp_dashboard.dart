@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teleafia_chp_app/presentation/chp_profile_screen.dart';
 import 'package:teleafia_chp_app/presentation/household_details.dart';
 import 'package:teleafia_chp_app/presentation/memberdetails.dart';
 import 'package:teleafia_chp_app/presentation/socioeconomic_status.dart';
@@ -51,6 +52,12 @@ class _ChpDashboardState extends State<ChpDashboard> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => const Login()),
+                    );
+                  }
+                  if (value == 'Profile') {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HealthPromoterProfile()),
                     );
                   }
                 });
@@ -149,8 +156,8 @@ class _ChpDashboardState extends State<ChpDashboard> {
                         Expanded(
                           flex: 1,
                           child: Container(
-                            width: 30,
-                            height: 100,
+                            width: 70,
+                            height: 70,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               boxShadow: [

@@ -36,59 +36,93 @@ class _SocioEconomicState extends State<SocioEconomic> {
   TextEditingController householdPrimarySourceOfIncomeController = TextEditingController();
   TextEditingController typeOfResidenceController = TextEditingController();
   TextEditingController typeOfResidenceOwnershipController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String? validateHouseholdIncomeLevel(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter household income level';
+    }
+    return null;
+  }
+
+  String? validateHouseholdAnnualIncome(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter household annual income';
+    }
+  }
+
+  String? validatePrimarySourceOfIncome(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter primary source of income';
+    }
+  }
+
+  String? validateTypeOfResidence(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter type of residence';
+    }
+  }
+
+  String? validateTypeOfResidenceOwnership(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter type of residence ownership';
+    }
+  }
+
+  String? validateHouseholdAmmenites(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please select household ammennities';
+    }
+  }
+
+
+  void _showErrorDialog(List<String> errorMessages) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Validation Error'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: errorMessages.map((message) => Text(message)).toList(),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              setState(() {
+
+              });
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
 
   List <String> householdAmmenities = [];
-  Future<void> _submitForm() async {
-    // Validate form data
-    if (_isFormDataValid(widget.formData)) {
-      // Convert form data to JSON string
-      String jsonData = jsonEncode(widget.formData.toJson());
-      setState(() {
-        _isSubmitting = true; // Set submitting state to true
-      });
-
-      // Post data to backend
-      var url = Uri.parse('https://b3e3-102-210-244-74.ngrok-free.app/api/create/household');
-      var response = await http.post(
-        url,
-        body: jsonData,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-
-      setState(() {
-        _isSubmitting = false; // Reset submitting state
-      });
-
-      // Check response status
-      if (response.statusCode == 201) {
-        // Data submitted successfully
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Form data submitted successfully')),
-        );
-        // Optionally, you can navigate to another screen or show a success message here
-      } else {
-        // Error submitting data
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error submitting form data: ${response.statusCode}')),
-        );
-      }
-    } else {
-      // Show error message if form data is incomplete
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill in all required fields.')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
-        backgroundColor: background,),
+        backgroundColor: background,
+        title: Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: Image.asset(
+              'assets/logo.png',
+              width: 200,
+              height: 80,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SafeArea(
@@ -103,39 +137,16 @@ class _SocioEconomicState extends State<SocioEconomic> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10.0),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Image.asset(
-                        'assets/logo.png',
-                        width: 200,
-                        height: 80,
-                        fit: BoxFit.cover,
+                    Text(
+                      'Social economic status',
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                        color: maroon,
                       ),
                     ),
-                    const SizedBox(height: 10.0),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Social economic status',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                            color: maroon,
-                          ),
-                        ),
-                        SizedBox(height: 10.0),
-
-                        LinearProgressIndicator(
-                          value: _progressValue,
-                          backgroundColor: Colors.grey[300],
-                          valueColor: AlwaysStoppedAnimation<Color>(maroon),
-                        ),
-                      ],
-                    ),
                     SizedBox(height: 10.0),
+
                     Container(
                       height: 40.0,
                       child: TextField(
@@ -498,24 +509,24 @@ class _SocioEconomicState extends State<SocioEconomic> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10.0),
+                    SizedBox(height: 40.0),
                     ElevatedButton(
-                      onPressed: _isSubmitting ? null : _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: maroon,
+                        style: ElevatedButton.styleFrom(backgroundColor: maroon,
                         minimumSize: Size(200, 50),
-                      ),
-                      child: _isSubmitting
-                          ? CircularProgressIndicator(
-                        color: maroon,
-                      )
-                          : Text(
-                        'Submit',
-                        style: TextStyle(
-                          color: Colors.white,
                         ),
-                      ),
-                    ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HouseHoldIllness1(formData: widget.formData),
+                            ),
+                          );
+                        },
+     child: Text('Next',style: TextStyle(color: Colors.white,),
+    ),
+    ),
+
                   ],
                 ),
               ),

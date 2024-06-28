@@ -194,7 +194,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   void postDataToServer(String email, String newPassword) async {
     // Backend active API endpoint
-    String apiUrl = 'https://a939-102-210-244-74.ngrok-free.app/api/auth/chp/changepassword';
+    String apiUrl = 'https://41cf-102-210-244-74.ngrok-free.app/api/auth/chp/changepassword';
 
     // Data payload
     Map<String, String> data = {
